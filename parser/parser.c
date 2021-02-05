@@ -33,7 +33,7 @@ void	parse_camera(char *str, t_stage *s_stage)
 	skip_between_arg(&str);
 	s_camera->s_angle = parse_angle(&str);
 	skip_between_arg(&str);
-	s_camera->fov = parse_float(&str);
+	s_camera->fov = ft_atoi_pos(&str);
 	ft_lstadd_back(&(s_stage->s_list_cameras), ft_lstnew(s_camera));
 }
 

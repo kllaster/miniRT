@@ -63,6 +63,17 @@ int			ft_atoi_pos(char **str)
 	return ((int)res * sign);
 }
 
+t_list		*ft_lstnew(void *content)
+{
+	t_list	*s_list;
+
+	if (!(s_list = (t_list *)malloc(sizeof(t_list))))
+		return (NULL);
+	s_list->content = content;
+	s_list->next = NULL;
+	return (s_list);
+}
+
 void		ft_lstadd_back(t_list **g_list, t_list *new)
 {
 	if (!(*g_list))
@@ -75,15 +86,29 @@ void		ft_lstadd_back(t_list **g_list, t_list *new)
 	(*g_list)->next = new;
 }
 
-t_list		*ft_lstnew(void *content)
+t_list_objs	*ft_lstnew_obj(void *content, unsigned char type)
 {
-	t_list	*s_list;
+	t_list_objs	*s_list_obj;
 
-	if (!(s_list = (t_list *)malloc(sizeof(t_list))))
+	if (!(s_list_obj = (t_list_objs *)malloc(sizeof(t_list_objs))))
 		return (NULL);
-	s_list->content = content;
-	s_list->next = NULL;
-	return (s_list);
+	s_list_obj->type = OBJ_NONE;
+	s_list_obj->type |= type;
+	s_list_obj->content = content;
+	s_list_obj->next = NULL;
+	return (s_list_obj);
+}
+
+void		ft_lstadd_back_obj(t_list_objs **g_list, t_list_objs *new)
+{
+	if (!(*g_list))
+	{
+		(*g_list) = new;
+		return ;
+	}
+	while ((*g_list)->next)
+		(*g_list) = (*g_list)->next;
+	(*g_list)->next = new;
 }
 
 void		putstr_fd(int fd, char *str)
