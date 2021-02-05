@@ -76,14 +76,17 @@ t_list		*ft_lstnew(void *content)
 
 void		ft_lstadd_back(t_list **g_list, t_list *new)
 {
+	t_list		*last;
+
 	if (!(*g_list))
 	{
 		(*g_list) = new;
 		return ;
 	}
-	while ((*g_list)->next)
-		(*g_list) = (*g_list)->next;
-	(*g_list)->next = new;
+	last = *g_list;
+	while (last->next)
+		last = last->next;
+	last->next = new;
 }
 
 t_list_objs	*ft_lstnew_obj(void *content, unsigned char type)
@@ -101,14 +104,17 @@ t_list_objs	*ft_lstnew_obj(void *content, unsigned char type)
 
 void		ft_lstadd_back_obj(t_list_objs **g_list, t_list_objs *new)
 {
+	t_list_objs *last;
+
 	if (!(*g_list))
 	{
 		(*g_list) = new;
 		return ;
 	}
-	while ((*g_list)->next)
-		(*g_list) = (*g_list)->next;
-	(*g_list)->next = new;
+	last = *g_list;
+	while (last->next)
+		last = last->next;
+	last->next = new;
 }
 
 void		putstr_fd(int fd, char *str)
