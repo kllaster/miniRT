@@ -31,7 +31,7 @@ clean:
 				${RM} ${OBJS}
 
 fclean:			clean
-				cd minilibx && make clean
+				cd minilibx && ${MAKE} clean
 				${RM} libmlx.dylib
 				${RM} ${NAME}
 

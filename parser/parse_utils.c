@@ -25,15 +25,21 @@ void			skip_between_arg(char **str)
 
 double			parse_double(char **str)
 {
-	double mantissa;
-	double num;
+	int		sign;
+	double	mantissa;
+	double	num;
 
-	num = 0;
+	sign = 1;
+	if (**str == '-')
+		sign = -1;
 	num = (double)ft_atoi_pos(str);
+	if (num < 0)
+		sign = 1;
 	if (*(*str) == '.' && (++(*str)))
 	{
 		mantissa = (double)ft_atoi_pos(str);
 		num += (mantissa / pow(10.0, ft_numlen(mantissa)));
+		num *= sign;
 	}
 	return (num);
 }

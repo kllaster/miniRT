@@ -3,12 +3,12 @@
 void	parse_screen(char *str, t_stage *s_stage)
 {
 	skip_between_arg(&str);
-	s_stage->s_screen.height = ft_atoi_pos(&str);
-	if (s_stage->s_screen.height <= 0)
-		error_end("Неверная высота окна", 1);
-	skip_between_arg(&str);
 	s_stage->s_screen.width = ft_atoi_pos(&str);
 	if (s_stage->s_screen.width <= 0)
+		error_end("Неверная высота окна", 1);
+	skip_between_arg(&str);
+	s_stage->s_screen.height = ft_atoi_pos(&str);
+	if (s_stage->s_screen.height <= 0)
 		error_end("Неверная ширина окна", 1);
 }
 

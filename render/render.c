@@ -49,7 +49,7 @@ void	inter_sphere(t_sphere *s_sphere, t_ray *s_ray)
 	}
 }
 
-unsigned int	start_ray(t_stage *s_stage, t_ray *s_ray)
+int		start_ray(t_stage *s_stage, t_ray *s_ray)
 {
 	t_list_objs	*s_list_obj;
 
@@ -91,23 +91,23 @@ int			render(t_stage *s_stage)
 	s_stage->mlx_p = NULL;
 	if ((s_stage->mlx_p = mlx_init()) == NULL)
 		return (-1);
-	mlx_get_screen_size(s_stage->mlx_p, &(s_screen.height), &(s_screen.width));
+	mlx_get_screen_size(s_stage->mlx_p, &(s_screen.width), &(s_screen.height));
 	if (s_stage->s_screen.width > s_screen.width)
 		s_stage->s_screen.width = s_screen.width;
 	if (s_stage->s_screen.height > s_screen.height)
 		s_stage->s_screen.height = s_screen.height;
-	mlx_window = mlx_new_window(s_stage->mlx_p, s_stage->s_screen.height,
-								s_stage->s_screen.width, "miniRT");
-	img.img = mlx_new_image(s_stage->mlx_p, s_stage->s_screen.height,
-							s_stage->s_screen.width);
+	mlx_window = mlx_new_window(s_stage->mlx_p, s_stage->s_screen.width,
+								s_stage->s_screen.height, "miniRT");
+	img.img = mlx_new_image(s_stage->mlx_p, s_stage->s_screen.width,
+							s_stage->s_screen.height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
 							  &img.line_length, &img.endian);
 	s_camera = get_another_camera(s_stage);
 	x = 0;
-	while (x < s_stage->s_screen.height)
+	while (x < s_stage->s_screen.width)
 	{
 		y = 0;
-		while (y < s_stage->s_screen.width)
+		while (y < s_stage->s_screen.height)
 		{
 			s_ray.length = MAX_DISTANCE;
 			s_ray.s_vector_start.x = x - ((double)s_stage->s_screen.width / 2);
