@@ -18,14 +18,14 @@ typedef	struct	s_sphere {
 
 typedef	struct	s_plane {
 	t_coordinates	*s_coordinates;
-	t_angle			*s_angle;
+	t_coordinates	*s_angle;
 	t_rgb			*s_color;
 }				t_plane;
 
 typedef	struct	s_square {
 	double			side_size;
 	t_coordinates	*s_coordinates;
-	t_angle			*s_angle;
+	t_coordinates	*s_angle;
 	t_rgb			*s_color;
 }				t_square;
 
@@ -33,7 +33,7 @@ typedef	struct	s_cylinder {
 	double			diameter;
 	double			height;
 	t_coordinates	*s_coordinates;
-	t_angle			*s_angle;
+	t_coordinates	*s_angle;
 	t_rgb			*s_color;
 }				t_cylinder;
 

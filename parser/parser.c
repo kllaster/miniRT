@@ -33,7 +33,7 @@ void	parse_camera(char *str, t_stage *s_stage)
 		error_end("Ошибка выделения памяти parse_camera", 1);
 	s_camera->s_coordinates = parse_coordinates(&str);
 	skip_between_arg(&str);
-	s_camera->s_angle = parse_angle(&str);
+	s_camera->s_angle = parse_coordinates(&str);
 	skip_between_arg(&str);
 	s_camera->fov = ft_atoi_pos(&str);
 	ft_lstadd_back(&(s_stage->s_list_cameras), ft_lstnew(s_camera));

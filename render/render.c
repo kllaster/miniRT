@@ -30,7 +30,7 @@ void	inter_sphere(t_sphere *s_sphere, t_ray *s_ray)
 	s_ray_inter.s_vector_inter = vector_sub(&(s_ray_inter.s_vector_start_normal), s_sphere->s_coordinates);
 	b = 2 * vector_scalar_mul(&s_ray_inter.s_vector_inter, &(s_ray_inter.s_vector_start_normal));
 	c = vector_scalar_mul(&s_ray_inter.s_vector_inter, &s_ray_inter.s_vector_inter) -
-				pow(s_sphere->diameter / 2.0, 2.0);
+						(s_sphere->diameter / 2.0 * s_sphere->diameter / 2.0);
 	discriminant = b * b - (4 * c);
 	if (discriminant < 0)
 		return ;
@@ -75,17 +75,27 @@ int		start_ray(t_stage *s_stage, t_ray *s_ray)
 
 t_camera	*get_another_camera(t_stage *s_stage)
 {
-	return ((t_camera *)(s_stage->s_list_cameras->content));
+	t_camera	*s_camera;
+
+	s_camera = s_stage->s_list_cameras->content;
+	if ((s_camera->s_mlx_img = malloc(sizeof(t_mlx_img))) == NULL)
+		error_end("Ошибка выделения памяти get_another_camera", 1);
+	s_camera->s_mlx_img->img = mlx_new_image(s_stage->mlx_p,
+												s_stage->s_screen.width,
+												s_stage->s_screen.height);
+	s_camera->s_mlx_img->addr = mlx_get_data_addr(s_camera->s_mlx_img->img,
+								&(s_camera->s_mlx_img->bits_per_pixel),
+								&(s_camera->s_mlx_img->line_length),
+								&(s_camera->s_mlx_img->endian));
+	return (s_camera);
 }
 
 int			render(t_stage *s_stage)
 {
 	int			x;
 	int			y;
-	void		*mlx_window;
 	t_camera	*s_camera;
 	t_ray 		s_ray;
-	t_mlx_img	img;
 	t_screen	s_screen;
 
 	s_stage->mlx_p = NULL;
@@ -96,12 +106,8 @@ int			render(t_stage *s_stage)
 		s_stage->s_screen.width = s_screen.width;
 	if (s_stage->s_screen.height > s_screen.height)
 		s_stage->s_screen.height = s_screen.height;
-	mlx_window = mlx_new_window(s_stage->mlx_p, s_stage->s_screen.width,
+	s_stage->mlx_window = mlx_new_window(s_stage->mlx_p, s_stage->s_screen.width,
 								s_stage->s_screen.height, "miniRT");
-	img.img = mlx_new_image(s_stage->mlx_p, s_stage->s_screen.width,
-							s_stage->s_screen.height);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
-							  &img.line_length, &img.endian);
 	s_camera = get_another_camera(s_stage);
 	x = 0;
 	while (x < s_stage->s_screen.width)
@@ -111,16 +117,16 @@ int			render(t_stage *s_stage)
 		{
 			s_ray.length = MAX_DISTANCE;
 			s_ray.s_vector_start.x = x - ((double)s_stage->s_screen.width / 2);
-			s_ray.s_vector_start.y = -y - ((double)s_stage->s_screen.height / 2);
+			s_ray.s_vector_start.y = -y + ((double)s_stage->s_screen.height / 2);
 			s_ray.s_vector_start.z = (double)s_stage->s_screen.width /
 					(2 * tan((double)s_camera->fov / 2 * M_PI / 180));
 			s_ray.s_vector_start_normal = vector_norm(&s_ray.s_vector_start);
-			my_mlx_pixel_put(&img, x, y, start_ray(s_stage, &s_ray));
+			my_mlx_pixel_put(s_camera->s_mlx_img, x, y, start_ray(s_stage, &s_ray));
 			y++;
 		}
 		x++;
 	}
-	mlx_put_image_to_window(s_stage->mlx_p, mlx_window, img.img, 0, 0);
+	mlx_put_image_to_window(s_stage->mlx_p, s_stage->mlx_window, s_camera->s_mlx_img->img, 0, 0);
 	mlx_loop(s_stage->mlx_p);
 	return (0);
 }

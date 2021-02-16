@@ -79,18 +79,3 @@ t_coordinates	*parse_coordinates(char **str)
 	s_coordinates->z = parse_double(str);
 	return (s_coordinates);
 }
-
-t_angle			*parse_angle(char **str)
-{
-	t_angle	*s_angle;
-
-	if (!(s_angle = malloc(sizeof(t_angle))))
-		error_end("Ошибка выделения памяти parse_angle", 1);
-	ft_bzero(s_angle, sizeof(s_angle));
-	s_angle->x = parse_double(str);
-	check_next_arg(str);
-	s_angle->y = parse_double(str);
-	check_next_arg(str);
-	s_angle->z = parse_double(str);
-	return (s_angle);
-}

@@ -26,7 +26,7 @@ void	parse_plane(char *str, t_stage *s_stage)
 	skip_between_arg(&str);
 	s_plane->s_coordinates = parse_coordinates(&str);
 	skip_between_arg(&str);
-	s_plane->s_angle = parse_angle(&str);
+	s_plane->s_angle = parse_coordinates(&str);
 	skip_between_arg(&str);
 	s_plane->s_color = parse_rgb(&str);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_plane, OBJ_PLANE));
@@ -41,7 +41,7 @@ void	parse_square(char *str, t_stage *s_stage)
 	skip_between_arg(&str);
 	s_square->s_coordinates = parse_coordinates(&str);
 	skip_between_arg(&str);
-	s_square->s_angle = parse_angle(&str);
+	s_square->s_angle = parse_coordinates(&str);
 	skip_between_arg(&str);
 	s_square->side_size = parse_double(&str);
 	if (s_square->side_size <= 0.0)
@@ -60,7 +60,7 @@ void	parse_cylinder(char *str, t_stage *s_stage)
 	skip_between_arg(&str);
 	s_cylinder->s_coordinates = parse_coordinates(&str);
 	skip_between_arg(&str);
-	s_cylinder->s_angle = parse_angle(&str);
+	s_cylinder->s_angle = parse_coordinates(&str);
 	skip_between_arg(&str);
 	s_cylinder->s_color = parse_rgb(&str);
 	skip_between_arg(&str);
