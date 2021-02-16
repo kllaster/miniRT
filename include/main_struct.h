@@ -2,25 +2,25 @@
 # define MAIN_STRUCT_H
 
 typedef	struct	s_rgb {
-	unsigned int	red;
-	unsigned int	green;
-	unsigned int	blue;
+	int				red;
+	int				green;
+	int				blue;
 }				t_rgb;
 
 typedef	struct	s_coordinates {
-	float			x;
-	float			y;
-	float			z;
+	double			x;
+	double			y;
+	double			z;
 }				t_coordinates;
 
 typedef	struct	s_angle {
-	float			x;
-	float			y;
-	float			z;
+	double			x;
+	double			y;
+	double			z;
 }				t_angle;
 
 typedef	struct	s_light {
-	float			brightness;
+	double			brightness;
 	t_coordinates	*s_coordinates;
 	t_rgb			*s_color;
 }				t_light;
@@ -32,13 +32,13 @@ typedef	struct	s_camera {
 }				t_camera;
 
 typedef	struct	s_g_light {
-	float			brightness;
+	double			brightness;
 	t_rgb			*s_color;
 }				t_g_light;
 
 typedef	struct	s_screen {
-	unsigned int	height;
-	unsigned int	width;
+	int				height;
+	int				width;
 }				t_screen;
 
 typedef struct		s_list_objs

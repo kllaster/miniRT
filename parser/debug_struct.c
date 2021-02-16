@@ -3,25 +3,25 @@
 void	debug_print_s_angle(t_angle *s_angle)
 {
 	printf("——— t_angle	s_angle:\n");
-	printf("—————— float	x: %f\n", s_angle->x);
-	printf("—————— float	y: %f\n", s_angle->y);
-	printf("—————— float	z: %f\n", s_angle->z);
+	printf("—————— double	x: %f\n", s_angle->x);
+	printf("—————— double	y: %f\n", s_angle->y);
+	printf("—————— double	z: %f\n", s_angle->z);
 }
 
 void	debug_print_s_coordinates(t_coordinates *s_coordinates)
 {
 	printf("——— t_coordinates	s_coordinates:\n");
-	printf("—————— float	x: %f\n", s_coordinates->x);
-	printf("—————— float	y: %f\n", s_coordinates->y);
-	printf("—————— float	z: %f\n", s_coordinates->z);
+	printf("—————— double	x: %f\n", s_coordinates->x);
+	printf("—————— double	y: %f\n", s_coordinates->y);
+	printf("—————— double	z: %f\n", s_coordinates->z);
 }
 
 void	debug_print_s_color(t_rgb *s_color)
 {
 	printf("——— t_rgb	s_color:\n");
-	printf("—————— unsigned int	red: %u\n", s_color->red);
-	printf("—————— unsigned int	green: %u\n", s_color->green);
-	printf("—————— unsigned int	blue: %u\n", s_color->blue);
+	printf("—————— int	red: %d\n", s_color->red);
+	printf("—————— int	green: %d\n", s_color->green);
+	printf("—————— int	blue: %d\n", s_color->blue);
 }
 
 void	debug_print_s_camera(t_camera *s_camera)
@@ -35,7 +35,7 @@ void	debug_print_s_camera(t_camera *s_camera)
 void	debug_print_s_lights(t_light *s_light)
 {
 	printf("\n——— t_light	s_light:\n");
-	printf("——— float	brightness: %f\n", s_light->brightness);
+	printf("——— double	brightness: %f\n", s_light->brightness);
 	debug_print_s_color(s_light->s_color);
 	debug_print_s_coordinates(s_light->s_coordinates);
 }
@@ -43,7 +43,7 @@ void	debug_print_s_lights(t_light *s_light)
 void	debug_print_s_sphere(t_sphere *s_sphere)
 {
 	printf("\n——— t_sphere	s_sphere:\n");
-	printf("——— float	diameter: %f\n", s_sphere->diameter);
+	printf("——— double	diameter: %f\n", s_sphere->diameter);
 	debug_print_s_color(s_sphere->s_color);
 	debug_print_s_coordinates(s_sphere->s_coordinates);
 }
@@ -59,7 +59,7 @@ void	debug_print_s_plane(t_plane *s_plane)
 void	debug_print_s_square(t_square *s_square)
 {
 	printf("\n——— t_square	s_square:\n");
-	printf("——— float	side_size: %f\n", s_square->side_size);
+	printf("——— double	side_size: %f\n", s_square->side_size);
 	debug_print_s_color(s_square->s_color);
 	debug_print_s_angle(s_square->s_angle);
 	debug_print_s_coordinates(s_square->s_coordinates);
@@ -68,8 +68,8 @@ void	debug_print_s_square(t_square *s_square)
 void	debug_print_s_cylinder(t_cylinder *s_cylinder)
 {
 	printf("\n——— t_cylinder	s_cylinder:\n");
-	printf("——— float	diameter: %f\n", s_cylinder->diameter);
-	printf("——— float	height: %f\n", s_cylinder->height);
+	printf("——— double	diameter: %f\n", s_cylinder->diameter);
+	printf("——— double	height: %f\n", s_cylinder->height);
 	debug_print_s_color(s_cylinder->s_color);
 	debug_print_s_angle(s_cylinder->s_angle);
 	debug_print_s_coordinates(s_cylinder->s_coordinates);
@@ -92,10 +92,10 @@ void	debug_print_s_stage(t_stage *s_stage)
 	printf("\n\n\\\\ t_stage s_stage //\n\n");
 	printf("— void	*mlx_p: %p\n\n", s_stage->mlx_p);
 	printf("— t_screen	s_screen:\n");
-	printf("——— unsigned int	height: %u\n", s_stage->s_screen.height);
-	printf("——— unsigned int	width: %u\n\n", s_stage->s_screen.width);
+	printf("——— int	height: %d\n", s_stage->s_screen.height);
+	printf("——— int	width: %d\n\n", s_stage->s_screen.width);
 	printf("— t_g_light	s_g_light:\n");
-	printf("——— float	brightness: %f\n", s_stage->s_g_light->brightness);
+	printf("——— double	brightness: %f\n", s_stage->s_g_light->brightness);
 	debug_print_s_color(s_stage->s_g_light->s_color);
 	s_list = s_stage->s_list_cameras;
 	while (s_list)

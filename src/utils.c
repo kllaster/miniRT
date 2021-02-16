@@ -124,11 +124,11 @@ void		putstr_fd(int fd, char *str)
 		write(fd, str, 1);
 		str++;
 	}
-	write(fd, "\n", 1);
 }
 
 void		error_end(char *str_error, int exit_code)
 {
 	putstr_fd(2, str_error);
+	putstr_fd(2, "\n");
 	exit(exit_code);
 }

@@ -1,22 +1,29 @@
-NOM=libmlx.a
-SRC= mlx_shaders.c mlx_new_window.m mlx_init_loop.m mlx_new_image.m mlx_xpm.c mlx_int_str_to_wordtab.c
-SRC+= mlx_png.c mlx_mouse.m
-OBJ1=$(SRC:.c=.o)
-OBJ=$(OBJ1:.m=.o)
-CFLAGS+=-O2
+MODULE_SRC= mlx_image.swift mlx_window.swift mlx_init.swift
+MODULE_OBJ=$(MODULE_SRC:.swift=.swiftmodule)
 
-# add to match string put with X11 in size and position
-CFLAGS+= -w -DSTRINGPUTX11
+SRC= interface.swift $(MODULE_SRC)
+OBJ=$(SRC:.swift=.o)
 
-all: $(NOM)
+C_SRC= mlx_xpm.c mlx_png.c mlx_string_put.c
+C_OBJ=$(C_SRC:.c=.o)
+CFLAGS=-O3
 
-$(NOM):	$(OBJ)
-	ar -r ../$(NOM) $(OBJ)
-	ranlib ../$(NOM)
+NAME=libmlx.dylib
+
+INC=-I.
+#OPTI=-Ounchecked
+
+all: $(NAME)
+
+$(NAME): $(MODULE_OBJ) $(OBJ) $(C_OBJ)
+	swiftc $(OPTI) $(INC) -o $(NAME) -emit-library $(OBJ) $(C_OBJ) -lz
+
+%.o: %.swift
+	swiftc $(OPTI) $(INC) -parse-as-library -c $< -o $@
+
+%.swiftmodule: %.swift
+	swiftc $(OPTI) $(INC) -parse-as-library -c $< -o $@ -emit-module -module-name $(patsubst %.swift,%,$<) -module-link-name $(patsubst %.swift,%,$<)
 
 clean:
-	rm -f ../$(NOM) $(OBJ) *~
-	rm -f mlx_app
+	rm -f $(NAME) $(OBJ) $(MODULE_OBJ) $(C_OBJ) *.swiftdoc *~
 
-re: clean all
-.SILENT:

@@ -11,7 +11,7 @@
 # define OBJ_TRIANGLE	0b00010000
 
 typedef	struct	s_sphere {
-	float			diameter;
+	double			diameter;
 	t_coordinates	*s_coordinates;
 	t_rgb			*s_color;
 }				t_sphere;
@@ -23,15 +23,15 @@ typedef	struct	s_plane {
 }				t_plane;
 
 typedef	struct	s_square {
-	float			side_size;
+	double			side_size;
 	t_coordinates	*s_coordinates;
 	t_angle			*s_angle;
 	t_rgb			*s_color;
 }				t_square;
 
 typedef	struct	s_cylinder {
-	float			diameter;
-	float			height;
+	double			diameter;
+	double			height;
 	t_coordinates	*s_coordinates;
 	t_angle			*s_angle;
 	t_rgb			*s_color;

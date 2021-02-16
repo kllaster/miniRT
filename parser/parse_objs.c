@@ -9,7 +9,9 @@ void	parse_sphere(char *str, t_stage *s_stage)
 	skip_between_arg(&str);
 	s_sphere->s_coordinates = parse_coordinates(&str);
 	skip_between_arg(&str);
-	s_sphere->diameter = parse_float(&str);
+	s_sphere->diameter = parse_double(&str);
+	if (s_sphere->diameter <= 0.0)
+		error_end("Неверный диаметр сферы", 1);
 	skip_between_arg(&str);
 	s_sphere->s_color = parse_rgb(&str);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_sphere, OBJ_SPHERE));
@@ -41,7 +43,9 @@ void	parse_square(char *str, t_stage *s_stage)
 	skip_between_arg(&str);
 	s_square->s_angle = parse_angle(&str);
 	skip_between_arg(&str);
-	s_square->side_size = parse_float(&str);
+	s_square->side_size = parse_double(&str);
+	if (s_square->side_size <= 0.0)
+		error_end("Неверный размер стороны куба", 1);
 	skip_between_arg(&str);
 	s_square->s_color = parse_rgb(&str);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_square, OBJ_SQUARE));
@@ -60,9 +64,13 @@ void	parse_cylinder(char *str, t_stage *s_stage)
 	skip_between_arg(&str);
 	s_cylinder->s_color = parse_rgb(&str);
 	skip_between_arg(&str);
-	s_cylinder->diameter = parse_float(&str);
+	s_cylinder->diameter = parse_double(&str);
+	if (s_cylinder->diameter <= 0.0)
+		error_end("Неверный диаметр цилиндра", 1);
 	skip_between_arg(&str);
-	s_cylinder->height = parse_float(&str);
+	s_cylinder->height = parse_double(&str);
+	if (s_cylinder->height <= 0.0)
+		error_end("Неверная высота цилиндра", 1);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_cylinder, OBJ_CYLINDER));
 }
 
