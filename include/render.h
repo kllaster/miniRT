@@ -3,6 +3,13 @@
 
 # include "mini_rt.h"
 
+typedef	struct	s_vscreen {
+	double			width;
+	double			height;
+	double			x_coef;
+	double			y_coef;
+}				t_vscreen;
+
 typedef	struct	s_ray {
 	double			length;
 	t_coordinates	s_vector_inter_normal;

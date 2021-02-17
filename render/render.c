@@ -90,6 +90,21 @@ t_camera	*get_another_camera(t_stage *s_stage)
 	return (s_camera);
 }
 
+void	init_vscreen(t_screen *s_screen, t_camera *s_camera, t_vscreen *s_vscreen)
+{
+	double		ratio;
+
+	ratio = (double)s_screen->width / (double)s_screen->height;
+	s_vscreen->width = (double)s_screen->width / (2 * tan((double)s_camera->fov / 2 * (M_PI / 180)));
+	s_vscreen->height = s_vscreen->width / ratio;
+	s_vscreen->x_coef = s_vscreen->width / (double)s_screen->width;
+	s_vscreen->y_coef = s_vscreen->height / (double)s_screen->height;
+	printf("\n s_vscreen->width: %f", s_vscreen->width);
+	printf("\n s_vscreen->height: %f", s_vscreen->height);
+	printf("\n s_vscreen.x_coef: %f", s_vscreen->x_coef);
+	printf("\n s_vscreen.y_coef: %f", s_vscreen->y_coef);
+}
+
 int			render(t_stage *s_stage)
 {
 	int			x;
@@ -97,6 +112,7 @@ int			render(t_stage *s_stage)
 	t_camera	*s_camera;
 	t_ray 		s_ray;
 	t_screen	s_screen;
+	t_vscreen	*s_vscreen;
 
 	s_stage->mlx_p = NULL;
 	if ((s_stage->mlx_p = mlx_init()) == NULL)
@@ -107,8 +123,11 @@ int			render(t_stage *s_stage)
 	if (s_stage->s_screen.height > s_screen.height)
 		s_stage->s_screen.height = s_screen.height;
 	s_stage->mlx_window = mlx_new_window(s_stage->mlx_p, s_stage->s_screen.width,
-								s_stage->s_screen.height, "miniRT");
+										 s_stage->s_screen.height, "miniRT");
 	s_camera = get_another_camera(s_stage);
+	if ((s_vscreen = malloc(sizeof(t_vscreen))) == NULL)
+		error_end("Ошибка выделения памяти init_vscreen", 1);
+	init_vscreen(&(s_stage->s_screen), s_camera, s_vscreen);
 	x = 0;
 	while (x < s_stage->s_screen.width)
 	{
@@ -116,11 +135,13 @@ int			render(t_stage *s_stage)
 		while (y < s_stage->s_screen.height)
 		{
 			s_ray.length = MAX_DISTANCE;
-			s_ray.s_vector_start.x = x - ((double)s_stage->s_screen.width / 2);
-			s_ray.s_vector_start.y = -y + ((double)s_stage->s_screen.height / 2);
-			s_ray.s_vector_start.z = (double)s_stage->s_screen.width /
-					(2 * tan((double)s_camera->fov / 2 * M_PI / 180));
+			s_ray.s_vector_start.x = (x - ((double)s_stage->s_screen.width / 2)) * s_vscreen->x_coef;
+			s_ray.s_vector_start.y = (-y + ((double)s_stage->s_screen.height / 2)) * s_vscreen->y_coef;
+			s_ray.s_vector_start.z = s_vscreen->width;
+			s_ray.s_vector_start = vector_sum(&s_ray.s_vector_start, s_camera->s_coordinates);
 			s_ray.s_vector_start_normal = vector_norm(&s_ray.s_vector_start);
+			s_ray.s_vector_start_normal = vector_sum(&s_ray.s_vector_start_normal, s_camera->s_angle);
+			s_ray.s_vector_start_normal = vector_norm(&s_ray.s_vector_start_normal);
 			my_mlx_pixel_put(s_camera->s_mlx_img, x, y, start_ray(s_stage, &s_ray));
 			y++;
 		}
