@@ -5,10 +5,16 @@ void			check_next_arg(char **str)
 	if (**str == ',')
 		(*str)++;
 	else
-		error_end("Ошибка в проверке на след. аргумент", 1);
+	{
+		skip_between_arg(str, ',');
+		if (**str == ',')
+			(*str)++;
+		else
+			error_end("Ошибка в проверке на след. аргумент", 1);
+	}
 }
 
-void			skip_between_arg(char **str)
+void			skip_between_arg(char **str, char symb)
 {
 	(*str)++;
 	while (**str)
@@ -16,7 +22,7 @@ void			skip_between_arg(char **str)
 		if (*(*str) == '\t' || *(*str) == ' ')
 			(*str)++;
 		else if ((*(*str) >= '0' && *(*str) <= '9') ||
-			*(*str) == '-' || *(*str) == '+')
+			*(*str) == '-' || *(*str) == '+' || *(*str) == symb)
 			return ;
 		else
 			error_end("Ошибка в проверке на след. параметр", 1);

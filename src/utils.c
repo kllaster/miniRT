@@ -52,6 +52,10 @@ int			ft_atoi_pos(char **str)
 
 	res = 0;
 	sign = 1;
+	while (*(*str) == '\t' || *(*str) == '\v'
+			|| *(*str) == '\f' || *(*str) == '\r'
+			|| *(*str) == ' ')
+		(*str)++;
 	if (*(*str) == '-' || *(*str) == '+')
 		sign = (*(*str)++ == '-') ? -1 : 1;
 	while (*(*str) >= '0' && *(*str) <= '9')
