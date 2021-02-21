@@ -6,13 +6,13 @@ void	parse_sphere(char *str, t_stage *s_stage)
 
 	if (!(s_sphere = malloc(sizeof(t_sphere))))
 		error_end("Ошибка выделения памяти parse_sphere", 1);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_sphere->s_coordinates = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_sphere->diameter = parse_double(&str);
 	if (s_sphere->diameter <= 0.0)
 		error_end("Неверный диаметр сферы", 1);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_sphere->s_color = parse_rgb(&str);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_sphere, OBJ_SPHERE));
 }
@@ -23,11 +23,11 @@ void	parse_plane(char *str, t_stage *s_stage)
 
 	if (!(s_plane = malloc(sizeof(t_sphere))))
 		error_end("Ошибка выделения памяти parse_plane", 1);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_plane->s_coordinates = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_plane->s_angle = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_plane->s_color = parse_rgb(&str);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_plane, OBJ_PLANE));
 }
@@ -38,15 +38,15 @@ void	parse_square(char *str, t_stage *s_stage)
 
 	if (!(s_square = malloc(sizeof(t_square))))
 		error_end("Ошибка выделения памяти parse_square", 1);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_square->s_coordinates = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_square->s_angle = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_square->side_size = parse_double(&str);
 	if (s_square->side_size <= 0.0)
 		error_end("Неверный размер стороны куба", 1);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_square->s_color = parse_rgb(&str);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_square, OBJ_SQUARE));
 }
@@ -57,17 +57,17 @@ void	parse_cylinder(char *str, t_stage *s_stage)
 
 	if (!(s_cylinder = malloc(sizeof(t_cylinder))))
 		error_end("Ошибка выделения памяти parse_cylinder", 1);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_cylinder->s_coordinates = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_cylinder->s_angle = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_cylinder->s_color = parse_rgb(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_cylinder->diameter = parse_double(&str);
 	if (s_cylinder->diameter <= 0.0)
 		error_end("Неверный диаметр цилиндра", 1);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_cylinder->height = parse_double(&str);
 	if (s_cylinder->height <= 0.0)
 		error_end("Неверная высота цилиндра", 1);
@@ -80,13 +80,13 @@ void	parse_triangle(char *str, t_stage *s_stage)
 
 	if (!(s_triangle = malloc(sizeof(t_triangle))))
 		error_end("Ошибка выделения памяти parse_triangle", 1);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_triangle->s_coordinates_1 = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_triangle->s_coordinates_2 = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_triangle->s_coordinates_3 = parse_coordinates(&str);
-	skip_between_arg(&str, 0);
+	skip_between_param(&str, 0);
 	s_triangle->s_color = parse_rgb(&str);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_triangle, OBJ_TRIANGLE));
 }

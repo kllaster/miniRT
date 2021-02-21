@@ -37,6 +37,8 @@ fclean:			clean
 
 re:				fclean all
 
+re_rt:			clean all
+
 .DEFAULT_GOAL:	${NAME}
 .PHONY:			all clean fclean
 .SILENT:

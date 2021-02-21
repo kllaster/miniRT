@@ -6,7 +6,7 @@ void			check_next_arg(char **str)
 		(*str)++;
 	else
 	{
-		skip_between_arg(str, ',');
+		skip_between_param(str, ',');
 		if (**str == ',')
 			(*str)++;
 		else
@@ -14,7 +14,7 @@ void			check_next_arg(char **str)
 	}
 }
 
-void			skip_between_arg(char **str, char symb)
+void			skip_between_param(char **str, char symb)
 {
 	(*str)++;
 	while (**str)

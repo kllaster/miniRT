@@ -1,8 +1,8 @@
 #ifndef MINI_RT_H
 # define MINI_RT_H
 
-# define MAX_DISTANCE	1000000
-# define DEFAULT_COLOR	0xFFCA86
+# define MAX_DISTANCE		1000000
+# define DEFAULT_COLOR		0xFFCA86
 
 # include "../minilibx/mlx.h"
 # include <stdlib.h>

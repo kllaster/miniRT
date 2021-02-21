@@ -29,6 +29,12 @@ typedef	struct	s_light {
 
 typedef	struct	s_camera {
 	unsigned int	fov;
+	double			sin_angle_x;
+	double			cos_angle_x;
+	double			sin_angle_y;
+	double			cos_angle_y;
+	double			sin_angle_z;
+	double			cos_angle_z;
 	t_coordinates	*s_angle;
 	t_coordinates	*s_coordinates;
 	t_mlx_img		*s_mlx_img;
@@ -60,6 +66,7 @@ typedef struct		s_list
 typedef	struct	s_stage {
 	void		*mlx_p;
 	void		*mlx_window;
+	t_camera	*s_selected_camera;
 	t_screen	s_screen;
 	t_g_light	*s_g_light;
 	t_list		*s_list_cameras;

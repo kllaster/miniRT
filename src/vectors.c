@@ -53,3 +53,33 @@ double			vector_scalar_mul(t_coordinates *s_vector_1, t_coordinates *s_vector_2)
 	return (s_vector_1->x * s_vector_2->x + s_vector_1->y * s_vector_2->y +
 											s_vector_1->z * s_vector_2->z);
 }
+
+void			rotate_vector_x(t_coordinates *s_vector, double sin, double cos)
+{
+	t_coordinates	s_vector_res;
+
+	s_vector_res.x = s_vector->x;
+	s_vector_res.y = s_vector->y * cos - s_vector->z * sin;
+	s_vector_res.z = s_vector->y * sin + s_vector->z * cos;
+	*s_vector = s_vector_res;
+}
+
+void			rotate_vector_y(t_coordinates *s_vector, double sin, double cos)
+{
+	t_coordinates	s_vector_res;
+
+	s_vector_res.x = s_vector->x * cos + s_vector->z * sin;
+	s_vector_res.y = s_vector->y;
+	s_vector_res.z = s_vector->x * -sin + s_vector->z * cos;
+	*s_vector = s_vector_res;
+}
+
+void			rotate_vector_z(t_coordinates *s_vector, double sin, double cos)
+{
+	t_coordinates	s_vector_res;
+
+	s_vector_res.x = s_vector->x * cos - s_vector->y * sin;
+	s_vector_res.y = s_vector->x * sin + s_vector->y * cos;
+	s_vector_res.z = s_vector->z;
+	*s_vector = s_vector_res;
+}
