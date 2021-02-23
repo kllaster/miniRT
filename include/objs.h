@@ -3,15 +3,18 @@
 
 # include "mini_rt.h"
 
-# define OBJ_NONE		0b00000000
-# define OBJ_SPHERE		0b00000001
-# define OBJ_PLANE		0b00000010
-# define OBJ_SQUARE		0b00000100
-# define OBJ_CYLINDER	0b00001000
-# define OBJ_TRIANGLE	0b00010000
+enum e_objs
+{
+	OBJ_NONE		= 0b00000000,
+	OBJ_SPHERE		= 0b00000001,
+	OBJ_PLANE		= 0b00000010,
+	OBJ_SQUARE		= 0b00000100,
+	OBJ_CYLINDER	= 0b00001000,
+	OBJ_TRIANGLE	= 0b00010000
+};
 
 typedef	struct	s_sphere {
-	double			diameter;
+	double			radius;
 	t_coordinates	*s_coordinates;
 	t_rgb			*s_color;
 }				t_sphere;

@@ -35,7 +35,7 @@ void	debug_print_s_lights(t_light *s_light)
 void	debug_print_s_sphere(t_sphere *s_sphere)
 {
 	printf("\n——— t_sphere	s_sphere:\n");
-	printf("——— double	diameter: %f\n", s_sphere->diameter);
+	printf("——— double	radius: %f\n", s_sphere->radius);
 	debug_print_s_color(s_sphere->s_color);
 	debug_print_s_coordinates(s_sphere->s_coordinates, "s_coordinates");
 }

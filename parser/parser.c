@@ -36,6 +36,8 @@ void	parse_camera(char *str, t_stage *s_stage)
 	s_camera->s_angle = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_camera->fov = ft_atoi_pos(&str);
+	if (s_camera->fov < 0)
+		error_end("FOV должен быть положительным числом", 1);
 	ft_lstadd_back(&(s_stage->s_list_cameras), ft_lstnew(s_camera));
 }
 

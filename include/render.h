@@ -3,22 +3,14 @@
 
 # include "mini_rt.h"
 
-typedef	struct	s_vscreen {
-	double			width;
-	double			height;
-	double			x_coef;
-	double			y_coef;
-}				t_vscreen;
-
 typedef	struct	s_ray {
 	t_coordinates	s_vector_inter_length;
 	t_coordinates	s_vector_inter_normal;
 	t_coordinates	s_vector_inter;
 	t_coordinates	s_vector_start_normal;
 	t_coordinates	s_vector_start;
+	t_rgb			s_color_obj;
 	double			length;
-	unsigned char 	type;
-	void			*content;
 }				t_ray;
 
 int				render(t_stage *s_stage);

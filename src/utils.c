@@ -58,12 +58,17 @@ int			ft_atoi_pos(char **str)
 		(*str)++;
 	if (*(*str) == '-' || *(*str) == '+')
 		sign = (*(*str)++ == '-') ? -1 : 1;
-	while (*(*str) >= '0' && *(*str) <= '9')
+	if (*(*str) >= '0' && *(*str) <= '9')
 	{
-		if ((res * 10) < res)
-			return ((sign < 1) ? 0 : -1);
-		res = res * 10 + (*(*str)++ - '0');
+		while (*(*str) >= '0' && *(*str) <= '9')
+		{
+			if ((res * 10) < res)
+				return ((sign < 1) ? 0 : -1);
+			res = res * 10 + (*(*str)++ - '0');
+		}
 	}
+	else
+		error_end("Нет числа", 1);
 	return ((int)res * sign);
 }
 
