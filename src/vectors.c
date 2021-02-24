@@ -12,10 +12,14 @@ t_coordinates	vector_norm(t_coordinates *s_vector)
 	double			len;
 
 	len = vector_len(s_vector);
-	s_vector_norm.x = s_vector->x / len;
-	s_vector_norm.y = s_vector->y / len;
-	s_vector_norm.z = s_vector->z / len;
-	return (s_vector_norm);
+	if (len != 1 && len != 0)
+	{
+		s_vector_norm.x = s_vector->x / len;
+		s_vector_norm.y = s_vector->y / len;
+		s_vector_norm.z = s_vector->z / len;
+		return (s_vector_norm);
+	}
+	return (*s_vector);
 }
 
 t_coordinates	vector_sum(t_coordinates *s_vector_1, t_coordinates *s_vector_2)
@@ -46,6 +50,16 @@ t_coordinates	vector_mul(t_coordinates *s_vector, double num)
 	s_vector_mul.y = s_vector->y * num;
 	s_vector_mul.z = s_vector->z * num;
 	return (s_vector_mul);
+}
+
+t_coordinates	vector_cross_product(t_coordinates *s_vector_1, t_coordinates *s_vector_2)
+{
+	t_coordinates p;
+
+	p.x = s_vector_1->z * s_vector_2->y - s_vector_1->y * s_vector_2->z;
+	p.y = s_vector_1->x * s_vector_2->z - s_vector_1->z * s_vector_2->x;
+	p.z = s_vector_1->y * s_vector_2->x - s_vector_1->x * s_vector_2->y;
+	return (p);
 }
 
 double			vector_scalar_mul(t_coordinates *s_vector_1, t_coordinates *s_vector_2)

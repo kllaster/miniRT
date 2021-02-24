@@ -1,5 +1,40 @@
 #include "mini_rt.h"
 
+t_coordinates	matrix_mul(t_coordinates *u, t_matrix *m)
+{
+	t_coordinates v;
+
+	v.x = u->x * m->el[0][0] + u->y * m->el[1][0] + u->z * m->el[2][0] + m->el[3][0];
+	v.y = u->x * m->el[0][1] + u->y * m->el[1][1] + u->z * m->el[2][1] + m->el[3][1];
+	v.z = u->x * m->el[0][2] + u->y * m->el[1][2] + u->z * m->el[2][2] + m->el[3][2];
+	return (v);
+}
+
+t_matrix		get_matrix_rotate(t_coordinates *s_vector_orig, t_coordinates *s_vector_dir)
+{
+	t_matrix		s_matrix;
+	t_coordinates	s_vector_tmp;
+
+	s_vector_tmp = (t_coordinates){0.0, 1.0, 0.0};
+	s_vector_tmp = vector_cross_product(&s_vector_tmp, s_vector_dir);
+	s_vector_tmp = vector_norm(&s_vector_tmp);
+	s_matrix.el[0][0] = s_vector_tmp.x;
+	s_matrix.el[0][1] = s_vector_tmp.y;
+	s_matrix.el[0][2] = s_vector_tmp.z;
+	s_vector_tmp = vector_cross_product(s_vector_dir, &s_vector_tmp);
+	s_vector_tmp = vector_norm(&s_vector_tmp);
+	s_matrix.el[1][0] = s_vector_tmp.x;
+	s_matrix.el[1][1] = s_vector_tmp.y;
+	s_matrix.el[1][2] = s_vector_tmp.z;
+	s_matrix.el[2][0] = s_vector_dir->x;
+	s_matrix.el[2][1] = s_vector_dir->y;
+	s_matrix.el[2][2] = s_vector_dir->z;
+	s_matrix.el[3][0] = s_vector_orig->x;
+	s_matrix.el[3][1] = s_vector_orig->y;
+	s_matrix.el[3][2] = s_vector_orig->z;
+	return (s_matrix);
+}
+
 t_rgb	rgb_mul_arr(t_rgb *s_rgb1, t_rgb *s_rgb2)
 {
     t_rgb	s_rgb_mul_arr;

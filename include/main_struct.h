@@ -34,12 +34,6 @@ typedef	struct	s_vscreen {
 }				t_vscreen;
 
 typedef	struct	s_camera {
-	double			sin_angle_x;
-	double			cos_angle_x;
-	double			sin_angle_y;
-	double			cos_angle_y;
-	double			sin_angle_z;
-	double			cos_angle_z;
 	t_vscreen		*s_vscreen;
 	t_coordinates	*s_angle;
 	t_coordinates	*s_coordinates;

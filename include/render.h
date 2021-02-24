@@ -3,8 +3,12 @@
 
 # include "mini_rt.h"
 
+typedef struct s_matrix
+{
+	double el[4][4];
+}				t_matrix;
+
 typedef	struct	s_ray {
-	t_coordinates	s_vector_inter_length;
 	t_coordinates	s_vector_inter_normal;
 	t_coordinates	s_vector_inter;
 	t_coordinates	s_vector_start_normal;
@@ -28,5 +32,8 @@ double			vector_scalar_mul(t_coordinates *s_vector_1, t_coordinates *s_vector_2)
 void			rotate_vector_x(t_coordinates *s_vector, double sin, double cos);
 void			rotate_vector_y(t_coordinates *s_vector, double sin, double cos);
 void			rotate_vector_z(t_coordinates *s_vector, double sin, double cos);
+t_coordinates	vector_cross_product(t_coordinates *s_vector_1, t_coordinates *s_vector_2);
+t_coordinates	matrix_mul(t_coordinates *u, t_matrix *m);
+t_matrix		get_matrix_rotate(t_coordinates *s_vector_orig, t_coordinates *s_vector_dir);
 
 #endif

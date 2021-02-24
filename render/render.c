@@ -8,13 +8,13 @@ void 	inter_plane(t_plane *s_plane, t_ray *s_ray)
 	x = vector_scalar_mul(&s_ray->s_vector_start_normal, s_plane->s_angle);
 	s_ray_inter.s_vector_inter = vector_sub(&s_ray->s_vector_start, s_plane->s_coordinates);
 	x = vector_scalar_mul(&s_ray_inter.s_vector_inter, s_plane->s_angle) / x;
-	if (x <= 0 || s_ray->length < x)
+	if (x <= 0 || s_ray->length <= x)
 		return ;
 	s_ray_inter = *s_ray;
 	s_ray_inter.length = x;
 	s_ray_inter.s_color_obj = *s_plane->s_color;
-	s_ray_inter.s_vector_inter_length = vector_mul(&s_ray->s_vector_start_normal, x);
-	s_ray_inter.s_vector_inter = vector_sum(&s_ray->s_vector_start, &s_ray_inter.s_vector_inter_length);
+	s_ray_inter.s_vector_inter = vector_mul(&s_ray->s_vector_start_normal, x);
+	s_ray_inter.s_vector_inter = vector_sum(&s_ray->s_vector_start, &s_ray_inter.s_vector_inter);
 	s_ray_inter.s_vector_inter_normal = *s_plane->s_angle;
 	*s_ray = s_ray_inter;
 }
@@ -34,13 +34,13 @@ void 	inter_sphere(t_sphere *s_sphere, t_ray *s_ray)
 	if (d_x < 0)
 		return ;
 	d_x = (-b - sqrt(d_x)) / 2;
-	if (d_x > 0 && d_x < s_ray->length)
+	if (d_x >= 0 && d_x <= s_ray->length)
 	{
 		s_ray_inter = *s_ray;
 		s_ray_inter.length = d_x;
 		s_ray_inter.s_color_obj = *s_sphere->s_color;
-		s_ray_inter.s_vector_inter_length = vector_mul(&s_ray->s_vector_start_normal, d_x);
-		s_ray_inter.s_vector_inter = vector_sum(&s_ray->s_vector_start, &s_ray_inter.s_vector_inter_length);
+		s_ray_inter.s_vector_inter = vector_mul(&s_ray->s_vector_start_normal, d_x);
+		s_ray_inter.s_vector_inter = vector_sum(&s_ray->s_vector_start, &s_ray_inter.s_vector_inter);
         s_ray_inter.s_vector_inter_normal = vector_sub(&s_ray_inter.s_vector_inter, s_sphere->s_coordinates);
         *s_ray = s_ray_inter;
 	}
@@ -55,7 +55,7 @@ void 	check_inter_objs(t_stage *s_stage, t_ray *s_ray)
 	while (s_list_obj)
 	{
 		if (s_list_obj->type & (unsigned)OBJ_SPHERE)
-            inter_sphere(s_list_obj->content, s_ray);
+			inter_sphere(s_list_obj->content, s_ray);
 		else if (s_list_obj->type & (unsigned)OBJ_PLANE)
 			inter_plane(s_list_obj->content, s_ray);
 //		else if (s_list_obj->type & (unsigned)OBJ_SQUARE)
@@ -122,12 +122,6 @@ void	init_vscreen(t_screen *s_screen, t_camera *s_camera, t_vscreen *s_vscreen)
 	s_vscreen->width = (double)s_screen->width / 2.0;
 	s_vscreen->height = (double)s_screen->height / 2.0;
 	s_vscreen->z = (double)s_screen->width / (2 * tan((double)s_camera->fov / 2 * (M_PI / 180)));
-	s_camera->sin_angle_x = sin(s_camera->s_angle->x);
-	s_camera->cos_angle_x = cos(s_camera->s_angle->x);
-	s_camera->sin_angle_y = sin(s_camera->s_angle->y);
-	s_camera->cos_angle_y = cos(s_camera->s_angle->y);
-	s_camera->sin_angle_z = sin(s_camera->s_angle->z);
-	s_camera->cos_angle_z = cos(s_camera->s_angle->z);
 }
 
 void	get_another_camera(t_stage *s_stage)
@@ -153,6 +147,7 @@ int		render(t_stage *s_stage)
 	int				y;
 	t_ray 			s_ray;
 	t_screen		s_screen;
+	t_matrix		s_matrix;
 
 	s_stage->mlx_p = NULL;
 	if ((s_stage->mlx_p = mlx_init()) == NULL)
@@ -175,10 +170,10 @@ int		render(t_stage *s_stage)
 			s_ray.s_vector_start_normal.x = (x + 0.5) - s_stage->s_selected_camera->s_vscreen->width;
 			s_ray.s_vector_start_normal.y = -(y + 0.5) + s_stage->s_selected_camera->s_vscreen->height;
 			s_ray.s_vector_start_normal.z = s_stage->s_selected_camera->s_vscreen->z;
+			s_matrix = get_matrix_rotate(s_stage->s_selected_camera->s_coordinates, s_stage->s_selected_camera->s_angle);
+			s_ray.s_vector_start_normal = matrix_mul(&s_ray.s_vector_start_normal, &s_matrix);
+			s_ray.s_vector_start_normal = vector_sub(&s_ray.s_vector_start_normal, s_stage->s_selected_camera->s_coordinates);
 			s_ray.s_vector_start_normal = vector_norm(&s_ray.s_vector_start_normal);
-			rotate_vector_x(&s_ray.s_vector_start_normal, s_stage->s_selected_camera->sin_angle_x, s_stage->s_selected_camera->cos_angle_x);
-			rotate_vector_y(&s_ray.s_vector_start_normal, s_stage->s_selected_camera->sin_angle_y, s_stage->s_selected_camera->cos_angle_y);
-			rotate_vector_z(&s_ray.s_vector_start_normal, s_stage->s_selected_camera->sin_angle_z, s_stage->s_selected_camera->cos_angle_z);
 			my_mlx_pixel_put(s_stage->s_selected_camera->s_mlx_img, x, y, start_ray(s_stage, &s_ray));
 			y++;
 		}
