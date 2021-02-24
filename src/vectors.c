@@ -54,12 +54,12 @@ t_coordinates	vector_mul(t_coordinates *s_vector, double num)
 
 t_coordinates	vector_cross_product(t_coordinates *s_vector_1, t_coordinates *s_vector_2)
 {
-	t_coordinates p;
+	t_coordinates s_vector;
 
-	p.x = s_vector_1->z * s_vector_2->y - s_vector_1->y * s_vector_2->z;
-	p.y = s_vector_1->x * s_vector_2->z - s_vector_1->z * s_vector_2->x;
-	p.z = s_vector_1->y * s_vector_2->x - s_vector_1->x * s_vector_2->y;
-	return (p);
+	s_vector.x = s_vector_1->z * s_vector_2->y - s_vector_1->y * s_vector_2->z;
+	s_vector.y = s_vector_1->x * s_vector_2->z - s_vector_1->z * s_vector_2->x;
+	s_vector.z = s_vector_1->y * s_vector_2->x - s_vector_1->x * s_vector_2->y;
+	return (s_vector);
 }
 
 double			vector_scalar_mul(t_coordinates *s_vector_1, t_coordinates *s_vector_2)

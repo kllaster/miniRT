@@ -4,6 +4,7 @@
 # include "mini_rt.h"
 
 void				error_end(char *str_error, int exit_code);
+double              ft_dabs(double num);
 int					ft_numlen(int num);
 int					ft_strequal_end(char *str, char *end);
 void				ft_bzero(void *s, size_t n);

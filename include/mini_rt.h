@@ -1,8 +1,11 @@
 #ifndef MINI_RT_H
 # define MINI_RT_H
 
-# define MAX_DISTANCE		1000000
-# define DEFAULT_COLOR		0xFFCA86
+enum e_rt
+{
+    MAX_DISTANCE	= 1000000,
+    DEFAULT_COLOR	= 0x0,
+};
 
 # include "../minilibx/mlx.h"
 # include <stdlib.h>

@@ -1,5 +1,12 @@
 #include "mini_rt.h"
 
+double      ft_dabs(double num)
+{
+    if (num < 0)
+        return (-num);
+    return (num);
+}
+
 int			ft_numlen(int num)
 {
 	int i;

@@ -6,9 +6,11 @@ void 	inter_plane(t_plane *s_plane, t_ray *s_ray)
     t_ray			s_ray_inter;
 
 	x = vector_scalar_mul(&s_ray->s_vector_start_normal, s_plane->s_angle);
-	s_ray_inter.s_vector_inter = vector_sub(&s_ray->s_vector_start, s_plane->s_coordinates);
+    if (ft_dabs(x) <= 0.0001)
+        return ;
+    s_ray_inter.s_vector_inter = vector_sub(s_plane->s_coordinates, &s_ray->s_vector_start);
 	x = vector_scalar_mul(&s_ray_inter.s_vector_inter, s_plane->s_angle) / x;
-	if (x <= 0 || s_ray->length <= x)
+	if (x <= 0.0001 || s_ray->length <= x)
 		return ;
 	s_ray_inter = *s_ray;
 	s_ray_inter.length = x;
@@ -34,7 +36,7 @@ void 	inter_sphere(t_sphere *s_sphere, t_ray *s_ray)
 	if (d_x < 0)
 		return ;
 	d_x = (-b - sqrt(d_x)) / 2;
-	if (d_x >= 0 && d_x <= s_ray->length)
+	if (d_x >= 0.0001 && d_x < s_ray->length)
 	{
 		s_ray_inter = *s_ray;
 		s_ray_inter.length = d_x;
@@ -46,11 +48,11 @@ void 	inter_sphere(t_sphere *s_sphere, t_ray *s_ray)
 	}
 }
 
-void 	check_inter_objs(t_stage *s_stage, t_ray *s_ray)
+void 	check_inter_objs(t_stage *s_stage, t_ray *s_ray, double distance)
 {
 	t_list_objs	*s_list_obj;
 
-	s_ray->length = MAX_DISTANCE;
+	s_ray->length = distance;
 	s_list_obj = s_stage->s_list_objs;
 	while (s_list_obj)
 	{
@@ -66,7 +68,7 @@ void 	check_inter_objs(t_stage *s_stage, t_ray *s_ray)
 //			inter_triangle(s_list_obj->content);
 		s_list_obj = s_list_obj->next;
 	}
-	if (s_ray->length < MAX_DISTANCE)
+	if (s_ray->length < distance)
         s_ray->s_vector_inter_normal = vector_norm(&s_ray->s_vector_inter_normal);
 }
 
@@ -77,19 +79,23 @@ int		get_color_pixel(t_stage *s_stage, t_ray *s_ray)
 	t_rgb           s_color_obj;
 	t_rgb           s_color_light;
     t_list          *s_list_light;
+    double		    light_length;
     double		    angel_incidence;
 
 	s_color_res = (t_rgb){0,0,0};
 	s_list_light = s_stage->s_list_lights;
+    if (vector_scalar_mul(&s_ray->s_vector_inter_normal, &s_ray->s_vector_start_normal) > 0)
+		s_ray->s_vector_inter_normal = vector_mul(&s_ray->s_vector_inter_normal, -1);
 	while (s_list_light)
     {
 		s_light_ray.s_vector_start = s_ray->s_vector_inter;
         s_light_ray.s_vector_start_normal = vector_sub(((t_light *)s_list_light->content)->s_coordinates, &s_ray->s_vector_inter);
+        light_length = vector_len(&s_light_ray.s_vector_start_normal);
         s_light_ray.s_vector_start_normal = vector_norm(&s_light_ray.s_vector_start_normal);
-        check_inter_objs(s_stage, &s_light_ray);
-		if (s_light_ray.length == MAX_DISTANCE)
+        check_inter_objs(s_stage, &s_light_ray, light_length);
+		if (s_light_ray.length == light_length)
         {
-            angel_incidence = vector_scalar_mul(&s_light_ray.s_vector_start_normal,
+			angel_incidence = vector_scalar_mul(&s_light_ray.s_vector_start_normal,
 												&s_ray->s_vector_inter_normal);
 			if (angel_incidence > 0)
             {
@@ -111,7 +117,7 @@ int		get_color_pixel(t_stage *s_stage, t_ray *s_ray)
 
 int		start_ray(t_stage *s_stage, t_ray *s_ray)
 {
-	check_inter_objs(s_stage, s_ray);
+	check_inter_objs(s_stage, s_ray, MAX_DISTANCE);
 	if (s_ray->length < MAX_DISTANCE)
 		return (get_color_pixel(s_stage, s_ray));
 	return (DEFAULT_COLOR);

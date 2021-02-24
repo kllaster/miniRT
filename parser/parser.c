@@ -67,7 +67,7 @@ void	parse_file(char *file, t_stage *s_stage)
 	fd = open(file, O_RDONLY);
 	if (!fd)
 		error_end("Файл невозможно прочесть", 1);
-	while ((error = get_next_line(fd, &str)) != -1 && error)
+	while ((error = get_next_line(fd, &str)) != -1)
 	{
 		if (str[0] == 'R' && str[1] == ' ')
 			parse_screen(str, s_stage);
@@ -80,8 +80,8 @@ void	parse_file(char *file, t_stage *s_stage)
 		else
 			parse_objs(str, s_stage);
 		free(str);
+		if (error == 0)
+			break ;
 	}
-	if (error != -1)
-		free(str);
 	close(fd);
 }
