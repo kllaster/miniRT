@@ -3,11 +3,6 @@
 
 # include "mini_rt.h"
 
-typedef struct s_matrix
-{
-	double el[4][4];
-}				t_matrix;
-
 typedef	struct	s_ray {
 	t_coordinates	s_vector_inter_normal;
 	t_coordinates	s_vector_inter;
@@ -17,10 +12,14 @@ typedef	struct	s_ray {
 	double			length;
 }				t_ray;
 
-int				render(t_stage *s_stage);
+void			init_render(t_stage *s_stage);
+void			render(t_stage *s_stage);
+void			inter_sphere(t_sphere *s_sphere, t_ray *s_ray);
+void			inter_plane(t_plane *s_plane, t_ray *s_ray);
 t_rgb			rgb_sum(t_rgb *s_rgb1, t_rgb *s_rgb2);
 t_rgb			rgb_mul(t_rgb *s_rgb, double num);
 t_rgb           rgb_mul_arr(t_rgb *s_rgb1, t_rgb *s_rgb2);
+t_rgb			rgb_average(t_rgb *s_rgb1, t_rgb *s_rgb2, int flag);
 int				rgb_get_int(t_rgb *s_rgb);
 void			my_mlx_pixel_put(t_mlx_img *s_mlx_img, unsigned int x, unsigned int y, int color);
 double			vector_len(t_coordinates *s_vector);

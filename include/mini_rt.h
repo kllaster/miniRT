@@ -4,7 +4,7 @@
 enum e_rt
 {
     MAX_DISTANCE	= 1000000,
-    DEFAULT_COLOR	= 0x0,
+	ANTI_ALIASING	= 3
 };
 
 # include "../minilibx/mlx.h"

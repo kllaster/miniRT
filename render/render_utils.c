@@ -77,6 +77,21 @@ t_rgb	rgb_sum(t_rgb *s_rgb1, t_rgb *s_rgb2)
 	return (s_rgb_sum);
 }
 
+t_rgb	rgb_average(t_rgb *s_rgb1, t_rgb *s_rgb2, int flag)
+{
+	t_rgb	s_rgb_average;
+
+	if (flag)
+	{
+		s_rgb_average.red = (s_rgb1->red + s_rgb2->red) / 2;
+		s_rgb_average.green = (s_rgb1->green + s_rgb2->green) / 2;
+		s_rgb_average.blue = (s_rgb1->blue + s_rgb2->blue) / 2;
+		return (s_rgb_average);
+	}
+	return (*s_rgb1);
+}
+
+
 int		rgb_get_int(t_rgb *s_rgb)
 {
 	if (!s_rgb)

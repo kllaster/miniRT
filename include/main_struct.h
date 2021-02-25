@@ -9,6 +9,11 @@ typedef struct  s_mlx_img {
 	int         endian;
 }               t_mlx_img;
 
+typedef struct s_matrix
+{
+	double el[4][4];
+}				t_matrix;
+
 typedef	struct	s_rgb {
 	int				red;
 	int				green;
@@ -34,10 +39,11 @@ typedef	struct	s_vscreen {
 }				t_vscreen;
 
 typedef	struct	s_camera {
-	t_vscreen		*s_vscreen;
+	t_matrix		s_matrix_rotate;
+	t_vscreen		s_vscreen;
 	t_coordinates	*s_angle;
 	t_coordinates	*s_coordinates;
-	t_mlx_img		*s_mlx_img;
+	t_mlx_img		s_mlx_img;
 	int				fov;
 }				t_camera;
 

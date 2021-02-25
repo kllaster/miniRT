@@ -13,8 +13,12 @@ SRCS =	src/main.c\
 		parser/parse_utils.c\
 		parser/parse_objs.c\
 		parser/parser.c\
-		render/render_utils.c\
 		render/render.c\
+		render/init_render.c\
+		render/render_utils.c\
+		render/intersections/inter_sphere.c\
+		render/intersections/inter_plane.c\
+
 
 OBJS = ${SRCS:.c=.o}
 
