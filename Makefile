@@ -6,6 +6,7 @@ HEADER	= include
 
 SRCS =	src/main.c\
 		src/utils.c\
+		src/hooks.c\
 		src/colors_utils.c\
 		src/matrix_utils.c\
 		src/vectors_utils.c\

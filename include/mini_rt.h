@@ -4,7 +4,7 @@
 enum e_rt
 {
     MAX_DISTANCE	= 1000000,
-	ANTI_ALIASING	= 5
+	ANTI_ALIASING	= 1
 };
 
 # include "../minilibx/mlx.h"
@@ -17,6 +17,7 @@ enum e_rt
 # include "vectors.h"
 # include "matrix.h"
 # include "main_struct.h"
+# include "hooks.h"
 # include "utils.h"
 # include "parser.h"
 # include "objs.h"

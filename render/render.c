@@ -123,11 +123,14 @@ void		render(t_stage *s_stage)
 		while (y < s_stage->s_screen.height)
 		{
 			color_pixel = anti_aliasing(s_stage, x, y, &s_ray);
-			my_mlx_pixel_put(&s_stage->s_selected_camera->s_mlx_img, x, y, color_pixel);
+			my_mlx_pixel_put(&s_stage->s_selected_camera->s_mlx_img,
+								x, y, color_pixel);
 			y++;
 		}
 		x++;
 	}
-	mlx_put_image_to_window(s_stage->mlx_p, s_stage->mlx_window, s_stage->s_selected_camera->s_mlx_img.img, 0, 0);
+	mlx_put_image_to_window(s_stage->mlx_p, s_stage->mlx_window,
+						 s_stage->s_selected_camera->s_mlx_img.img, 0, 0);
+	s_stage->s_selected_camera->render_ready = 1;
 	mlx_loop(s_stage->mlx_p);
 }

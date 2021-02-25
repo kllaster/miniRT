@@ -29,6 +29,9 @@ void	parse_camera(char *str, t_stage *s_stage)
 	skip_between_param(&str, 0);
 	if ((s_camera = malloc(sizeof(t_camera))) == NULL)
 		error_end("Ошибка выделения памяти parse_camera", 1);
+	s_camera->init = 0;
+	s_camera->count = 0;
+	s_camera->render_ready = 0;
 	s_camera->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_camera->s_vec_dir = parse_coordinates(&str);

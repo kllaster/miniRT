@@ -31,7 +31,10 @@ typedef	struct	s_camera {
 	t_vec			*s_vec_dir;
 	t_vec			*s_vec_origin;
 	t_mlx_img		s_mlx_img;
+	int				render_ready;
 	int				fov;
+	int				count;
+	int				init;
 }				t_camera;
 
 typedef	struct	s_ambient_light {
