@@ -1,96 +1,48 @@
 #include "mini_rt.h"
 
-t_coordinates	matrix_mul(t_coordinates *u, t_matrix *m)
+void	get_aa_sample(t_aa_sample *s_aa_sample)
 {
-	t_coordinates v;
+	int 	i;
+	double	aa_sample1[1][2] = {{0,0}};
+	double	aa_sample2[2][2] = {{-0.35,0.35}, {0.35,-0.35}};
+	double	aa_sample3[3][2] = {{-0.45,0.45}, {0,0}, {0.45,-0.45}};
+	double	aa_sample4[4][2] = {{-0.45,0.4}, {0.4,0.45}, {-0.4,-0.45}, {-0.45,-0.45}};
+	double	aa_sample5[5][2] = {{-0.45,0.4}, {0.4,0.45}, {0,0}, {-0.4,-0.45}, {-0.45,-0.45}};
 
-	v.x = u->x * m->el[0][0] + u->y * m->el[1][0] + u->z * m->el[2][0] + m->el[3][0];
-	v.y = u->x * m->el[0][1] + u->y * m->el[1][1] + u->z * m->el[2][1] + m->el[3][1];
-	v.z = u->x * m->el[0][2] + u->y * m->el[1][2] + u->z * m->el[2][2] + m->el[3][2];
-	return (v);
-}
-
-t_matrix		get_matrix_rotate(t_coordinates *s_vector_orig, t_coordinates *s_vector_dir)
-{
-	t_matrix		s_matrix;
-	t_coordinates	s_vector_tmp;
-
-	s_vector_tmp = (t_coordinates){0.0, 1.0, 0.0};
-	s_vector_tmp = vector_cross_product(&s_vector_tmp, s_vector_dir);
-	s_vector_tmp = vector_norm(&s_vector_tmp);
-	s_matrix.el[0][0] = s_vector_tmp.x;
-	s_matrix.el[0][1] = s_vector_tmp.y;
-	s_matrix.el[0][2] = s_vector_tmp.z;
-	s_vector_tmp = vector_cross_product(s_vector_dir, &s_vector_tmp);
-	s_vector_tmp = vector_norm(&s_vector_tmp);
-	s_matrix.el[1][0] = s_vector_tmp.x;
-	s_matrix.el[1][1] = s_vector_tmp.y;
-	s_matrix.el[1][2] = s_vector_tmp.z;
-	s_matrix.el[2][0] = s_vector_dir->x;
-	s_matrix.el[2][1] = s_vector_dir->y;
-	s_matrix.el[2][2] = s_vector_dir->z;
-	s_matrix.el[3][0] = s_vector_orig->x;
-	s_matrix.el[3][1] = s_vector_orig->y;
-	s_matrix.el[3][2] = s_vector_orig->z;
-	return (s_matrix);
-}
-
-t_rgb	rgb_mul_arr(t_rgb *s_rgb1, t_rgb *s_rgb2)
-{
-    t_rgb	s_rgb_mul_arr;
-
-    s_rgb_mul_arr.red = (int)((double)s_rgb1->red * (double)s_rgb2->red / 255.0);
-    s_rgb_mul_arr.green = (int)((double)s_rgb1->green * s_rgb2->green / 255.0);
-    s_rgb_mul_arr.blue = (int)((double)s_rgb1->blue * (double)s_rgb2->blue / 255.0);
-    return (s_rgb_mul_arr);
-}
-
-t_rgb	rgb_mul(t_rgb *s_rgb, double num)
-{
-	t_rgb	s_rgb_mul;
-
-	s_rgb_mul.red = (int)((double)s_rgb->red * num);
-	s_rgb_mul.green = (int)((double)s_rgb->green * num);
-	s_rgb_mul.blue =  (int)((double)s_rgb->blue * num);
-	if (s_rgb_mul.red > 255)
-		s_rgb_mul.red = 255;
-	if (s_rgb_mul.green > 255)
-		s_rgb_mul.green = 255;
-	if (s_rgb_mul.blue > 255)
-		s_rgb_mul.blue = 255;
-	return (s_rgb_mul);
-}
-
-t_rgb	rgb_sum(t_rgb *s_rgb1, t_rgb *s_rgb2)
-{
-	t_rgb	s_rgb_sum;
-
-	s_rgb_sum.red = s_rgb1->red + s_rgb2->red;
-	s_rgb_sum.green = s_rgb1->green + s_rgb2->green;
-	s_rgb_sum.blue = s_rgb1->blue + s_rgb2->blue;
-	if (s_rgb_sum.red > 255)
-		s_rgb_sum.red = 255;
-	if (s_rgb_sum.green > 255)
-		s_rgb_sum.green = 255;
-	if (s_rgb_sum.blue > 255)
-		s_rgb_sum.blue = 255;
-	return (s_rgb_sum);
-}
-
-t_rgb	rgb_average(t_rgb *s_rgb1, t_rgb *s_rgb2, int flag)
-{
-	t_rgb	s_rgb_average;
-
-	if (flag)
+	if ((s_aa_sample->matrix_sample = malloc(sizeof(double) * ANTI_ALIASING)) == NULL)
+		error_end("Ошибка выделения памяти s_aa_sample->matrix_sample", 1);
+	i = -1;
+	while (i++ < ANTI_ALIASING)
 	{
-		s_rgb_average.red = (s_rgb1->red + s_rgb2->red) / 2;
-		s_rgb_average.green = (s_rgb1->green + s_rgb2->green) / 2;
-		s_rgb_average.blue = (s_rgb1->blue + s_rgb2->blue) / 2;
-		return (s_rgb_average);
+		if ((s_aa_sample->matrix_sample[i] = malloc(sizeof(double) * 2)) == NULL)
+			error_end("Ошибка выделения памяти s_aa_sample->matrix_sample[]", 1);
+		if (ANTI_ALIASING == 1)
+		{
+			s_aa_sample->matrix_sample[i][0] = aa_sample1[i][0];
+			s_aa_sample->matrix_sample[i][1] = aa_sample1[i][1];
+		}
+		else if (ANTI_ALIASING == 2)
+		{
+			s_aa_sample->matrix_sample[i][0] = aa_sample2[i][0];
+			s_aa_sample->matrix_sample[i][1] = aa_sample2[i][1];
+		}
+		else if (ANTI_ALIASING == 3)
+		{
+			s_aa_sample->matrix_sample[i][0] = aa_sample3[i][0];
+			s_aa_sample->matrix_sample[i][1] = aa_sample3[i][1];
+		}
+		else if (ANTI_ALIASING == 4)
+		{
+			s_aa_sample->matrix_sample[i][0] = aa_sample4[i][0];
+			s_aa_sample->matrix_sample[i][1] = aa_sample4[i][1];
+		}
+		else if (ANTI_ALIASING == 5)
+		{
+			s_aa_sample->matrix_sample[i][0] = aa_sample5[i][0];
+			s_aa_sample->matrix_sample[i][1] = aa_sample5[i][1];
+		}
 	}
-	return (*s_rgb1);
 }
-
 
 int		rgb_get_int(t_rgb *s_rgb)
 {
@@ -105,7 +57,7 @@ int		rgb_get_int(t_rgb *s_rgb)
 	return (s_rgb->red << 16 | s_rgb->green << 8 | s_rgb->blue);
 }
 
-void	my_mlx_pixel_put(t_mlx_img *s_mlx_img, unsigned int x, unsigned int y, int color)
+void	my_mlx_pixel_put(t_mlx_img *s_mlx_img, int x, int y, int color)
 {
 	*(unsigned int *)(s_mlx_img->addr + (y * s_mlx_img->line_length + x *
 									(s_mlx_img->bits_per_pixel / 8))) = color;

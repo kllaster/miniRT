@@ -2,33 +2,20 @@
 # define MAIN_STRUCT_H
 
 typedef struct  s_mlx_img {
-	void        *img;
-	char        *addr;
-	int         bits_per_pixel;
-	int         line_length;
-	int         endian;
+	void        	*img;
+	char        	*addr;
+	int         	bits_per_pixel;
+	int         	line_length;
+	int         	endian;
 }               t_mlx_img;
 
-typedef struct s_matrix
-{
-	double el[4][4];
-}				t_matrix;
-
-typedef	struct	s_rgb {
-	int				red;
-	int				green;
-	int				blue;
-}				t_rgb;
-
-typedef	struct	s_coordinates {
-	double			x;
-	double			y;
-	double			z;
-}				t_coordinates;
+typedef	struct	s_aa_sample {
+	double			**matrix_sample;
+}				t_aa_sample;
 
 typedef	struct	s_light {
 	double			brightness;
-	t_coordinates	*s_coordinates;
+	t_vec			*s_vec_origin;
 	t_rgb			*s_color;
 }				t_light;
 
@@ -41,16 +28,16 @@ typedef	struct	s_vscreen {
 typedef	struct	s_camera {
 	t_matrix		s_matrix_rotate;
 	t_vscreen		s_vscreen;
-	t_coordinates	*s_angle;
-	t_coordinates	*s_coordinates;
+	t_vec			*s_vec_dir;
+	t_vec			*s_vec_origin;
 	t_mlx_img		s_mlx_img;
 	int				fov;
 }				t_camera;
 
-typedef	struct	s_g_light {
+typedef	struct	s_ambient_light {
 	double			brightness;
 	t_rgb			*s_color;
-}				t_g_light;
+}				t_ambient_light;
 
 typedef	struct	s_screen {
 	int				height;
@@ -71,14 +58,15 @@ typedef struct		s_list
 }					t_list;
 
 typedef	struct	s_stage {
-	void		*mlx_p;
-	void		*mlx_window;
-	t_camera	*s_selected_camera;
-	t_screen	s_screen;
-	t_g_light	*s_g_light;
-	t_list		*s_list_cameras;
-	t_list		*s_list_lights;
-	t_list_objs	*s_list_objs;
+	void			*mlx_p;
+	void			*mlx_window;
+	t_aa_sample		s_aa_sample;
+	t_screen		s_screen;
+	t_ambient_light	s_ambient_light;
+	t_camera		*s_selected_camera;
+	t_list			*s_list_cameras;
+	t_list			*s_list_lights;
+	t_list_objs		*s_list_objs;
 }				t_stage;
 
 #endif

@@ -44,7 +44,7 @@ double			parse_double(char **str)
 	if (*(*str) == '.' && (++(*str)))
 	{
 		mantissa = (double)ft_atoi_pos(str);
-		num += (mantissa / pow(10.0, ft_numlen(mantissa)));
+		num += (mantissa / pow(10.0, ft_numlen((int)mantissa)));
 		num *= sign;
 	}
 	return (num);
@@ -54,9 +54,8 @@ t_rgb			*parse_rgb(char **str)
 {
 	t_rgb	*s_rgb;
 
-	if (!(s_rgb = malloc(sizeof(t_rgb))))
+	if ((s_rgb = malloc(sizeof(t_rgb))) == NULL)
 		error_end("Ошибка выделения памяти parse_rgb", 1);
-	ft_bzero(s_rgb, sizeof(s_rgb));
 	s_rgb->red = ft_atoi_pos(str);
 	if (s_rgb->red < 0 || s_rgb->red > 255)
 		error_end("Ошибка в проверке цвета red", 1);
@@ -71,17 +70,16 @@ t_rgb			*parse_rgb(char **str)
 	return (s_rgb);
 }
 
-t_coordinates	*parse_coordinates(char **str)
+t_vec	*parse_coordinates(char **str)
 {
-	t_coordinates *s_coordinates;
+	t_vec *s_vec;
 
-	if (!(s_coordinates = malloc(sizeof(t_coordinates))))
+	if ((s_vec = malloc(sizeof(t_vec))) == NULL)
 		error_end("Ошибка выделения памяти parse_coordinates", 1);
-	ft_bzero(s_coordinates, sizeof(s_coordinates));
-	s_coordinates->x = parse_double(str);
+	s_vec->x = parse_double(str);
 	check_next_arg(str);
-	s_coordinates->y = parse_double(str);
+	s_vec->y = parse_double(str);
 	check_next_arg(str);
-	s_coordinates->z = parse_double(str);
-	return (s_coordinates);
+	s_vec->z = parse_double(str);
+	return (s_vec);
 }

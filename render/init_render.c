@@ -18,12 +18,12 @@ void	get_another_camera(t_stage *s_stage)
 																	&(s_stage->s_selected_camera->s_mlx_img.line_length),
 																	&(s_stage->s_selected_camera->s_mlx_img.endian));
 	init_vscreen(&s_stage->s_screen, s_stage->s_selected_camera, &s_stage->s_selected_camera->s_vscreen);
-	s_stage->s_selected_camera->s_matrix_rotate = get_matrix_rotate(s_stage->s_selected_camera->s_coordinates, s_stage->s_selected_camera->s_angle);
+	s_stage->s_selected_camera->s_matrix_rotate = get_matrix_rotate(s_stage->s_selected_camera->s_vec_origin, s_stage->s_selected_camera->s_vec_dir);
 }
 
 void	check_user_window(t_stage *s_stage)
 {
-	t_screen		s_screen;
+	t_screen	s_screen;
 
 	mlx_get_screen_size(s_stage->mlx_p, &(s_screen.width), &(s_screen.height));
 	if (s_stage->s_screen.width > s_screen.width)
@@ -41,4 +41,5 @@ void	init_render(t_stage *s_stage)
 	s_stage->mlx_window = mlx_new_window(s_stage->mlx_p, s_stage->s_screen.width,
 										 s_stage->s_screen.height, "miniRT");
 	get_another_camera(s_stage);
+	get_aa_sample(&s_stage->s_aa_sample);
 }

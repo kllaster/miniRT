@@ -1,11 +1,11 @@
 #include "mini_rt.h"
 
-void	debug_print_s_coordinates(t_coordinates *s_coordinates, char *s_name)
+void	debug_print_s_vec(t_vec *s_vec, char *s_name)
 {
-	printf("——— t_coordinates	%s:\n", s_name);
-	printf("—————— double	x: %f\n", s_coordinates->x);
-	printf("—————— double	y: %f\n", s_coordinates->y);
-	printf("—————— double	z: %f\n", s_coordinates->z);
+	printf("——— t_vec	%s:\n", s_name);
+	printf("—————— double	x: %f\n", s_vec->x);
+	printf("—————— double	y: %f\n", s_vec->y);
+	printf("—————— double	z: %f\n", s_vec->z);
 }
 
 void	debug_print_s_color(t_rgb *s_color)
@@ -20,8 +20,8 @@ void	debug_print_s_camera(t_camera *s_camera)
 {
 	printf("\n——— t_camera	s_camera:\n");
 	printf("——— unsigned int	fov: %u\n", s_camera->fov);
-	debug_print_s_coordinates(s_camera->s_angle, "s_angle");
-	debug_print_s_coordinates(s_camera->s_coordinates, "s_coordinates");
+	debug_print_s_vec(s_camera->s_vec_dir, "s_vec_dir");
+	debug_print_s_vec(s_camera->s_vec_origin, "s_vec_origin");
 }
 
 void	debug_print_s_lights(t_light *s_light)
@@ -29,7 +29,7 @@ void	debug_print_s_lights(t_light *s_light)
 	printf("\n——— t_light	s_light:\n");
 	printf("——— double	brightness: %f\n", s_light->brightness);
 	debug_print_s_color(s_light->s_color);
-	debug_print_s_coordinates(s_light->s_coordinates, "s_coordinates");
+	debug_print_s_vec(s_light->s_vec_origin, "s_vec_origin");
 }
 
 void	debug_print_s_sphere(t_sphere *s_sphere)
@@ -37,15 +37,15 @@ void	debug_print_s_sphere(t_sphere *s_sphere)
 	printf("\n——— t_sphere	s_sphere:\n");
 	printf("——— double	radius: %f\n", s_sphere->radius);
 	debug_print_s_color(s_sphere->s_color);
-	debug_print_s_coordinates(s_sphere->s_coordinates, "s_coordinates");
+	debug_print_s_vec(s_sphere->s_vec_origin, "s_vec_origin");
 }
 
 void	debug_print_s_plane(t_plane *s_plane)
 {
 	printf("\n——— t_plane	s_plane:\n");
 	debug_print_s_color(s_plane->s_color);
-	debug_print_s_coordinates(s_plane->s_angle, "s_angle");
-	debug_print_s_coordinates(s_plane->s_coordinates, "s_coordinates");
+	debug_print_s_vec(s_plane->s_vec_dir, "s_vec_dir");
+	debug_print_s_vec(s_plane->s_vec_origin, "s_vec_origin");
 }
 
 void	debug_print_s_square(t_square *s_square)
@@ -53,8 +53,8 @@ void	debug_print_s_square(t_square *s_square)
 	printf("\n——— t_square	s_square:\n");
 	printf("——— double	side_size: %f\n", s_square->side_size);
 	debug_print_s_color(s_square->s_color);
-	debug_print_s_coordinates(s_square->s_angle, "s_angle");
-	debug_print_s_coordinates(s_square->s_coordinates, "s_coordinates");
+	debug_print_s_vec(s_square->s_vec_dir, "s_vec_dir");
+	debug_print_s_vec(s_square->s_vec_origin, "s_vec_origin");
 }
 
 void	debug_print_s_cylinder(t_cylinder *s_cylinder)
@@ -63,16 +63,16 @@ void	debug_print_s_cylinder(t_cylinder *s_cylinder)
 	printf("——— double	diameter: %f\n", s_cylinder->diameter);
 	printf("——— double	height: %f\n", s_cylinder->height);
 	debug_print_s_color(s_cylinder->s_color);
-	debug_print_s_coordinates(s_cylinder->s_angle, "s_angle");
-	debug_print_s_coordinates(s_cylinder->s_coordinates, "s_coordinates");
+	debug_print_s_vec(s_cylinder->s_vec_dir, "s_vec_dir");
+	debug_print_s_vec(s_cylinder->s_vec_origin, "s_vec_origin");
 }
 
 void	debug_print_s_triangle(t_triangle *s_triangle)
 {
 	printf("\n——— t_triangle	s_triangle:\n");
-	debug_print_s_coordinates(s_triangle->s_coordinates_1, "s_coordinates_1");
-	debug_print_s_coordinates(s_triangle->s_coordinates_2, "s_coordinates_2");
-	debug_print_s_coordinates(s_triangle->s_coordinates_3, "s_coordinates_3");
+	debug_print_s_vec(s_triangle->s_vec_origin_1, "s_vec_origin_1");
+	debug_print_s_vec(s_triangle->s_vec_origin_2, "s_vec_origin_2");
+	debug_print_s_vec(s_triangle->s_vec_origin_3, "s_vec_origin_3");
 	debug_print_s_color(s_triangle->s_color);
 }
 
@@ -86,9 +86,9 @@ void	debug_print_s_stage(t_stage *s_stage)
 	printf("— t_screen	s_screen:\n");
 	printf("——— int	height: %d\n", s_stage->s_screen.height);
 	printf("——— int	width: %d\n\n", s_stage->s_screen.width);
-	printf("— t_g_light	s_g_light:\n");
-	printf("——— double	brightness: %f\n", s_stage->s_g_light->brightness);
-	debug_print_s_color(s_stage->s_g_light->s_color);
+	printf("— t_ambient_light	s_ambient_light:\n");
+	printf("——— double	brightness: %f\n", s_stage->s_ambient_light.brightness);
+	debug_print_s_color(s_stage->s_ambient_light.s_color);
 	s_list = s_stage->s_list_cameras;
 	while (s_list)
 	{
@@ -104,15 +104,15 @@ void	debug_print_s_stage(t_stage *s_stage)
 	s_list_obj = s_stage->s_list_objs;
 	while (s_list_obj)
 	{
-		if (s_list_obj->type & OBJ_SPHERE)
+		if (s_list_obj->type & (unsigned)OBJ_SPHERE)
 			debug_print_s_sphere(s_list_obj->content);
-		else if (s_list_obj->type & OBJ_PLANE)
+		else if (s_list_obj->type & (unsigned)OBJ_PLANE)
 			debug_print_s_plane(s_list_obj->content);
-		else if (s_list_obj->type & OBJ_SQUARE)
+		else if (s_list_obj->type & (unsigned)OBJ_SQUARE)
 			debug_print_s_square(s_list_obj->content);
-		else if (s_list_obj->type & OBJ_CYLINDER)
+		else if (s_list_obj->type & (unsigned)OBJ_CYLINDER)
 			debug_print_s_cylinder(s_list_obj->content);
-		else if (s_list_obj->type & OBJ_TRIANGLE)
+		else if (s_list_obj->type & (unsigned)OBJ_TRIANGLE)
 			debug_print_s_triangle(s_list_obj->content);
 		s_list_obj = s_list_obj->next;
 	}

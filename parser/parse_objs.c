@@ -7,7 +7,7 @@ void	parse_sphere(char *str, t_stage *s_stage)
 	if ((s_sphere = malloc(sizeof(t_sphere))) == NULL)
 		error_end("Ошибка выделения памяти parse_sphere", 1);
 	skip_between_param(&str, 0);
-	s_sphere->s_coordinates = parse_coordinates(&str);
+	s_sphere->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_sphere->radius = parse_double(&str);
 	if (s_sphere->radius <= 0.0)
@@ -25,9 +25,9 @@ void	parse_plane(char *str, t_stage *s_stage)
 	if ((s_plane = malloc(sizeof(t_sphere))) == NULL)
 		error_end("Ошибка выделения памяти parse_plane", 1);
 	skip_between_param(&str, 0);
-	s_plane->s_coordinates = parse_coordinates(&str);
+	s_plane->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	s_plane->s_angle = parse_coordinates(&str);
+	s_plane->s_vec_dir = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_plane->s_color = parse_rgb(&str);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_plane, OBJ_PLANE));
@@ -40,9 +40,9 @@ void	parse_square(char *str, t_stage *s_stage)
 	if ((s_square = malloc(sizeof(t_square))) == NULL)
 		error_end("Ошибка выделения памяти parse_square", 1);
 	skip_between_param(&str, 0);
-	s_square->s_coordinates = parse_coordinates(&str);
+	s_square->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	s_square->s_angle = parse_coordinates(&str);
+	s_square->s_vec_dir = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_square->side_size = parse_double(&str);
 	if (s_square->side_size <= 0.0)
@@ -59,9 +59,9 @@ void	parse_cylinder(char *str, t_stage *s_stage)
 	if ((s_cylinder = malloc(sizeof(t_cylinder))) == NULL)
 		error_end("Ошибка выделения памяти parse_cylinder", 1);
 	skip_between_param(&str, 0);
-	s_cylinder->s_coordinates = parse_coordinates(&str);
+	s_cylinder->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	s_cylinder->s_angle = parse_coordinates(&str);
+	s_cylinder->s_vec_dir = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_cylinder->s_color = parse_rgb(&str);
 	skip_between_param(&str, 0);
@@ -82,11 +82,11 @@ void	parse_triangle(char *str, t_stage *s_stage)
 	if ((s_triangle = malloc(sizeof(t_triangle))) == NULL)
 		error_end("Ошибка выделения памяти parse_triangle", 1);
 	skip_between_param(&str, 0);
-	s_triangle->s_coordinates_1 = parse_coordinates(&str);
+	s_triangle->s_vec_origin_1 = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	s_triangle->s_coordinates_2 = parse_coordinates(&str);
+	s_triangle->s_vec_origin_2 = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	s_triangle->s_coordinates_3 = parse_coordinates(&str);
+	s_triangle->s_vec_origin_3 = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_triangle->s_color = parse_rgb(&str);
 	ft_lstadd_back_obj(&(s_stage->s_list_objs), ft_lstnew_obj(s_triangle, OBJ_TRIANGLE));
