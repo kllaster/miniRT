@@ -32,9 +32,11 @@ void				ft_bzero(void *s, size_t n);
 int					ft_atoi_pos(char **str);
 void				*ft_memcpy(void *dest, const void *source, size_t count);
 t_list				*ft_list_new(void *content);
+void				ft_list_add_front(t_list **s_list_src, t_list *s_list_new);
 void				ft_list_add_back(t_list **s_list_src, t_list *new);
 void				ft_list_cpy(t_list **s_list_dest, t_list *s_list_src, void *(*f_content_cpy)(void *));
 t_list_objs			*ft_list_obj_new(void *content, unsigned char type);
+void				ft_list_obj_add_front(t_list_objs **s_list_src, t_list_objs *s_list_new);
 void				ft_list_obj_add_back(t_list_objs **s_list_src, t_list_objs *new);
 void				ft_list_obj_cpy(t_list_objs **s_list_dest, t_list_objs *s_list_src);
 

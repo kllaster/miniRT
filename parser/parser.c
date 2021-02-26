@@ -54,7 +54,7 @@ void	parse_light(char *str, t_stage *s_stage)
 	s_light->brightness = parse_double(&str);
 	skip_between_param(&str, 0);
 	s_light->s_color = parse_rgb(&str);
-	ft_list_add_back(&(s_stage->s_list_lights), ft_list_new(s_light));
+	ft_list_add_front(&(s_stage->s_list_lights), ft_list_new(s_light));
 }
 
 void	parse_file(char *file, t_stage *s_stage)

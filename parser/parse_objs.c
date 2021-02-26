@@ -15,7 +15,7 @@ void	parse_sphere(char *str, t_stage *s_stage)
 	s_sphere->radius /= 2.0;
 	skip_between_param(&str, 0);
 	s_sphere->s_color = parse_rgb(&str);
-	ft_list_obj_add_back(&(s_stage->s_list_objs), ft_list_obj_new(s_sphere, OBJ_SPHERE));
+	ft_list_obj_add_front(&(s_stage->s_list_objs), ft_list_obj_new(s_sphere, OBJ_SPHERE));
 }
 
 void	parse_plane(char *str, t_stage *s_stage)
@@ -30,7 +30,7 @@ void	parse_plane(char *str, t_stage *s_stage)
 	s_plane->s_vec_dir = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_plane->s_color = parse_rgb(&str);
-	ft_list_obj_add_back(&(s_stage->s_list_objs), ft_list_obj_new(s_plane, OBJ_PLANE));
+	ft_list_obj_add_front(&(s_stage->s_list_objs), ft_list_obj_new(s_plane, OBJ_PLANE));
 }
 
 void	parse_square(char *str, t_stage *s_stage)
@@ -49,7 +49,7 @@ void	parse_square(char *str, t_stage *s_stage)
 		error_end("Неверный размер стороны куба", PARSE_ERROR);
 	skip_between_param(&str, 0);
 	s_square->s_color = parse_rgb(&str);
-	ft_list_obj_add_back(&(s_stage->s_list_objs), ft_list_obj_new(s_square, OBJ_SQUARE));
+	ft_list_obj_add_front(&(s_stage->s_list_objs), ft_list_obj_new(s_square, OBJ_SQUARE));
 }
 
 void	parse_cylinder(char *str, t_stage *s_stage)
@@ -72,7 +72,7 @@ void	parse_cylinder(char *str, t_stage *s_stage)
 	s_cylinder->height = parse_double(&str);
 	if (s_cylinder->height <= 0.0)
 		error_end("Неверная высота цилиндра", PARSE_ERROR);
-	ft_list_obj_add_back(&(s_stage->s_list_objs), ft_list_obj_new(s_cylinder, OBJ_CYLINDER));
+	ft_list_obj_add_front(&(s_stage->s_list_objs), ft_list_obj_new(s_cylinder, OBJ_CYLINDER));
 }
 
 void	parse_triangle(char *str, t_stage *s_stage)
@@ -89,7 +89,7 @@ void	parse_triangle(char *str, t_stage *s_stage)
 	s_triangle->s_vec_origin_3 = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_triangle->s_color = parse_rgb(&str);
-	ft_list_obj_add_back(&(s_stage->s_list_objs), ft_list_obj_new(s_triangle, OBJ_TRIANGLE));
+	ft_list_obj_add_front(&(s_stage->s_list_objs), ft_list_obj_new(s_triangle, OBJ_TRIANGLE));
 }
 
 void	parse_objs(char *str, t_stage *s_stage)

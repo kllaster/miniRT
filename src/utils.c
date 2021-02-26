@@ -106,19 +106,30 @@ t_list		*ft_list_new(void *content)
 	return (s_list);
 }
 
-void		ft_list_add_back(t_list **s_list_src, t_list *new)
+void		ft_list_add_front(t_list **s_list_src, t_list *s_list_new)
+{
+	if (!(*s_list_src))
+	{
+		*s_list_src = s_list_new;
+		return ;
+	}
+	s_list_new->next = *s_list_src;
+	*s_list_src = s_list_new;
+}
+
+void		ft_list_add_back(t_list **s_list_src, t_list *s_list_new)
 {
 	t_list	*s_list_last;
 
 	if (!(*s_list_src))
 	{
-		*s_list_src = new;
+		*s_list_src = s_list_new;
 		return ;
 	}
 	s_list_last = *s_list_src;
 	while (s_list_last->next)
 		s_list_last = s_list_last->next;
-	s_list_last->next = new;
+	s_list_last->next = s_list_new;
 }
 
 void		ft_list_cpy(t_list **s_list_dest, t_list *s_list_src, void *(*f_content_cpy)(void *))
@@ -158,19 +169,30 @@ t_list_objs	*ft_list_obj_new(void *content, unsigned char type)
 	return (s_list_obj);
 }
 
-void		ft_list_obj_add_back(t_list_objs **s_list_src, t_list_objs *new)
+void		ft_list_obj_add_front(t_list_objs **s_list_src, t_list_objs *s_list_new)
+{
+	if (!(*s_list_src))
+	{
+		*s_list_src = s_list_new;
+		return ;
+	}
+	s_list_new->next = *s_list_src;
+	*s_list_src = s_list_new;
+}
+
+void		ft_list_obj_add_back(t_list_objs **s_list_src, t_list_objs *s_list_new)
 {
 	t_list_objs *last;
 
 	if (!(*s_list_src))
 	{
-		(*s_list_src) = new;
+		(*s_list_src) = s_list_new;
 		return ;
 	}
 	last = *s_list_src;
 	while (last->next)
 		last = last->next;
-	last->next = new;
+	last->next = s_list_new;
 }
 
 void		ft_list_obj_cpy(t_list_objs **s_list_dest, t_list_objs *s_list_src)
