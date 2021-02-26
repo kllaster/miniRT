@@ -4,10 +4,12 @@
 enum e_rt
 {
     MAX_DISTANCE	= 1000000,
-	ANTI_ALIASING	= 1
+	ANTI_ALIASING	= 3,
+	COUNT_THREADS	= 5
 };
 
 # include "../minilibx/mlx.h"
+# include <pthread.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -15,10 +17,10 @@ enum e_rt
 # include <math.h>
 # include "color.h"
 # include "vectors.h"
+# include "utils.h"
 # include "matrix.h"
 # include "main_struct.h"
 # include "hooks.h"
-# include "utils.h"
 # include "parser.h"
 # include "objs.h"
 # include "get_next_line.h"

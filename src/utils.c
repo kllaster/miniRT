@@ -75,11 +75,27 @@ int			ft_atoi_pos(char **str)
 		}
 	}
 	else
-		error_end("Нет числа", 1);
+		error_end("Нет числа", PARSE_ERROR);
 	return ((int)res * sign);
 }
 
-t_list		*ft_lstnew(void *content)
+void		*ft_memcpy(void *dest, const void *source, size_t count)
+{
+	size_t			i;
+	unsigned char	*p1;
+	unsigned char	*p2;
+
+	if (dest == source)
+		return (dest);
+	i = -1;
+	p1 = (unsigned char *) dest;
+	p2 = (unsigned char *) source;
+	while (++i != count)
+		p1[i] = p2[i];
+	return (dest);
+}
+
+t_list		*ft_list_new(void *content)
 {
 	t_list	*s_list;
 
@@ -90,22 +106,46 @@ t_list		*ft_lstnew(void *content)
 	return (s_list);
 }
 
-void		ft_lstadd_back(t_list **g_list, t_list *new)
+void		ft_list_add_back(t_list **s_list_src, t_list *new)
 {
-	t_list		*last;
+	t_list	*s_list_last;
 
-	if (!(*g_list))
+	if (!(*s_list_src))
 	{
-		(*g_list) = new;
+		*s_list_src = new;
 		return ;
 	}
-	last = *g_list;
-	while (last->next)
-		last = last->next;
-	last->next = new;
+	s_list_last = *s_list_src;
+	while (s_list_last->next)
+		s_list_last = s_list_last->next;
+	s_list_last->next = new;
 }
 
-t_list_objs	*ft_lstnew_obj(void *content, unsigned char type)
+void		ft_list_cpy(t_list **s_list_dest, t_list *s_list_src, void *(*f_content_cpy)(void *))
+{
+	t_list		*s_list_new;
+
+	if (!s_list_src)
+		return ;
+	*s_list_dest = NULL;
+	s_list_new = NULL;
+	while (s_list_src)
+	{
+		if (*s_list_dest)
+		{
+			s_list_new->next = ft_list_new(f_content_cpy(s_list_src->content));
+			s_list_new = s_list_new->next;
+		}
+		else
+		{
+			s_list_new = ft_list_new(f_content_cpy(s_list_src->content));
+			*s_list_dest = s_list_new;
+		}
+		s_list_src = s_list_src->next;
+	}
+}
+
+t_list_objs	*ft_list_obj_new(void *content, unsigned char type)
 {
 	t_list_objs	*s_list_obj;
 
@@ -118,19 +158,43 @@ t_list_objs	*ft_lstnew_obj(void *content, unsigned char type)
 	return (s_list_obj);
 }
 
-void		ft_lstadd_back_obj(t_list_objs **g_list, t_list_objs *new)
+void		ft_list_obj_add_back(t_list_objs **s_list_src, t_list_objs *new)
 {
 	t_list_objs *last;
 
-	if (!(*g_list))
+	if (!(*s_list_src))
 	{
-		(*g_list) = new;
+		(*s_list_src) = new;
 		return ;
 	}
-	last = *g_list;
+	last = *s_list_src;
 	while (last->next)
 		last = last->next;
 	last->next = new;
+}
+
+void		ft_list_obj_cpy(t_list_objs **s_list_dest, t_list_objs *s_list_src)
+{
+	t_list_objs	*s_list_new;
+
+	if (!s_list_src)
+		return ;
+	*s_list_dest = NULL;
+	s_list_new = NULL;
+	while (s_list_src)
+	{
+		if (*s_list_dest)
+		{
+			s_list_new->next = ft_list_obj_new(obj_cpy(s_list_src->content, s_list_src->type), s_list_src->type);
+			s_list_new = s_list_new->next;
+		}
+		else
+		{
+			s_list_new = ft_list_obj_new(obj_cpy(s_list_src->content, s_list_src->type), s_list_src->type);
+			*s_list_dest = s_list_new;
+		}
+		s_list_src = s_list_src->next;
+	}
 }
 
 void		putstr_fd(int fd, char *str)

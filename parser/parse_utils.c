@@ -10,7 +10,7 @@ void			check_next_arg(char **str)
 		if (**str == ',')
 			(*str)++;
 		else
-			error_end("Ошибка в проверке на след. аргумент", 1);
+			error_end("Ошибка в проверке на след. аргумент", PARSE_ERROR);
 	}
 }
 
@@ -25,7 +25,7 @@ void			skip_between_param(char **str, char symb)
 			*(*str) == '-' || *(*str) == '+' || *(*str) == symb)
 			return ;
 		else
-			error_end("Ошибка в проверке на след. параметр", 1);
+			error_end("Ошибка в проверке на след. параметр", PARSE_ERROR);
 	}
 }
 
@@ -55,18 +55,18 @@ t_rgb			*parse_rgb(char **str)
 	t_rgb	*s_rgb;
 
 	if ((s_rgb = malloc(sizeof(t_rgb))) == NULL)
-		error_end("Ошибка выделения памяти parse_rgb", 1);
+		error_end("Ошибка выделения памяти parse_rgb", MALLOC_ERROR);
 	s_rgb->red = ft_atoi_pos(str);
 	if (s_rgb->red < 0 || s_rgb->red > 255)
-		error_end("Ошибка в проверке цвета red", 1);
+		error_end("Ошибка в проверке цвета red", PARSE_ERROR);
 	check_next_arg(str);
 	s_rgb->green = ft_atoi_pos(str);
 	if (s_rgb->green < 0 || s_rgb->green > 255)
-		error_end("Ошибка в проверке цвета green", 1);
+		error_end("Ошибка в проверке цвета green", PARSE_ERROR);
 	check_next_arg(str);
 	s_rgb->blue = ft_atoi_pos(str);
 	if (s_rgb->blue < 0 || s_rgb->blue > 255)
-		error_end("Ошибка в проверке цвета blue", 1);
+		error_end("Ошибка в проверке цвета blue", PARSE_ERROR);
 	return (s_rgb);
 }
 
@@ -75,7 +75,7 @@ t_vec	*parse_coordinates(char **str)
 	t_vec *s_vec;
 
 	if ((s_vec = malloc(sizeof(t_vec))) == NULL)
-		error_end("Ошибка выделения памяти parse_coordinates", 1);
+		error_end("Ошибка выделения памяти parse_coordinates", MALLOC_ERROR);
 	s_vec->x = parse_double(str);
 	check_next_arg(str);
 	s_vec->y = parse_double(str);

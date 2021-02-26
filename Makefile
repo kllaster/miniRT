@@ -1,6 +1,6 @@
 NAME	= miniRT
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -pthread -g
 RM		= rm -f
 HEADER	= include
 
@@ -10,6 +10,7 @@ SRCS =	src/main.c\
 		src/colors_utils.c\
 		src/matrix_utils.c\
 		src/vectors_utils.c\
+		src/cpy_objs.c\
 		parser/debug_struct.c\
 		parser/get_next_line.c\
 		parser/get_next_line_utils.c\
@@ -17,6 +18,7 @@ SRCS =	src/main.c\
 		parser/parse_objs.c\
 		parser/parser.c\
 		render/render.c\
+		render/threads.c\
 		render/init_render.c\
 		render/render_utils.c\
 		render/intersections/inter_sphere.c\

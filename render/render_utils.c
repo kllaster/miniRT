@@ -5,17 +5,17 @@ void	get_aa_sample(t_aa_sample *s_aa_sample)
 	int 	i;
 	double	aa_sample1[1][2] = {{0,0}};
 	double	aa_sample2[2][2] = {{-0.35,0.35}, {0.35,-0.35}};
-	double	aa_sample3[3][2] = {{-0.45,0.45}, {0,0}, {0.45,-0.45}};
+	double	aa_sample3[3][2] = {{-0.45,0.45}, {-0.4,-0.45}, {-0.45,-0.4}};
 	double	aa_sample4[4][2] = {{-0.45,0.4}, {0.4,0.45}, {-0.4,-0.45}, {-0.45,-0.45}};
 	double	aa_sample5[5][2] = {{-0.45,0.4}, {0.4,0.45}, {0,0}, {-0.4,-0.45}, {-0.45,-0.45}};
 
 	if ((s_aa_sample->matrix_sample = malloc(sizeof(double) * ANTI_ALIASING)) == NULL)
-		error_end("Ошибка выделения памяти s_aa_sample->matrix_sample", 1);
+		error_end("Ошибка выделения памяти s_aa_sample->matrix_sample", MALLOC_ERROR);
 	i = -1;
 	while (i++ < ANTI_ALIASING)
 	{
 		if ((s_aa_sample->matrix_sample[i] = malloc(sizeof(double) * 2)) == NULL)
-			error_end("Ошибка выделения памяти s_aa_sample->matrix_sample[]", 1);
+			error_end("Ошибка выделения памяти s_aa_sample->matrix_sample[]", MALLOC_ERROR);
 		if (ANTI_ALIASING == 1)
 		{
 			s_aa_sample->matrix_sample[i][0] = aa_sample1[i][0];

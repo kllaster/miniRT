@@ -47,4 +47,15 @@ typedef	struct	s_triangle {
 	t_rgb	*s_color;
 }				t_triangle;
 
+t_vec		*vec_cpy(t_vec *s_vec);
+t_rgb		*rgb_cpy(t_rgb *s_color);
+void		*light_cpy(void *data);
+void		*camera_cpy(void *data);
+t_triangle	*triangle_cpy(t_triangle *s_triangle);
+t_cylinder	*cylinder_cpy(t_cylinder *s_cylinder);
+t_square	*square_cpy(t_square *s_square);
+t_plane		*plane_cpy(t_plane *s_plane);
+t_sphere	*sphere_cpy(t_sphere *s_sphere);
+void		*obj_cpy(void *data, unsigned char type);
+
 #endif

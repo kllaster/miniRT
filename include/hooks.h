@@ -7,7 +7,6 @@ enum e_keys
 	KEY_SPACE	= 49
 };
 
-void	get_another_camera(t_stage *s_stage);
-int		key_hook(int keycode, t_stage *s_stage);
+int		key_hook(int keycode, t_rt *s_rt);
 
 #endif

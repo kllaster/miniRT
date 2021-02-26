@@ -13,12 +13,6 @@ typedef	struct	s_aa_sample {
 	double			**matrix_sample;
 }				t_aa_sample;
 
-typedef	struct	s_light {
-	double			brightness;
-	t_vec			*s_vec_origin;
-	t_rgb			*s_color;
-}				t_light;
-
 typedef	struct	s_vscreen {
 	double			width;
 	double			height;
@@ -37,6 +31,12 @@ typedef	struct	s_camera {
 	int				init;
 }				t_camera;
 
+typedef	struct	s_light {
+	double			brightness;
+	t_vec			*s_vec_origin;
+	t_rgb			*s_color;
+}				t_light;
+
 typedef	struct	s_ambient_light {
 	double			brightness;
 	t_rgb			*s_color;
@@ -47,29 +47,32 @@ typedef	struct	s_screen {
 	int				width;
 }				t_screen;
 
-typedef struct		s_list_objs
-{
-	unsigned char 		type;
-	void				*content;
-	struct s_list_objs	*next;
-}					t_list_objs;
-
-typedef struct		s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
-
 typedef	struct	s_stage {
-	void			*mlx_p;
-	void			*mlx_window;
 	t_aa_sample		s_aa_sample;
 	t_screen		s_screen;
 	t_ambient_light	s_ambient_light;
 	t_camera		*s_selected_camera;
-	t_list			*s_list_cameras;
 	t_list			*s_list_lights;
 	t_list_objs		*s_list_objs;
+	t_list			*s_list_cameras;
 }				t_stage;
+
+typedef	struct	s_thread_data {
+	t_aa_sample		s_aa_sample;
+	t_screen		s_screen;
+	t_ambient_light	s_ambient_light;
+	t_camera		*s_selected_camera;
+	t_list			*s_list_lights;
+	t_list_objs		*s_list_objs;
+	int 			start_x;
+}				t_thread_data;
+
+typedef	struct	s_rt {
+	t_stage			s_stage;
+	t_thread_data	s_thread_data[COUNT_THREADS];
+	pthread_t		threads[COUNT_THREADS];
+	void			*mlx_window;
+	void			*mlx_p;
+}				t_rt;
 
 #endif

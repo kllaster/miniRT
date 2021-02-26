@@ -1,0 +1,39 @@
+#include "mini_rt.h"
+
+void 	create_threads_data(t_rt *s_rt)
+{
+	int	i;
+	int	width_thread;
+
+	width_thread = s_rt->s_stage.s_screen.width / COUNT_THREADS;
+	i = -1;
+	while (++i < COUNT_THREADS)
+	{
+		ft_memcpy(&s_rt->s_thread_data[i], &s_rt->s_stage, sizeof(t_thread_data) - sizeof(int));
+		s_rt->s_thread_data[i].s_selected_camera = s_rt->s_stage.s_selected_camera;
+		ft_list_cpy(&s_rt->s_thread_data[i].s_list_lights, s_rt->s_stage.s_list_lights, light_cpy);
+		ft_list_obj_cpy(&s_rt->s_thread_data[i].s_list_objs, s_rt->s_stage.s_list_objs);
+		s_rt->s_thread_data[i].start_x = width_thread * i;
+		if (i != COUNT_THREADS)
+			s_rt->s_thread_data[i].s_screen.width = s_rt->s_thread_data[i].start_x + width_thread;
+		else
+			s_rt->s_thread_data[i].s_screen.width = s_rt->s_stage.s_screen.width;
+	}
+}
+
+void	start_render(t_rt *s_rt)
+{
+	int	i;
+
+	i = -1;
+	while (++i < COUNT_THREADS)
+		if (pthread_create(&(s_rt->threads[i]), NULL, render, &(s_rt->s_thread_data[i])) != 0)
+			error_end("Ошибка при создании потока create_threads", THREAD_ERROR);
+	i =	-1;
+	while (++i < COUNT_THREADS)
+		pthread_join(s_rt->threads[i], NULL);
+	mlx_put_image_to_window(s_rt->mlx_p, s_rt->mlx_window,
+							s_rt->s_stage.s_selected_camera->s_mlx_img.img, 0, 0);
+	s_rt->s_stage.s_selected_camera->render_ready = 1;
+	mlx_loop(s_rt->mlx_p);
+}

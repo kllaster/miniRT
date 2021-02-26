@@ -12,8 +12,11 @@ typedef	struct	s_ray {
 	double	length;
 }				t_ray;
 
-void			init_render(t_stage *s_stage);
-void			render(t_stage *s_stage);
+void			start_render(t_rt *s_rt);
+void			create_threads_data(t_rt *s_rt);
+void			get_another_camera(t_rt *s_rt);
+void			init_render(t_rt *s_rt);
+void			*render(void *data);
 void			inter_sphere(t_sphere *s_sphere, t_ray *s_ray);
 void			inter_plane(t_plane *s_plane, t_ray *s_ray);
 void			my_mlx_pixel_put(t_mlx_img *s_mlx_img, int x, int y, int color);
