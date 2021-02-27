@@ -1,5 +1,10 @@
 #include "mini_rt.h"
 
+int		vec_check_unzero(t_vec *s_vec)
+{
+	return (s_vec->x || s_vec->y || s_vec->z);
+}
+
 double	vec_len(t_vec *s_vec)
 {
 	return (sqrt(s_vec->x * s_vec->x + s_vec->y * s_vec->y +

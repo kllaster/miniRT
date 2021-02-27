@@ -9,25 +9,25 @@ void 	create_threads_data(t_rt *s_rt)
 	i = -1;
 	while (++i < COUNT_THREADS)
 	{
-		ft_memcpy(&s_rt->s_thread_data[i], &s_rt->s_stage, sizeof(t_thread_data) - sizeof(int));
+		ft_memcpy(&s_rt->s_thread_data[i], &s_rt->s_stage, sizeof(t_stage) - sizeof(t_list*));
 		s_rt->s_thread_data[i].s_selected_camera = s_rt->s_stage.s_selected_camera;
 		ft_list_cpy(&s_rt->s_thread_data[i].s_list_lights, s_rt->s_stage.s_list_lights, light_cpy);
 		ft_list_obj_cpy(&s_rt->s_thread_data[i].s_list_objs, s_rt->s_stage.s_list_objs);
 		s_rt->s_thread_data[i].start_x = width_thread * i;
 		if (i != COUNT_THREADS)
-			s_rt->s_thread_data[i].s_screen.width = s_rt->s_thread_data[i].start_x + width_thread;
+			s_rt->s_thread_data[i].end_x = s_rt->s_thread_data[i].start_x + width_thread;
 		else
-			s_rt->s_thread_data[i].s_screen.width = s_rt->s_stage.s_screen.width;
+			s_rt->s_thread_data[i].end_x = s_rt->s_stage.s_screen.width;
 	}
 }
 
-void	start_render(t_rt *s_rt)
+int		start_render(t_rt *s_rt)
 {
-	int	i;
+	int			i;
 
 	i = -1;
 	while (++i < COUNT_THREADS)
-		if (pthread_create(&(s_rt->threads[i]), NULL, render, &(s_rt->s_thread_data[i])) != 0)
+		if (pthread_create(&s_rt->threads[i], NULL, render, &(s_rt->s_thread_data[i])) != 0)
 			error_end("Ошибка при создании потока create_threads", THREAD_ERROR);
 	i =	-1;
 	while (++i < COUNT_THREADS)
@@ -35,5 +35,5 @@ void	start_render(t_rt *s_rt)
 	mlx_put_image_to_window(s_rt->mlx_p, s_rt->mlx_window,
 							s_rt->s_stage.s_selected_camera->s_mlx_img.img, 0, 0);
 	s_rt->s_stage.s_selected_camera->render_ready = 1;
-	mlx_loop(s_rt->mlx_p);
+	return (0);
 }

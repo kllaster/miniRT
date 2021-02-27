@@ -12,7 +12,7 @@ void	parse_sphere(char *str, t_stage *s_stage)
 	s_sphere->radius = parse_double(&str);
 	if (s_sphere->radius <= 0.0)
 		error_end("Неверный диаметр сферы", PARSE_ERROR);
-	s_sphere->radius /= 2.0;
+	s_sphere->radius *= 0.5;
 	skip_between_param(&str, 0);
 	s_sphere->s_color = parse_rgb(&str);
 	ft_list_obj_add_front(&(s_stage->s_list_objs), ft_list_obj_new(s_sphere, OBJ_SPHERE));

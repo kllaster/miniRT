@@ -1,6 +1,6 @@
 NAME	= miniRT
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -pthread -g
+CFLAGS	= -Wall -Wextra -Werror -D COUNT_THREADS=$(COUNT_THREADS)
 RM		= rm -f
 HEADER	= include
 
@@ -24,6 +24,11 @@ SRCS =	src/main.c\
 		render/intersections/inter_sphere.c\
 		render/intersections/inter_plane.c\
 
+ifeq ($(UNAME),Darwin)
+	COUNT_THREADS = $(shell sysctl -n hw.ncpu)
+else
+	COUNT_THREADS = 4
+endif
 
 OBJS = ${SRCS:.c=.o}
 

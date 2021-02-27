@@ -1,12 +1,10 @@
 #ifndef MINI_RT_H
 # define MINI_RT_H
 
-enum e_rt
-{
-    MAX_DISTANCE	= 1000000,
-	ANTI_ALIASING	= 3,
-	COUNT_THREADS	= 5
-};
+# define	MAX_DISTANCE	1000000
+# define	ANTI_ALIASING	3
+# define	SPEED_MOVE		10
+# define	ANGEL_ROTATION	1
 
 # include "../minilibx/mlx.h"
 # include <pthread.h>

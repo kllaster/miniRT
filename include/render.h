@@ -4,15 +4,15 @@
 # include "mini_rt.h"
 
 typedef	struct	s_ray {
-	t_vec	s_vec_inter_normal;
+	t_vec	s_vec_inter_dir;
 	t_vec	s_vec_inter;
-	t_vec	s_vec_start_normal;
+	t_vec	s_vec_start_dir;
 	t_vec	s_vec_start;
 	t_rgb	s_color_obj;
 	double	length;
 }				t_ray;
 
-void			start_render(t_rt *s_rt);
+int				start_render(t_rt *s_rt);
 void			create_threads_data(t_rt *s_rt);
 void			get_another_camera(t_rt *s_rt);
 void			init_render(t_rt *s_rt);

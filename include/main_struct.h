@@ -10,7 +10,7 @@ typedef struct  s_mlx_img {
 }               t_mlx_img;
 
 typedef	struct	s_aa_sample {
-	double			**matrix_sample;
+	double			**matrix;
 }				t_aa_sample;
 
 typedef	struct	s_vscreen {
@@ -65,12 +65,15 @@ typedef	struct	s_thread_data {
 	t_list			*s_list_lights;
 	t_list_objs		*s_list_objs;
 	int 			start_x;
+	int 			end_x;
 }				t_thread_data;
 
 typedef	struct	s_rt {
 	t_stage			s_stage;
 	t_thread_data	s_thread_data[COUNT_THREADS];
 	pthread_t		threads[COUNT_THREADS];
+	t_vec			new_origin;
+	t_vec			new_dir;
 	void			*mlx_window;
 	void			*mlx_p;
 }				t_rt;

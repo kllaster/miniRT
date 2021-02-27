@@ -2,8 +2,8 @@
 
 void	init_vscreen(t_screen *s_screen, t_camera *s_camera, t_vscreen *s_vscreen)
 {
-	s_vscreen->width = (double)s_screen->width / 2.0;
-	s_vscreen->height = (double)s_screen->height / 2.0;
+	s_vscreen->width = (double)s_screen->width * 0.5;
+	s_vscreen->height = (double)s_screen->height * 0.5;
 	s_vscreen->z = (double)s_screen->width /
 							(2 * tan((double)s_camera->fov / 2 * (M_PI / 180)));
 }
@@ -68,7 +68,8 @@ void	init_render(t_rt *s_rt)
 	check_user_window(s_rt);
 	s_rt->mlx_window = mlx_new_window(s_rt->mlx_p, s_rt->s_stage.s_screen.width,
 									  s_rt->s_stage.s_screen.height, "miniRT");
-	mlx_key_hook(s_rt->mlx_window, key_hook, s_rt);
+	mlx_hook(s_rt->mlx_window, 2, 0, key_press, s_rt);
+	mlx_hook(s_rt->mlx_window, 3, 0, key_release, s_rt);
 	get_another_camera(s_rt);
 	get_aa_sample(&s_rt->s_stage.s_aa_sample);
 	create_threads_data(s_rt);
