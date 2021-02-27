@@ -60,7 +60,25 @@ void	rgb_add_light(t_rgb *s_rgb_res, t_rgb *s_rgb_obj, t_rgb *s_rgb_light, doubl
 {
 	t_rgb	s_rgb_tmp;
 
-	s_rgb_tmp = rgb_mul(s_rgb_light, intensity);
-	s_rgb_tmp = rgb_mul_arr(s_rgb_obj, &s_rgb_tmp);
-	*s_rgb_res = rgb_sum(s_rgb_res, &s_rgb_tmp);
+	s_rgb_tmp.red = (int)((double)s_rgb_light->red * intensity);
+	s_rgb_tmp.green = (int)((double)s_rgb_light->green * intensity);
+	s_rgb_tmp.blue =  (int)((double)s_rgb_light->blue * intensity);
+	if (s_rgb_tmp.red > 255)
+		s_rgb_tmp.red = 255;
+	if (s_rgb_tmp.green > 255)
+		s_rgb_tmp.green = 255;
+	if (s_rgb_tmp.blue > 255)
+		s_rgb_tmp.blue = 255;
+	s_rgb_tmp.red = (int)((double)s_rgb_obj->red * (double)s_rgb_tmp.red * 0.003921568627451);
+	s_rgb_tmp.green = (int)((double)s_rgb_obj->green * (double)s_rgb_tmp.green * 0.003921568627451);
+	s_rgb_tmp.blue = (int)((double)s_rgb_obj->blue * (double)s_rgb_tmp.blue * 0.003921568627451);
+	s_rgb_res->red = s_rgb_res->red + s_rgb_tmp.red;
+	s_rgb_res->green = s_rgb_res->green + s_rgb_tmp.green;
+	s_rgb_res->blue = s_rgb_res->blue + s_rgb_tmp.blue;
+	if (s_rgb_res->red > 255)
+		s_rgb_res->red = 255;
+	if (s_rgb_res->green > 255)
+		s_rgb_res->green = 255;
+	if (s_rgb_res->blue > 255)
+		s_rgb_res->blue = 255;
 }

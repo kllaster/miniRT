@@ -20,6 +20,8 @@ void 	inter_sphere(t_sphere *s_sphere, t_ray *s_ray)
 		s_ray_inter = *s_ray;
 		s_ray_inter.length = d_x;
 		s_ray_inter.s_color_obj = *s_sphere->s_color;
+		s_ray_inter.last_inter_obj = s_sphere;
+		s_ray_inter.last_inter_type = (unsigned)OBJ_SPHERE;
 		s_ray_inter.s_vec_inter = vec_mul(&s_ray->s_vec_start_dir, d_x);
 		s_ray_inter.s_vec_inter = vec_sum(&s_ray->s_vec_start, &s_ray_inter.s_vec_inter);
 		s_ray_inter.s_vec_inter_dir = vec_sub(&s_ray_inter.s_vec_inter, s_sphere->s_vec_origin);

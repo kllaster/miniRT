@@ -22,13 +22,21 @@ int		change_dir_camera(t_rt *s_rt, t_vec *s_vec)
 {
 	t_vec	s_vec_new;
 
+	if (s_rt->s_stage.s_selected_camera->s_vec_dir->z == -1)
+		*s_vec = vec_mul(s_vec, -1);
 	s_vec_new = vec_sum(s_rt->s_stage.s_selected_camera->s_vec_dir, s_vec);
-	s_vec_new.x > 1 ? s_vec_new.x = 0 : 0;
-	s_vec_new.x < -1 ? s_vec_new.x = 0 : 0;
-	s_vec_new.y > 1 ? s_vec_new.y = 0 : 0;
-	s_vec_new.y < -1 ? s_vec_new.y = 0 : 0;
-	s_vec_new.z > 1 ? s_vec_new.z = 0 : 0;
-	s_vec_new.z < -1 ? s_vec_new.z = 0 : 0;
+	if (s_vec_new.x > 1)
+		return (0);
+	if (s_vec_new.x < -1)
+		return (0);
+	if (s_vec_new.y > 1)
+		return (0);
+	if (s_vec_new.y < -1)
+		return (0);
+	if (s_vec_new.z > 1)
+		return (0);
+	if (s_vec_new.z < -1)
+		return (0);
 	*s_rt->s_stage.s_selected_camera->s_vec_dir = s_vec_new;
 	s_rt->s_stage.s_selected_camera->s_matrix_rotate =
 			get_matrix_rotate(s_rt->s_stage.s_selected_camera->s_vec_origin,
@@ -44,12 +52,16 @@ int		key_press(int keycode, t_rt *s_rt)
 		exit(0);
 	else if (keycode == KEY_W)
 		s_rt->new_origin = (t_vec){0, 0, SPEED_MOVE};
+	else if (keycode == KEY_S)
+		s_rt->new_origin = (t_vec){0, 0, -SPEED_MOVE};
 	else if (keycode == KEY_A)
 		s_rt->new_origin = (t_vec){SPEED_MOVE, 0, 0};
 	else if (keycode == KEY_D)
 		s_rt->new_origin = (t_vec){-SPEED_MOVE, 0, 0};
-	else if (keycode == KEY_S)
-		s_rt->new_origin = (t_vec){0, 0, -SPEED_MOVE};
+	else if (keycode == KEY_Z)
+		s_rt->new_origin = (t_vec){0, SPEED_MOVE, 0};
+	else if (keycode == KEY_X)
+		s_rt->new_origin = (t_vec){0, -SPEED_MOVE, 0};
 	else if (keycode == KEY_Q)
 		s_rt->new_dir = (t_vec){(double)ANGEL_ROTATION * 0.01, 0, 0};
 	else if (keycode == KEY_E)
@@ -67,17 +79,10 @@ int		key_press(int keycode, t_rt *s_rt)
 
 int		key_release(int keycode, t_rt *s_rt)
 {
-	if (keycode == KEY_W)
+	if (keycode == KEY_W || keycode == KEY_A || keycode == KEY_D ||
+		keycode == KEY_S || keycode == KEY_Z || keycode == KEY_X)
 		s_rt->new_origin = (t_vec){0,0,0};
-	else if (keycode == KEY_A)
-		s_rt->new_origin = (t_vec){0,0,0};
-	else if (keycode == KEY_D)
-		s_rt->new_origin = (t_vec){0,0,0};
-	else if (keycode == KEY_S)
-		s_rt->new_origin = (t_vec){0,0,0};
-	else if (keycode == KEY_Q)
-		s_rt->new_dir = (t_vec){0,0,0};
-	else if (keycode == KEY_E)
+	else if (keycode == KEY_Q || keycode == KEY_E)
 		s_rt->new_dir = (t_vec){0,0,0};
 	return (0);
 }
