@@ -76,6 +76,7 @@ typedef	struct	s_rt {
 	t_vec			new_dir;
 	void			*mlx_window;
 	void			*mlx_p;
+	int				render_now;
 }				t_rt;
 
 #endif

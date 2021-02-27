@@ -3,8 +3,8 @@
 
 # define	MAX_DISTANCE	1000000
 # define	ANTI_ALIASING	3
-# define	SPEED_MOVE		10
-# define	ANGEL_ROTATION	1
+# define	SPEED_MOVE		5
+# define	ANGEL_ROTATION	5
 
 # include "../minilibx/mlx.h"
 # include <pthread.h>

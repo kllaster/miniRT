@@ -2,7 +2,6 @@
 
 void	change_img_window(t_rt *s_rt)
 {
-    mlx_clear_window(s_rt->mlx_p, s_rt->mlx_window);
 	if (s_rt->s_stage.s_selected_camera->render_ready == 1)
 	{
 		mlx_put_image_to_window(s_rt->mlx_p, s_rt->mlx_window,
@@ -52,9 +51,9 @@ int		key_press(int keycode, t_rt *s_rt)
 	else if (keycode == KEY_S)
 		s_rt->new_origin = (t_vec){0, 0, -SPEED_MOVE};
 	else if (keycode == KEY_Q)
-		s_rt->new_dir = (t_vec){(double)ANGEL_ROTATION * 0.1, 0, 0};
+		s_rt->new_dir = (t_vec){(double)ANGEL_ROTATION * 0.01, 0, 0};
 	else if (keycode == KEY_E)
-		s_rt->new_dir = (t_vec){(double)-ANGEL_ROTATION * 0.1, 0, 0};
+		s_rt->new_dir = (t_vec){(double)-ANGEL_ROTATION * 0.01, 0, 0};
 	else if (keycode == KEY_SPACE)
 	{
 		get_another_camera(s_rt);
@@ -85,14 +84,28 @@ int		key_release(int keycode, t_rt *s_rt)
 
 int		new_frame(t_rt *s_rt)
 {
-	static int	update = 1;
+	static int	update = 0;
 
 	if (vec_check_unzero(&s_rt->new_origin))
 		update = change_pos_camera(s_rt, &s_rt->new_origin);
 	if (vec_check_unzero(&s_rt->new_dir))
 		update = change_dir_camera(s_rt, &s_rt->new_dir);
-	if (update)
+	if (update && !s_rt->render_now)
+	{
+		if (s_rt->s_stage.s_selected_camera->s_mlx_img.img)
+		{
+			if ((s_rt->s_stage.s_selected_camera->s_mlx_img.img = mlx_new_image(s_rt->mlx_p,
+														 s_rt->s_stage.s_screen.width,
+														 s_rt->s_stage.s_screen.height)) == NULL)
+				error_end("Ошибка при mlx_new_image()", MLX_ERROR);
+			if ((s_rt->s_stage.s_selected_camera->s_mlx_img.addr = mlx_get_data_addr(s_rt->s_stage.s_selected_camera->s_mlx_img.img,
+																					 &(s_rt->s_stage.s_selected_camera->s_mlx_img.bits_per_pixel),
+																					 &(s_rt->s_stage.s_selected_camera->s_mlx_img.line_length),
+																					 &(s_rt->s_stage.s_selected_camera->s_mlx_img.endian))) == NULL)
+				error_end("Ошибка при mlx_new_image()", MLX_ERROR);
+		}
 		start_render(s_rt);
-	update = 0;
+		update = 0;
+	}
 	return (0);
 }

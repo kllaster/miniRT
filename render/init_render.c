@@ -10,9 +10,10 @@ void	init_vscreen(t_screen *s_screen, t_camera *s_camera, t_vscreen *s_vscreen)
 
 void	init_camera(t_rt *s_rt, t_camera *s_camera)
 {
-	s_camera->s_mlx_img.img = mlx_new_image(s_rt->mlx_p,
-												s_rt->s_stage.s_screen.width,
-												s_rt->s_stage.s_screen.height);
+	if ((s_camera->s_mlx_img.img = mlx_new_image(s_rt->mlx_p,
+												 s_rt->s_stage.s_screen.width,
+												 s_rt->s_stage.s_screen.height)) == NULL)
+		error_end("Ошибка при mlx_new_image()", MLX_ERROR);
 	s_camera->s_mlx_img.addr = mlx_get_data_addr(s_camera->s_mlx_img.img,
 									   &(s_camera->s_mlx_img.bits_per_pixel),
 									   &(s_camera->s_mlx_img.line_length),
@@ -66,8 +67,9 @@ void	init_render(t_rt *s_rt)
 	if ((s_rt->mlx_p = mlx_init()) == NULL)
 		error_end("Ошибка при mlx_init()", MLX_ERROR);
 	check_user_window(s_rt);
-	s_rt->mlx_window = mlx_new_window(s_rt->mlx_p, s_rt->s_stage.s_screen.width,
-									  s_rt->s_stage.s_screen.height, "miniRT");
+	if ((s_rt->mlx_window = mlx_new_window(s_rt->mlx_p, s_rt->s_stage.s_screen.width,
+										   s_rt->s_stage.s_screen.height, "miniRT")) == NULL)
+		error_end("Ошибка при mlx_new_window()", MLX_ERROR);
 	mlx_hook(s_rt->mlx_window, 2, 0, key_press, s_rt);
 	mlx_hook(s_rt->mlx_window, 3, 0, key_release, s_rt);
 	get_another_camera(s_rt);

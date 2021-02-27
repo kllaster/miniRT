@@ -26,6 +26,7 @@ int		start_render(t_rt *s_rt)
 	int			i;
 
 	i = -1;
+	s_rt->render_now = 1;
 	while (++i < COUNT_THREADS)
 		if (pthread_create(&s_rt->threads[i], NULL, render, &(s_rt->s_thread_data[i])) != 0)
 			error_end("Ошибка при создании потока create_threads", THREAD_ERROR);
@@ -35,5 +36,6 @@ int		start_render(t_rt *s_rt)
 	mlx_put_image_to_window(s_rt->mlx_p, s_rt->mlx_window,
 							s_rt->s_stage.s_selected_camera->s_mlx_img.img, 0, 0);
 	s_rt->s_stage.s_selected_camera->render_ready = 1;
+	s_rt->render_now = 0;
 	return (0);
 }
