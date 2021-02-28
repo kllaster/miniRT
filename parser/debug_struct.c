@@ -3,9 +3,9 @@
 void	debug_print_s_vec(t_vec *s_vec, char *s_name)
 {
 	printf("——— t_vec	%s:\n", s_name);
-	printf("—————— double	x: %f\n", s_vec->x);
-	printf("—————— double	y: %f\n", s_vec->y);
-	printf("—————— double	z: %f\n", s_vec->z);
+	printf("—————— float	x: %f\n", s_vec->x);
+	printf("—————— float	y: %f\n", s_vec->y);
+	printf("—————— float	z: %f\n", s_vec->z);
 }
 
 void	debug_print_s_color(t_rgb *s_color)
@@ -27,7 +27,7 @@ void	debug_print_s_camera(t_camera *s_camera)
 void	debug_print_s_lights(t_light *s_light)
 {
 	printf("\n——— t_light	s_light:\n");
-	printf("——— double	brightness: %f\n", s_light->brightness);
+	printf("——— float	brightness: %f\n", s_light->brightness);
 	debug_print_s_color(s_light->s_color);
 	debug_print_s_vec(s_light->s_vec_origin, "s_vec_origin");
 }
@@ -35,7 +35,7 @@ void	debug_print_s_lights(t_light *s_light)
 void	debug_print_s_sphere(t_sphere *s_sphere)
 {
 	printf("\n——— t_sphere	s_sphere:\n");
-	printf("——— double	radius: %f\n", s_sphere->radius);
+	printf("——— float	radius: %f\n", s_sphere->radius);
 	debug_print_s_color(s_sphere->s_color);
 	debug_print_s_vec(s_sphere->s_vec_origin, "s_vec_origin");
 }
@@ -51,7 +51,7 @@ void	debug_print_s_plane(t_plane *s_plane)
 void	debug_print_s_square(t_square *s_square)
 {
 	printf("\n——— t_square	s_square:\n");
-	printf("——— double	side_size: %f\n", s_square->side_size);
+	printf("——— float	side_size: %f\n", s_square->side_size);
 	debug_print_s_color(s_square->s_color);
 	debug_print_s_vec(s_square->s_vec_dir, "s_vec_dir");
 	debug_print_s_vec(s_square->s_vec_origin, "s_vec_origin");
@@ -60,8 +60,8 @@ void	debug_print_s_square(t_square *s_square)
 void	debug_print_s_cylinder(t_cylinder *s_cylinder)
 {
 	printf("\n——— t_cylinder	s_cylinder:\n");
-	printf("——— double	diameter: %f\n", s_cylinder->diameter);
-	printf("——— double	height: %f\n", s_cylinder->height);
+	printf("——— float	diameter: %f\n", s_cylinder->diameter);
+	printf("——— float	height: %f\n", s_cylinder->height);
 	debug_print_s_color(s_cylinder->s_color);
 	debug_print_s_vec(s_cylinder->s_vec_dir, "s_vec_dir");
 	debug_print_s_vec(s_cylinder->s_vec_origin, "s_vec_origin");
@@ -86,7 +86,7 @@ void	debug_print_s_stage(t_stage *s_stage)
 	printf("——— int	height: %d\n", s_stage->s_screen.height);
 	printf("——— int	width: %d\n\n", s_stage->s_screen.width);
 	printf("— t_ambient_light	s_ambient_light:\n");
-	printf("——— double	brightness: %f\n", s_stage->s_ambient_light.brightness);
+	printf("——— float	brightness: %f\n", s_stage->s_ambient_light.brightness);
 	debug_print_s_color(s_stage->s_ambient_light.s_color);
 	s_list = s_stage->s_list_cameras;
 	while (s_list)

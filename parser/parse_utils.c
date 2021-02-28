@@ -29,21 +29,21 @@ void			skip_between_param(char **str, char symb)
 	}
 }
 
-double			parse_double(char **str)
+float			parse_float(char **str)
 {
 	int		sign;
-	double	mantissa;
-	double	num;
+	float	mantissa;
+	float	num;
 
 	sign = 1;
 	if (**str == '-')
 		sign = -1;
-	num = (double)ft_atoi_pos(str);
+	num = (float)ft_atoi_pos(str);
 	if (num < 0)
 		sign = 1;
 	if (*(*str) == '.' && (++(*str)))
 	{
-		mantissa = (double)ft_atoi_pos(str);
+		mantissa = (float)ft_atoi_pos(str);
 		num += (mantissa / pow(10.0, ft_numlen((int)mantissa)));
 		num *= sign;
 	}
@@ -76,10 +76,10 @@ t_vec	*parse_coordinates(char **str)
 
 	if ((s_vec = malloc(sizeof(t_vec))) == NULL)
 		error_end("Ошибка выделения памяти parse_coordinates", MALLOC_ERROR);
-	s_vec->x = parse_double(str);
+	s_vec->x = parse_float(str);
 	check_next_arg(str);
-	s_vec->y = parse_double(str);
+	s_vec->y = parse_float(str);
 	check_next_arg(str);
-	s_vec->z = parse_double(str);
+	s_vec->z = parse_float(str);
 	return (s_vec);
 }

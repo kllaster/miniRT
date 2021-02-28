@@ -14,7 +14,7 @@ int	main(int argc, char *argv[])
 		error_end("Не задана ни одна камера", PARSE_ERROR);
 	init_render(&s_rt);
 	debug_print_s_stage(&s_rt.s_stage);
-    start_render(&s_rt);
+	change_frame(&s_rt, NULL);
 	mlx_loop_hook(s_rt.mlx_p, new_frame, &s_rt);
 	mlx_loop(s_rt.mlx_p);
 	return (0);

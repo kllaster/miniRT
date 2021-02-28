@@ -11,7 +11,7 @@ typedef	struct	s_ray {
 	t_rgb			s_color_obj;
 	void			*last_inter_obj;
 	unsigned char	last_inter_type;
-	double			length;
+	float			length;
 }				t_ray;
 
 typedef	struct	s_rays {

@@ -1,6 +1,6 @@
 #include "mini_rt.h"
 
-int 		check_inter_obj(t_ray *s_ray, double distance)
+int 		check_inter_obj(t_ray *s_ray, float distance)
 {
 	if (s_ray->last_inter_type & (unsigned)OBJ_SPHERE)
 		inter_sphere(s_ray->last_inter_obj, s_ray);
@@ -17,7 +17,7 @@ int 		check_inter_obj(t_ray *s_ray, double distance)
 	return (0);
 }
 
-void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray, double distance)
+void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray, float distance)
 {
 	t_list_objs	*s_list_obj;
 
@@ -48,8 +48,8 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 	t_vec	s_vec_halfway;
 	t_rgb	s_color_res;
     t_list	*s_list_light;
-    double	light_length;
-    double	angel_incidence;
+	float	light_length;
+	float	angel_incidence;
 
 	s_color_res = (t_rgb){0,0,0};
 	s_list_light = s_thread_data->s_list_lights;
@@ -81,7 +81,7 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 												 &s_rays->s_ray.s_vec_inter_dir);
 				if (angel_incidence > 0)
 				{
-					angel_incidence = pow(angel_incidence, 60);
+					angel_incidence = (float)pow(angel_incidence, 60);
 					rgb_add_light(&s_color_res, &s_rays->s_ray.s_color_obj,
 						((t_light *)s_list_light->content)->s_color,
 						angel_incidence * ((t_light *)s_list_light->content)->brightness);
@@ -104,7 +104,7 @@ t_rgb		start_ray(t_thread_data *s_thread_data, t_rays *s_rays)
 	return ((t_rgb){0,0,0});
 }
 
-void		get_norm_start_ray(double x, double y, t_vec *s_vec_start_dir, t_camera *s_camera)
+void		get_norm_start_ray(float x, float y, t_vec *s_vec_start_dir, t_camera *s_camera)
 {
 	s_vec_start_dir->x = x - s_camera->s_vscreen.width;
 	s_vec_start_dir->y = -y + s_camera->s_vscreen.height;
@@ -124,8 +124,8 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y, t_rays *s_rays)
 	s_color_res = (t_rgb){0,0,0};
 	while (count_rays < ANTI_ALIASING)
 	{
-		get_norm_start_ray(x + s_thread_data->s_aa_sample.matrix[count_rays][0],
-						y + s_thread_data->s_aa_sample.matrix[count_rays][1],
+		get_norm_start_ray((float)x + s_thread_data->s_aa_sample.matrix[count_rays][0],
+						   (float)y + s_thread_data->s_aa_sample.matrix[count_rays][1],
 						&s_rays->s_ray.s_vec_start_dir, s_thread_data->s_main_camera);
 		s_color_ray = start_ray(s_thread_data, s_rays);
 		if (count_rays == 0)
@@ -145,10 +145,10 @@ void		*render(void *data)
 	t_rays			s_rays;
 	t_thread_data	*s_thread_data;
 
-	s_thread_data = (t_thread_data *)data;
-	x = s_thread_data->start_x;
 	ft_bzero(&s_rays, sizeof(s_rays));
+	s_thread_data = (t_thread_data *)data;
 	s_rays.s_ray.s_vec_start = *s_thread_data->s_main_camera->s_vec_origin;
+	x = s_thread_data->start_x;
 	while (x < s_thread_data->end_x)
 	{
 		y = 0;

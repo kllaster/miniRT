@@ -15,7 +15,7 @@ void	parse_screen(char *str, t_stage *s_stage)
 void	parse_ambient_light(char *str, t_stage *s_stage)
 {
 	skip_between_param(&str, 0);
-	s_stage->s_ambient_light.brightness = parse_double(&str);
+	s_stage->s_ambient_light.brightness = parse_float(&str);
 	if (s_stage->s_ambient_light.brightness < 0.0)
 		error_end("Неверная яркость глобального света", PARSE_ERROR);
 	skip_between_param(&str, 0);
@@ -51,7 +51,7 @@ void	parse_light(char *str, t_stage *s_stage)
 		error_end("Ошибка выделения памяти parse_light", MALLOC_ERROR);
 	s_light->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	s_light->brightness = parse_double(&str);
+	s_light->brightness = parse_float(&str);
 	skip_between_param(&str, 0);
 	s_light->s_color = parse_rgb(&str);
 	ft_list_add_front(&(s_stage->s_list_lights), ft_list_new(s_light));

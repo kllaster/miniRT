@@ -1,6 +1,6 @@
 #include "mini_rt.h"
 
-double      ft_dabs(double num)
+float      ft_fabs(float num)
 {
     if (num < 0)
         return (-num);

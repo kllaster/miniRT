@@ -5,16 +5,16 @@ int		vec_check_unzero(t_vec *s_vec)
 	return (s_vec->x || s_vec->y || s_vec->z);
 }
 
-double	vec_len(t_vec *s_vec)
+float	vec_len(t_vec *s_vec)
 {
-	return (sqrt(s_vec->x * s_vec->x + s_vec->y * s_vec->y +
-												s_vec->z * s_vec->z));
+	return (float)(sqrt((double)(s_vec->x * s_vec->x + s_vec->y * s_vec->y +
+									s_vec->z * s_vec->z)));
 }
 
 t_vec	vec_norm(t_vec *s_vec)
 {
 	t_vec	s_vec_norm;
-	double	len;
+	float	len;
 
 	len = vec_len(s_vec);
 	if (len != 1 && len != 0)
@@ -47,7 +47,7 @@ t_vec	vec_sub(t_vec *s_vec_1, t_vec *s_vec_2)
 	return (s_vec_sub);
 }
 
-t_vec	vec_mul(t_vec *s_vec, double num)
+t_vec	vec_mul(t_vec *s_vec, float num)
 {
 	t_vec	s_vec_mul;
 
@@ -67,13 +67,13 @@ t_vec	vec_cross_product(t_vec *s_vec_1, t_vec *s_vec_2)
 	return (s_vec);
 }
 
-double	vec_scalar_mul(t_vec *s_vec_1, t_vec *s_vec_2)
+float	vec_scalar_mul(t_vec *s_vec_1, t_vec *s_vec_2)
 {
 	return (s_vec_1->x * s_vec_2->x + s_vec_1->y * s_vec_2->y +
 											s_vec_1->z * s_vec_2->z);
 }
 
-void	vec_rotate_x(t_vec *s_vec, double sin, double cos)
+void	vec_rotate_x(t_vec *s_vec, float sin, float cos)
 {
 	t_vec	s_vec_res;
 
@@ -83,7 +83,7 @@ void	vec_rotate_x(t_vec *s_vec, double sin, double cos)
 	*s_vec = s_vec_res;
 }
 
-void	vec_rotate_y(t_vec *s_vec, double sin, double cos)
+void	vec_rotate_y(t_vec *s_vec, float sin, float cos)
 {
 	t_vec	s_vec_res;
 
@@ -93,7 +93,7 @@ void	vec_rotate_y(t_vec *s_vec, double sin, double cos)
 	*s_vec = s_vec_res;
 }
 
-void	vec_rotate_z(t_vec *s_vec, double sin, double cos)
+void	vec_rotate_z(t_vec *s_vec, float sin, float cos)
 {
 	t_vec	s_vec_res;
 

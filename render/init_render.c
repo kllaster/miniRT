@@ -2,10 +2,10 @@
 
 void	init_vscreen(t_screen *s_screen, t_camera *s_camera, t_vscreen *s_vscreen)
 {
-	s_vscreen->width = (double)s_screen->width * 0.5;
-	s_vscreen->height = (double)s_screen->height * 0.5;
-	s_vscreen->z = (double)s_screen->width /
-							(2 * tan((double)s_camera->fov / 2 * (M_PI / 180)));
+	s_vscreen->width = (float)(s_screen->width * 0.5);
+	s_vscreen->height = (float)(s_screen->height * 0.5);
+	s_vscreen->z = (float)(s_screen->width /
+							(2 * tan((double)s_camera->fov / 2 * (M_PI / 180))));
 }
 
 void	init_camera(t_rt *s_rt, t_camera *s_camera)

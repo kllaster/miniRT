@@ -1,8 +1,13 @@
-NAME	= miniRT
-CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -D COUNT_THREADS=$(COUNT_THREADS)
-RM		= rm -f
-HEADER	= include
+NAME		= miniRT
+CC			= gcc
+DEBUG		= 0
+ifeq (DEBUG, 1)
+	DEBUG_FLAGS	= -fsanitize=address -g
+endif
+CFLAGS		= -Wall -Wextra -Werror $(DEBUG_FLAGS) -D COUNT_THREADS=$(COUNT_THREADS)
+CPPFLAGS	= $(CFLAGS) -msse3 -O2 -pipe
+RM			= rm -f
+HEADER		= include
 
 SRCS =	src/main.c\
 		src/utils.c\
@@ -11,6 +16,7 @@ SRCS =	src/main.c\
 		src/matrix_utils.c\
 		src/vectors_utils.c\
 		src/cpy_objs.c\
+		parser/debug_window.c\
 		parser/debug_struct.c\
 		parser/get_next_line.c\
 		parser/get_next_line_utils.c\
@@ -24,22 +30,24 @@ SRCS =	src/main.c\
 		render/intersections/inter_sphere.c\
 		render/intersections/inter_plane.c\
 
+OBJS = ${SRCS:.c=.o}
+
+UNAME := $(shell uname)
+
 ifeq ($(UNAME),Darwin)
 	COUNT_THREADS = $(shell sysctl -n hw.ncpu)
 else
 	COUNT_THREADS = 4
 endif
 
-OBJS = ${SRCS:.c=.o}
-
 all:			$(NAME)
 
 %.o: %.c
-				$(CC) $(CFLAGS) -I $(HEADER) -o $@ -c $<
+				$(CC) $(CPPFLAGS) -I $(HEADER) -o $@ -c $<
 
 ${NAME}:		${OBJS}
 				cd minilibx && ${MAKE} && mv libmlx.dylib ../libmlx.dylib
-				$(CC) $(CFLAGS) -I $(HEADER) $(OBJS) libmlx.dylib -o $(NAME)
+				$(CC) $(CPPFLAGS) -I $(HEADER) $(OBJS) libmlx.dylib -o $(NAME)
 
 clean:
 				${RM} ${OBJS}

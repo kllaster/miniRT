@@ -2,7 +2,7 @@
 # define MATRIX_H
 
 typedef struct s_matrix {
-	double			el[4][4];
+	float	el[4][4];
 }				t_matrix;
 
 t_vec			matrix_mul(t_vec *u, t_matrix *m);

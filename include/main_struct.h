@@ -10,13 +10,13 @@ typedef struct  s_mlx_img {
 }               t_mlx_img;
 
 typedef	struct	s_aa_sample {
-	double			**matrix;
+	float			**matrix;
 }				t_aa_sample;
 
 typedef	struct	s_vscreen {
-	double			width;
-	double			height;
-	double			z;
+	float			width;
+	float			height;
+	float			z;
 }				t_vscreen;
 
 typedef	struct	s_camera {
@@ -32,13 +32,13 @@ typedef	struct	s_camera {
 }				t_camera;
 
 typedef	struct	s_light {
-	double			brightness;
+	float			brightness;
 	t_vec			*s_vec_origin;
 	t_rgb			*s_color;
 }				t_light;
 
 typedef	struct	s_ambient_light {
-	double			brightness;
+	float			brightness;
 	t_rgb			*s_color;
 }				t_ambient_light;
 
@@ -72,8 +72,10 @@ typedef	struct	s_rt {
 	t_stage			s_stage;
 	t_thread_data	s_thread_data[COUNT_THREADS];
 	pthread_t		threads[COUNT_THREADS];
-	t_vec			new_origin;
 	t_vec			new_dir;
+	int				x_move;
+	int				y_move;
+	int				z_move;
 	void			*mlx_window;
 	void			*mlx_p;
 	int				render_now;

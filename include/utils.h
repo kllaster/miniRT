@@ -25,7 +25,7 @@ typedef struct		s_list
 }					t_list;
 
 void				error_end(char *str_error, int exit_code);
-double              ft_dabs(double num);
+float				ft_fabs(float num);
 int					ft_numlen(int num);
 int					ft_strequal_end(char *str, char *end);
 void				ft_bzero(void *s, size_t n);
