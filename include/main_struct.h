@@ -2,7 +2,7 @@
 # define MAIN_STRUCT_H
 
 typedef struct  s_mlx_img {
-	void        	*img;
+	void        	*img_ptr;
 	char        	*addr;
 	int         	bits_per_pixel;
 	int         	line_length;
@@ -51,7 +51,7 @@ typedef	struct	s_stage {
 	t_aa_sample		s_aa_sample;
 	t_screen		s_screen;
 	t_ambient_light	s_ambient_light;
-	t_camera		*s_selected_camera;
+	t_camera		*s_main_camera;
 	t_list			*s_list_lights;
 	t_list_objs		*s_list_objs;
 	t_list			*s_list_cameras;
@@ -61,7 +61,7 @@ typedef	struct	s_thread_data {
 	t_aa_sample		s_aa_sample;
 	t_screen		s_screen;
 	t_ambient_light	s_ambient_light;
-	t_camera		*s_selected_camera;
+	t_camera		*s_main_camera;
 	t_list			*s_list_lights;
 	t_list_objs		*s_list_objs;
 	int 			start_x;
