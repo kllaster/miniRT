@@ -1,6 +1,6 @@
 #include "mini_rt.h"
 
-void 	create_threads_data(t_rt *s_rt)
+void	create_threads_data(t_rt *s_rt)
 {
 	int	i;
 	int	width_thread;

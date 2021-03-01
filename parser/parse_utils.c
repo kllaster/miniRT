@@ -1,6 +1,6 @@
 #include "mini_rt.h"
 
-void			check_next_arg(char **str)
+void	check_next_arg(char **str)
 {
 	if (**str == ',')
 		(*str)++;
@@ -14,7 +14,7 @@ void			check_next_arg(char **str)
 	}
 }
 
-void			skip_between_param(char **str, char symb)
+void	skip_between_param(char **str, char symb)
 {
 	(*str)++;
 	while (**str)
@@ -29,10 +29,9 @@ void			skip_between_param(char **str, char symb)
 	}
 }
 
-float			parse_float(char **str)
+float	parse_float(char **str)
 {
-	int		sign;
-	float	mantissa;
+	float	sign;
 	float	num;
 
 	sign = 1;
@@ -40,17 +39,14 @@ float			parse_float(char **str)
 		sign = -1;
 	num = (float)ft_atoi_pos(str);
 	if (num < 0)
-		sign = 1;
+		num *= sign = -1;
 	if (*(*str) == '.' && (++(*str)))
-	{
-		mantissa = (float)ft_atoi_pos(str);
-		num += (mantissa / pow(10.0, ft_numlen((int)mantissa)));
-		num *= sign;
-	}
+		num += ft_atoi_pos_mantissa(str);
+	num *= sign;
 	return (num);
 }
 
-t_rgb			*parse_rgb(char **str)
+t_rgb	*parse_rgb(char **str)
 {
 	t_rgb	*s_rgb;
 

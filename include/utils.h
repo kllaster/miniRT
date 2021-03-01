@@ -3,8 +3,7 @@
 
 # include "mini_rt.h"
 
-enum e_errors
-{
+enum e_errors {
 	MALLOC_ERROR	= 1,
 	PARSE_ERROR		= 2,
 	MLX_ERROR		= 3,
@@ -25,11 +24,11 @@ typedef struct		s_list
 }					t_list;
 
 void				error_end(char *str_error, int exit_code);
-float				ft_fabs(float num);
 int					ft_numlen(int num);
 int					ft_strequal_end(char *str, char *end);
 void				ft_bzero(void *s, size_t n);
 int					ft_atoi_pos(char **str);
+float				ft_atoi_pos_mantissa(char **str);
 void				*ft_memcpy(void *dest, const void *source, size_t count);
 t_list				*ft_list_new(void *content);
 void				ft_list_add_front(t_list **s_list_src, t_list *s_list_new);

@@ -94,14 +94,19 @@ void	parse_triangle(char *str, t_stage *s_stage)
 
 void	parse_objs(char *str, t_stage *s_stage)
 {
-	if (str[0] == 's' && str[1] == 'p' && (str += 2))
+	if (str[0] == 's' && str[1] == 'p' &&
+		(str[2] == ' ' || str[2] == '\t') && (str += 2))
 		parse_sphere(str, s_stage);
-	else if (str[0] == 'p' && str[1] == 'l' && (str += 2))
+	else if (str[0] == 'p' && str[1] == 'l' &&
+		(str[2] == ' ' || str[2] == '\t') && (str += 2))
 		parse_plane(str, s_stage);
-	else if (str[0] == 's' && str[1] == 'q' && (str += 2))
+	else if (str[0] == 's' && str[1] == 'q' &&
+			(str[2] == ' ' || str[2] == '\t') && (str += 2))
 		parse_square(str, s_stage);
-	else if (str[0] == 'c' && str[1] == 'y' && (str += 2))
+	else if (str[0] == 'c' && str[1] == 'y' &&
+			(str[2] == ' ' || str[2] == '\t') && (str += 2))
 		parse_cylinder(str, s_stage);
-	else if (str[0] == 't' && str[1] == 'r' && (str += 2))
+	else if (str[0] == 't' && str[1] == 'r' &&
+			(str[2] == ' ' || str[2] == '\t') && (str += 2))
 		parse_triangle(str, s_stage);
 }

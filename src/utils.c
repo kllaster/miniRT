@@ -1,12 +1,5 @@
 #include "mini_rt.h"
 
-float      ft_fabs(float num)
-{
-    if (num < 0)
-        return (-num);
-    return (num);
-}
-
 int			ft_numlen(int num)
 {
 	int i;
@@ -77,6 +70,30 @@ int			ft_atoi_pos(char **str)
 	else
 		error_end("Нет числа", PARSE_ERROR);
 	return ((int)res * sign);
+}
+
+float		ft_atoi_pos_mantissa(char **str)
+{
+	float	len;
+	float	res;
+
+	res = 0;
+	while (*(*str) == '\t' || *(*str) == '\v'
+		   || *(*str) == '\f' || *(*str) == '\r'
+		   || *(*str) == ' ')
+		(*str)++;
+	if (*(*str) >= '0' && *(*str) <= '9')
+	{
+		len = 0;
+		while (*(*str) >= '0' && *(*str) <= '9')
+		{
+			len++;
+			res += powf((float)0.1, len) * (float)(*(*str)++ - '0');
+		}
+	}
+	else
+		error_end("Нет мантиссы", PARSE_ERROR);
+	return (res);
 }
 
 void		*ft_memcpy(void *dest, const void *source, size_t count)

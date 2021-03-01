@@ -3,8 +3,7 @@
 
 # include "mini_rt.h"
 
-enum e_objs
-{
+enum e_objs {
 	OBJ_NONE		= 0b00000000,
 	OBJ_SPHERE		= 0b00000001,
 	OBJ_PLANE		= 0b00000010,

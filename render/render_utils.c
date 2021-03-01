@@ -2,7 +2,7 @@
 
 void	get_aa_sample(t_aa_sample *s_aa_sample)
 {
-	int 	i;
+	int		i;
 	float	aa_sample1[1][2] = {{0,0}};
 	float	aa_sample2[2][2] = {{-0.35,0.35}, {0.35,-0.35}};
 	float	aa_sample3[3][2] = {{-0.45,0.45}, {-0.4,-0.45}, {-0.45,-0.4}};

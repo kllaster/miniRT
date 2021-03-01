@@ -70,13 +70,13 @@ void	parse_file(char *file, t_stage *s_stage)
 		error_end("Файл невозможно прочесть", PARSE_ERROR);
 	while ((error = get_next_line(fd, &str)) != -1)
 	{
-		if (str[0] == 'R' && str[1] == ' ')
+		if (str[0] == 'R' && (str[1] == ' ' || str[1] == '\t'))
 			parse_screen(str, s_stage);
-		else if (str[0] == 'A' && str[1] == ' ')
+		else if (str[0] == 'A' && (str[1] == ' ' || str[1] == '\t'))
 			parse_ambient_light(str, s_stage);
-		else if (str[0] == 'c' && str[1] == ' ')
+		else if (str[0] == 'c' && (str[1] == ' ' || str[1] == '\t'))
 			parse_camera(str, s_stage);
-		else if (str[0] == 'l' && str[1] == ' ')
+		else if (str[0] == 'l' && (str[1] == ' ' || str[1] == '\t'))
 			parse_light(str, s_stage);
 		else
 			parse_objs(str, s_stage);
