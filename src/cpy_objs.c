@@ -57,6 +57,9 @@ t_triangle	*triangle_cpy(t_triangle *s_triangle)
 	s_triangle_new->s_vec_origin_1 = vec_cpy(s_triangle->s_vec_origin_1);
 	s_triangle_new->s_vec_origin_2 = vec_cpy(s_triangle->s_vec_origin_2);
 	s_triangle_new->s_vec_origin_3 = vec_cpy(s_triangle->s_vec_origin_3);
+	s_triangle_new->s_vec_edge_1 = vec_cpy(s_triangle->s_vec_edge_1);
+	s_triangle_new->s_vec_edge_2 = vec_cpy(s_triangle->s_vec_edge_2);
+	s_triangle_new->s_vec_dir = vec_cpy(s_triangle->s_vec_dir);
 	s_triangle_new->s_color = rgb_cpy(s_triangle->s_color);
 	return (s_triangle_new);
 }

@@ -73,6 +73,9 @@ void	debug_print_s_triangle(t_triangle *s_triangle)
 	debug_print_s_vec(s_triangle->s_vec_origin_1, "s_vec_origin_1");
 	debug_print_s_vec(s_triangle->s_vec_origin_2, "s_vec_origin_2");
 	debug_print_s_vec(s_triangle->s_vec_origin_3, "s_vec_origin_3");
+	debug_print_s_vec(s_triangle->s_vec_edge_1, "s_vec_edge_1");
+	debug_print_s_vec(s_triangle->s_vec_edge_2, "s_vec_edge_2");
+	debug_print_s_vec(s_triangle->s_vec_dir, "s_vec_dir");
 	debug_print_s_color(s_triangle->s_color);
 }
 

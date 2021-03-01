@@ -118,25 +118,35 @@ int		key_release(int keycode, t_rt *s_rt)
 
 int		new_frame(t_rt *s_rt)
 {
-	static int	update = 0;
-	void		*img_old_p;
+	static long long int	last_hook_time = 0;
+	static int				update = 0;
+	void					*img_old_p;
 
-	if (!s_rt->render_now && vec_check_unzero(&s_rt->new_dir))
-		update = change_dir_camera(s_rt, s_rt->new_dir);
-	else if (!s_rt->render_now && (!s_rt->x_move || !s_rt->y_move || !s_rt->z_move))
-		update = change_pos_camera(s_rt, s_rt->x_move, s_rt->y_move, s_rt->z_move);
+	if ((last_hook_time + (1000 / MAX_FPS)) < time_unix_ms())
+	{
+		if (!s_rt->render_now && vec_check_unzero(&s_rt->new_dir))
+		{
+			update = change_dir_camera(s_rt, s_rt->new_dir);
+			last_hook_time = time_unix_ms();
+		}
+		else if (!s_rt->render_now && (!s_rt->x_move || !s_rt->y_move || !s_rt->z_move))
+		{
+			update = change_pos_camera(s_rt, s_rt->x_move, s_rt->y_move, s_rt->z_move);
+			last_hook_time = time_unix_ms();
+		}
+	}
 	if (update && !s_rt->render_now)
 	{
 		img_old_p = s_rt->s_stage.s_main_camera->s_mlx_img.img_ptr;
 		if ((s_rt->s_stage.s_main_camera->s_mlx_img.img_ptr = mlx_new_image(s_rt->mlx_p,
-													 s_rt->s_stage.s_screen.width,
-													 s_rt->s_stage.s_screen.height)) == NULL)
+																			s_rt->s_stage.s_screen.width,
+																			s_rt->s_stage.s_screen.height)) == NULL)
 			error_end("Ошибка при mlx_new_image()", MLX_ERROR);
 		if ((s_rt->s_stage.s_main_camera->s_mlx_img.addr =
-				mlx_get_data_addr(s_rt->s_stage.s_main_camera->s_mlx_img.img_ptr,
-								 &(s_rt->s_stage.s_main_camera->s_mlx_img.bits_per_pixel),
-								 &(s_rt->s_stage.s_main_camera->s_mlx_img.line_length),
-								 &(s_rt->s_stage.s_main_camera->s_mlx_img.endian))) == NULL)
+					 mlx_get_data_addr(s_rt->s_stage.s_main_camera->s_mlx_img.img_ptr,
+									   &(s_rt->s_stage.s_main_camera->s_mlx_img.bits_per_pixel),
+									   &(s_rt->s_stage.s_main_camera->s_mlx_img.line_length),
+									   &(s_rt->s_stage.s_main_camera->s_mlx_img.endian))) == NULL)
 			error_end("Ошибка при mlx_get_data_addr()", MLX_ERROR);
 		s_rt->s_stage.s_main_camera->render_ready = 0;
 		change_frame(s_rt, img_old_p);

@@ -1,5 +1,13 @@
 #include "mini_rt.h"
 
+long long int	time_unix_ms()
+{
+	struct timeval	s_time;
+
+	gettimeofday(&s_time, NULL);
+	return (s_time.tv_sec * 1000 + (s_time.tv_usec / 1000));
+}
+
 int			ft_numlen(int num)
 {
 	int i;

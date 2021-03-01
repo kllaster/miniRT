@@ -36,7 +36,8 @@ void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray, float distanc
 			inter_triangle(s_list_obj->content, s_ray);
 		s_list_obj = s_list_obj->next;
 	}
-	if (s_ray->length < distance && s_ray->last_inter_type ^ (unsigned)OBJ_PLANE)
+	if (s_ray->length < distance && s_ray->last_inter_type ^ (unsigned)OBJ_PLANE
+									&& s_ray->last_inter_type ^ (unsigned)OBJ_TRIANGLE)
 		s_ray->s_vec_inter_dir = vec_norm(&s_ray->s_vec_inter_dir);
 }
 
@@ -91,24 +92,6 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 	return (s_color_res);
 }
 
-t_rgb		start_ray(t_thread_data *s_thread_data, t_rays *s_rays)
-{
-	check_inter_objs(s_thread_data, &s_rays->s_ray, MAX_DISTANCE);
-	if (s_rays->s_ray.length < MAX_DISTANCE)
-		return (get_color_pixel(s_thread_data, s_rays));
-	return ((t_rgb){0,0,0});
-}
-
-void		get_norm_start_ray(float x, float y, t_vec *s_vec_start_dir, t_camera *s_camera)
-{
-	s_vec_start_dir->x = x - s_camera->s_vscreen.width;
-	s_vec_start_dir->y = -y + s_camera->s_vscreen.height;
-	s_vec_start_dir->z = s_camera->s_vscreen.z;
-	*s_vec_start_dir = matrix_mul(s_vec_start_dir, &s_camera->s_matrix_rotate);
-	*s_vec_start_dir = vec_sub(s_vec_start_dir, s_camera->s_vec_origin);
-	*s_vec_start_dir = vec_norm(s_vec_start_dir);
-}
-
 int			anti_aliasing(t_thread_data *s_thread_data, int x, int y, t_rays *s_rays)
 {
 	int		count_rays;
@@ -119,10 +102,22 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y, t_rays *s_rays)
 	s_color_res = (t_rgb){0,0,0};
 	while (count_rays < ANTI_ALIASING)
 	{
-		get_norm_start_ray((float)x + s_thread_data->s_aa_sample.matrix[count_rays][0],
-							(float)y + s_thread_data->s_aa_sample.matrix[count_rays][1],
-							&s_rays->s_ray.s_vec_start_dir, s_thread_data->s_main_camera);
-		s_color_ray = start_ray(s_thread_data, s_rays);
+		s_rays->s_ray.s_vec_start_dir.x = (float)x + s_thread_data->s_aa_sample.matrix[count_rays][0] -
+											s_thread_data->s_main_camera->s_vscreen.width;
+		s_rays->s_ray.s_vec_start_dir.y = (float)-y + s_thread_data->s_aa_sample.matrix[count_rays][1] +
+											s_thread_data->s_main_camera->s_vscreen.height;
+		s_rays->s_ray.s_vec_start_dir.z = s_thread_data->s_main_camera->s_vscreen.z;
+		s_rays->s_ray.s_vec_start_dir = matrix_mul(&s_rays->s_ray.s_vec_start_dir,
+											 &s_thread_data->s_main_camera->s_matrix_rotate);
+		s_rays->s_ray.s_vec_start_dir = vec_sub(&s_rays->s_ray.s_vec_start_dir,
+										  s_thread_data->s_main_camera->s_vec_origin);
+		s_rays->s_ray.s_vec_start_dir = vec_norm(&s_rays->s_ray.s_vec_start_dir);
+
+		check_inter_objs(s_thread_data, &s_rays->s_ray, MAX_DISTANCE);
+		if (s_rays->s_ray.length < MAX_DISTANCE)
+			s_color_ray = get_color_pixel(s_thread_data, s_rays);
+		else
+			s_color_ray = (t_rgb){0,0,0};
 		if (count_rays == 0)
 			s_color_res = rgb_average(&s_color_ray, &s_color_res, 0);
 		else

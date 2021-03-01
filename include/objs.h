@@ -43,6 +43,9 @@ typedef	struct	s_triangle {
 	t_vec	*s_vec_origin_1;
 	t_vec	*s_vec_origin_2;
 	t_vec	*s_vec_origin_3;
+	t_vec	*s_vec_edge_1;
+	t_vec	*s_vec_edge_2;
+	t_vec	*s_vec_dir;
 	t_rgb	*s_color;
 }				t_triangle;
 
