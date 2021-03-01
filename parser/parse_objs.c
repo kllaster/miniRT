@@ -22,7 +22,7 @@ void	parse_plane(char *str, t_stage *s_stage)
 {
 	t_plane	*s_plane;
 
-	if ((s_plane = malloc(sizeof(t_sphere))) == NULL)
+	if ((s_plane = malloc(sizeof(t_plane))) == NULL)
 		error_end("Ошибка выделения памяти parse_plane", MALLOC_ERROR);
 	skip_between_param(&str, 0);
 	s_plane->s_vec_origin = parse_coordinates(&str);

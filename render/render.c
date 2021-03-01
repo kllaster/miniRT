@@ -1,6 +1,6 @@
 #include "mini_rt.h"
 
-int 		check_inter_obj(t_ray *s_ray, float distance)
+void 		check_inter_obj(t_ray *s_ray)
 {
 	if (s_ray->last_inter_type & (unsigned)OBJ_SPHERE)
 		inter_sphere(s_ray->last_inter_obj, s_ray);
@@ -10,11 +10,8 @@ int 		check_inter_obj(t_ray *s_ray, float distance)
 //		inter_square(s_ray->last_inter_obj);
 //	else if (s_ray->last_inter_type & (unsigned)OBJ_CYLINDER)
 //		inter_cylinder(s_ray->last_inter_obj);
-//	else if (s_ray->last_inter_type & (unsigned)OBJ_TRIANGLE)
-//		inter_triangle(s_ray->last_inter_obj);
-	if (s_ray->length < distance)
-		return (1);
-	return (0);
+	else if (s_ray->last_inter_type & (unsigned)OBJ_TRIANGLE)
+		inter_triangle(s_ray->last_inter_obj, s_ray);
 }
 
 void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray, float distance)
@@ -23,7 +20,7 @@ void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray, float distanc
 
 	s_ray->length = distance;
 	if (s_ray->last_inter_obj)
-		check_inter_obj(s_ray, distance);
+		check_inter_obj(s_ray);
 	s_list_obj = s_thread_data->s_list_objs;
 	while (s_list_obj)
 	{
@@ -35,8 +32,8 @@ void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray, float distanc
 //			inter_square(s_list_obj->content);
 //		else if (s_list_obj->type & (unsigned)OBJ_CYLINDER)
 //			inter_cylinder(s_list_obj->content);
-//		else if (s_list_obj->type & (unsigned)OBJ_TRIANGLE)
-//			inter_triangle(s_list_obj->content);
+		else if (s_list_obj->type & (unsigned)OBJ_TRIANGLE)
+			inter_triangle(s_list_obj->content, s_ray);
 		s_list_obj = s_list_obj->next;
 	}
 	if (s_ray->length < distance)

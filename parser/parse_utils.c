@@ -72,7 +72,7 @@ t_rgb			*parse_rgb(char **str)
 
 t_vec	*parse_coordinates(char **str)
 {
-	t_vec *s_vec;
+	t_vec	*s_vec;
 
 	if ((s_vec = malloc(sizeof(t_vec))) == NULL)
 		error_end("Ошибка выделения памяти parse_coordinates", MALLOC_ERROR);

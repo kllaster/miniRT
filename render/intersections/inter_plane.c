@@ -6,11 +6,11 @@ void 	inter_plane(t_plane *s_plane, t_ray *s_ray)
 	t_ray	s_ray_inter;
 
 	x = vec_scalar_mul(&s_ray->s_vec_start_dir, s_plane->s_vec_dir);
-	if (ft_fabs(x) <= 0.0001)
+	if (ft_fabs(x) <= EPSILON)
 		return ;
 	s_ray_inter.s_vec_inter = vec_sub(s_plane->s_vec_origin, &s_ray->s_vec_start);
 	x = vec_scalar_mul(&s_ray_inter.s_vec_inter, s_plane->s_vec_dir) / x;
-	if (x <= 0.0001 || s_ray->length <= x)
+	if (x <= EPSILON || s_ray->length <= x)
 		return ;
 	s_ray_inter = *s_ray;
 	s_ray_inter.length = x;

@@ -6,6 +6,8 @@
 # define	SPEED_MOVE		5
 # define	ANGEL_ROTATION	3
 
+# define	EPSILON			0.001
+
 # include "../minilibx/mlx.h"
 # include <pthread.h>
 # include <stdlib.h>

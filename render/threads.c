@@ -9,7 +9,7 @@ void 	create_threads_data(t_rt *s_rt)
 	i = -1;
 	while (++i < COUNT_THREADS)
 	{
-		ft_memcpy(&s_rt->s_thread_data[i], &s_rt->s_stage, sizeof(t_stage) - sizeof(t_list*));
+		ft_memcpy(&s_rt->s_thread_data[i], &s_rt->s_stage, sizeof(t_stage) - sizeof(t_list *));
 		s_rt->s_thread_data[i].s_main_camera = s_rt->s_stage.s_main_camera;
 		ft_list_cpy(&s_rt->s_thread_data[i].s_list_lights, s_rt->s_stage.s_list_lights, light_cpy);
 		ft_list_obj_cpy(&s_rt->s_thread_data[i].s_list_objs, s_rt->s_stage.s_list_objs);

@@ -7,8 +7,8 @@ int		vec_check_unzero(t_vec *s_vec)
 
 float	vec_len(t_vec *s_vec)
 {
-	return (float)(sqrt((double)(s_vec->x * s_vec->x + s_vec->y * s_vec->y +
-									s_vec->z * s_vec->z)));
+	return (sqrtf(s_vec->x * s_vec->x + s_vec->y * s_vec->y +
+									s_vec->z * s_vec->z));
 }
 
 t_vec	vec_norm(t_vec *s_vec)

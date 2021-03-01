@@ -1,7 +1,7 @@
 NAME		= miniRT
 CC			= gcc
 DEBUG		= 0
-ifeq (DEBUG, 1)
+ifeq ($(DEBUG), 1)
 	DEBUG_FLAGS	= -fsanitize=address -g
 endif
 CFLAGS		= -Wall -Wextra -Werror $(DEBUG_FLAGS) -D COUNT_THREADS=$(COUNT_THREADS)
@@ -27,8 +27,9 @@ SRCS =	src/main.c\
 		render/threads.c\
 		render/init_render.c\
 		render/render_utils.c\
-		render/intersections/inter_sphere.c\
 		render/intersections/inter_plane.c\
+		render/intersections/inter_sphere.c\
+		render/intersections/inter_triangle.c\
 
 OBJS = ${SRCS:.c=.o}
 

@@ -86,13 +86,13 @@ int		key_press(int keycode, t_rt *s_rt)
 	else if (keycode == KEY_E)
 		s_rt->new_dir = (t_vec){-ANGEL_ROTATION * (float)0.01, 0, 0};
 	else if (keycode == KEY_UP)
-		s_rt->new_dir = (t_vec){0, ANGEL_ROTATION * (float)0.01, 0};
-	else if (keycode == KEY_DOWN)
 		s_rt->new_dir = (t_vec){0, -ANGEL_ROTATION * (float)0.01, 0};
+	else if (keycode == KEY_DOWN)
+		s_rt->new_dir = (t_vec){0, ANGEL_ROTATION * (float)0.01, 0};
 	else if (keycode == KEY_RIGHT)
-		s_rt->new_dir = (t_vec){0, 0, ANGEL_ROTATION * (float)0.01};
+		s_rt->new_dir = (t_vec){0, 0, ANGEL_ROTATION * (float)0.05};
 	else if (keycode == KEY_LEFT)
-		s_rt->new_dir = (t_vec){0, 0, -ANGEL_ROTATION * (float)0.01};
+		s_rt->new_dir = (t_vec){0, 0, -ANGEL_ROTATION * (float)0.05};
 	else if (keycode == KEY_SPACE)
 	{
 		get_another_camera(s_rt);

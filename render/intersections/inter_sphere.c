@@ -14,8 +14,8 @@ void 	inter_sphere(t_sphere *s_sphere, t_ray *s_ray)
 	d_x = b * b - (4 * c);
 	if (d_x < 0)
 		return ;
-	d_x = (float)((-b - sqrt((double)d_x)) * 0.5);
-	if (d_x >= 0.0001 && d_x < s_ray->length)
+	d_x = (float)((-b - sqrtf(d_x)) * 0.5);
+	if (d_x > EPSILON && d_x < s_ray->length)
 	{
 		s_ray_inter = *s_ray;
 		s_ray_inter.length = d_x;
