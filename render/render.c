@@ -6,10 +6,10 @@ void		check_inter_obj(t_ray *s_ray)
 		inter_sphere(s_ray->last_inter_obj, s_ray);
 	else if (s_ray->last_inter_type & (unsigned)OBJ_PLANE)
 		inter_plane(s_ray->last_inter_obj, s_ray);
-//	else if (s_ray->last_inter_type & (unsigned)OBJ_SQUARE)
-//		inter_square(s_ray->last_inter_obj);
+	// else if (s_ray->last_inter_type & (unsigned)OBJ_SQUARE)
+	// 	inter_square(s_ray->last_inter_obj, s_ray);
 //	else if (s_ray->last_inter_type & (unsigned)OBJ_CYLINDER)
-//		inter_cylinder(s_ray->last_inter_obj);
+//		inter_cylinder(s_ray->last_inter_obj, s_ray);
 	else if (s_ray->last_inter_type & (unsigned)OBJ_TRIANGLE)
 		inter_triangle(s_ray->last_inter_obj, s_ray);
 }
@@ -28,8 +28,8 @@ void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray, float distanc
 			inter_sphere(s_list_obj->content, s_ray);
 		else if (s_list_obj->type & (unsigned)OBJ_PLANE)
 			inter_plane(s_list_obj->content, s_ray);
-//		else if (s_list_obj->type & (unsigned)OBJ_SQUARE)
-//			inter_square(s_list_obj->content, s_ray);
+		// else if (s_list_obj->type & (unsigned)OBJ_SQUARE)
+		// 	inter_square(s_list_obj->content, s_ray);
 //		else if (s_list_obj->type & (unsigned)OBJ_CYLINDER)
 //			inter_cylinder(s_list_obj->content, s_ray);
 		else if (s_list_obj->type & (unsigned)OBJ_TRIANGLE)
@@ -112,7 +112,6 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y, t_rays *s_rays)
 		s_rays->s_ray.s_vec_start_dir = vec_sub(&s_rays->s_ray.s_vec_start_dir,
 										  s_thread_data->s_main_camera->s_vec_origin);
 		s_rays->s_ray.s_vec_start_dir = vec_norm(&s_rays->s_ray.s_vec_start_dir);
-
 		check_inter_objs(s_thread_data, &s_rays->s_ray, MAX_DISTANCE);
 		if (s_rays->s_ray.length < MAX_DISTANCE)
 			s_color_ray = get_color_pixel(s_thread_data, s_rays);
@@ -122,7 +121,7 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y, t_rays *s_rays)
 			s_color_res = rgb_average(&s_color_ray, &s_color_res, 0);
 		else
 			s_color_res = rgb_average(&s_color_ray, &s_color_res, 1);
-		count_rays++;
+		++count_rays;
 	}
 	return (rgb_get_int(&s_color_res));
 }
@@ -147,9 +146,9 @@ void		*render(void *data)
 			color_pixel = anti_aliasing(s_thread_data, x, y, &s_rays);
 			my_mlx_pixel_put(&s_thread_data->s_main_camera->s_mlx_img,
 							 								x, y, color_pixel);
-			y++;
+			++y;
 		}
-		x++;
+		++x;
 	}
 	return ((void *)"Ready");
 }

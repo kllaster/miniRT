@@ -27,12 +27,17 @@ int		start_render(t_rt *s_rt)
 
 	i = -1;
 	s_rt->render_now = 1;
-	while (++i < COUNT_THREADS)
-		if (pthread_create(&s_rt->threads[i], NULL, render, &(s_rt->s_thread_data[i])) != 0)
-			error_end("Ошибка при создании потока create_threads", THREAD_ERROR);
-	i =	-1;
-	while (++i < COUNT_THREADS)
-		pthread_join(s_rt->threads[i], NULL);
+	if (COUNT_THREADS > 1)
+	{
+		while (++i < COUNT_THREADS)
+			if (pthread_create(&s_rt->threads[i], NULL, render, &(s_rt->s_thread_data[i])) != 0)
+				error_end("Ошибка при создании потока create_threads", THREAD_ERROR);
+		i =	-1;
+		while (++i < COUNT_THREADS)
+			pthread_join(s_rt->threads[i], NULL);
+	}
+	else
+		render(&s_rt->s_thread_data[0]);
 	s_rt->s_stage.s_main_camera->render_ready = 1;
 	s_rt->render_now = 0;
 	return (0);

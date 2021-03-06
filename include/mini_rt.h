@@ -1,12 +1,12 @@
 #ifndef MINI_RT_H
 # define MINI_RT_H
 
-# define	MAX_FPS			30
-# define	MAX_DISTANCE	100000
-# define	MIN_DISTANCE	0.0008
-# define	ANTI_ALIASING	1
-# define	SPEED_MOVE		5
-# define	ANGEL_ROTATION	3
+# define MAX_FPS		30
+# define MAX_DISTANCE	100000
+# define MIN_DISTANCE	0.0004
+# define ANTI_ALIASING	1
+# define SPEED_MOVE		5
+# define ANGEL_ROTATION	3
 
 # include "../minilibx/mlx.h"
 # include <pthread.h>

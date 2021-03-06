@@ -12,6 +12,7 @@ HEADER		= include
 SRCS =	src/main.c\
 		src/utils.c\
 		src/hooks.c\
+		src/hooks_utils.c\
 		src/colors_utils.c\
 		src/matrix_utils.c\
 		src/vectors_utils.c\
@@ -35,10 +36,14 @@ OBJS = ${SRCS:.c=.o}
 
 UNAME := $(shell uname)
 
-ifeq ($(UNAME),Darwin)
+ifeq ($(UNAME), Darwin)
 	COUNT_THREADS = $(shell sysctl -n hw.ncpu)
 else
-	COUNT_THREADS = 4
+	COUNT_THREADS = 1
+endif
+
+ifeq ($(COUNT_THREADS), 0)
+	COUNT_THREADS = 1
 endif
 
 all:			$(NAME)
@@ -63,5 +68,5 @@ re:				fclean all
 re_rt:			clean all
 
 .DEFAULT_GOAL:	${NAME}
-.PHONY:			all clean fclean
+.PHONY:			${NAME} all clean fclean re re_rt
 .SILENT:

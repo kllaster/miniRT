@@ -40,7 +40,7 @@ void	get_another_camera(t_rt *s_rt)
 		if (((t_camera *)s_list_cameras->content)->count < i)
 		{
 			s_rt->s_stage.s_main_camera = s_list_cameras->content;
-			s_rt->s_stage.s_main_camera->count++;
+			++s_rt->s_stage.s_main_camera->count;
 			if (s_rt->s_stage.s_main_camera->init == 0)
 				init_camera(s_rt, s_rt->s_stage.s_main_camera);
 			return ;
@@ -48,7 +48,7 @@ void	get_another_camera(t_rt *s_rt)
 		s_list_cameras = s_list_cameras->next;
 	}
 	s_rt->s_stage.s_main_camera = s_rt->s_stage.s_list_cameras->content;
-	s_rt->s_stage.s_main_camera->count++;
+	++s_rt->s_stage.s_main_camera->count;
 }
 
 void	check_user_window(t_rt *s_rt)

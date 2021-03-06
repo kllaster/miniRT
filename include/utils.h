@@ -3,18 +3,18 @@
 
 # include "mini_rt.h"
 
-enum e_errors {
-	MALLOC_ERROR	= 1,
-	PARSE_ERROR		= 2,
-	MLX_ERROR		= 3,
-	THREAD_ERROR	= 4,
+enum	e_errors {
+	MALLOC_ERROR = 1,
+	PARSE_ERROR = 2,
+	MLX_ERROR = 3,
+	THREAD_ERROR = 4,
 };
 
 typedef struct		s_list_objs
 {
-	unsigned char 		type;
 	void				*content;
 	struct s_list_objs	*next;
+	unsigned char		type;
 }					t_list_objs;
 
 typedef struct		s_list
@@ -24,6 +24,7 @@ typedef struct		s_list
 }					t_list;
 
 void				error_end(char *str_error, int exit_code);
+float				ft_fabs(float num);
 int					ft_numlen(int num);
 long long int		time_unix_ms();
 int					ft_strequal_end(char *str, char *end);

@@ -3,29 +3,35 @@
 void	check_next_arg(char **str)
 {
 	if (**str == ',')
-		(*str)++;
+		++(*str);
 	else
 	{
 		skip_between_param(str, ',');
 		if (**str == ',')
-			(*str)++;
+			++(*str);
 		else
+		{
+			printf("\n ---> \"%s\"", *str);
 			error_end("Ошибка в проверке на след. аргумент", PARSE_ERROR);
+		}
 	}
 }
 
 void	skip_between_param(char **str, char symb)
 {
-	(*str)++;
+	++(*str);
 	while (**str)
 	{
 		if (*(*str) == '\t' || *(*str) == ' ')
-			(*str)++;
+			++(*str);
 		else if ((*(*str) >= '0' && *(*str) <= '9') ||
 			*(*str) == '-' || *(*str) == '+' || *(*str) == symb)
 			return ;
 		else
+		{
+			printf("\n ---> \"%s\"", *str);
 			error_end("Ошибка в проверке на след. параметр", PARSE_ERROR);
+		}
 	}
 }
 

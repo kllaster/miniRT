@@ -1,12 +1,12 @@
 #ifndef MAIN_STRUCT_H
 # define MAIN_STRUCT_H
 
-typedef struct  s_mlx_img {
+typedef struct	s_mlx_img {
 	void			*img_ptr;
-	char			*addr;
 	int				bits_per_pixel;
 	int				line_length;
 	int				endian;
+	char			*addr;
 }				t_mlx_img;
 
 typedef	struct	s_aa_sample {
@@ -22,9 +22,9 @@ typedef	struct	s_vscreen {
 typedef	struct	s_camera {
 	t_matrix		s_matrix_rotate;
 	t_vscreen		s_vscreen;
-	t_vec			*s_vec_dir;
-	t_vec			*s_vec_origin;
 	t_mlx_img		s_mlx_img;
+	t_vec			*s_vec_origin;
+	t_vec			*s_vec_dir;
 	int				render_ready;
 	int				fov;
 	int				count;
@@ -32,14 +32,14 @@ typedef	struct	s_camera {
 }				t_camera;
 
 typedef	struct	s_light {
-	float			brightness;
 	t_vec			*s_vec_origin;
 	t_rgb			*s_color;
+	float			brightness;
 }				t_light;
 
 typedef	struct	s_ambient_light {
-	float			brightness;
 	t_rgb			*s_color;
+	float			brightness;
 }				t_ambient_light;
 
 typedef	struct	s_screen {
@@ -64,8 +64,8 @@ typedef	struct	s_thread_data {
 	t_camera		*s_main_camera;
 	t_list			*s_list_lights;
 	t_list_objs		*s_list_objs;
-	int 			start_x;
-	int 			end_x;
+	int				start_x;
+	int				end_x;
 }				t_thread_data;
 
 typedef	struct	s_rt {
@@ -73,11 +73,12 @@ typedef	struct	s_rt {
 	t_thread_data	s_thread_data[COUNT_THREADS];
 	pthread_t		threads[COUNT_THREADS];
 	t_vec			new_dir;
+	void			*mlx_window;
+	void			*mlx_p;
+	int				change_cam;
 	int				x_move;
 	int				y_move;
 	int				z_move;
-	void			*mlx_window;
-	void			*mlx_p;
 	int				render_now;
 }				t_rt;
 

@@ -16,12 +16,14 @@ t_vec	vec_norm(t_vec *s_vec)
 	t_vec	s_vec_norm;
 	float	len;
 
-	len = vec_len(s_vec);
+	len = sqrtf(s_vec->x * s_vec->x + s_vec->y * s_vec->y +
+									s_vec->z * s_vec->z);
 	if (len != 1 && len != 0)
 	{
-		s_vec_norm.x = s_vec->x / len;
-		s_vec_norm.y = s_vec->y / len;
-		s_vec_norm.z = s_vec->z / len;
+		len = 1 / len;
+		s_vec_norm.x = s_vec->x * len;
+		s_vec_norm.y = s_vec->y * len;
+		s_vec_norm.z = s_vec->z * len;
 		return (s_vec_norm);
 	}
 	return (*s_vec);

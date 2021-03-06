@@ -1,11 +1,18 @@
 #include "mini_rt.h"
 
-long long int	time_unix_ms()
+long long int	time_unix_ms(void)
 {
 	struct timeval	s_time;
 
 	gettimeofday(&s_time, NULL);
-	return (s_time.tv_sec * 1000 + (s_time.tv_usec / 1000));
+	return (s_time.tv_sec * 1000 + (int)(s_time.tv_usec * 0.001));
+}
+
+float		ft_fabs(float num)
+{
+	if (num < 0)
+		return (-num);
+	return (num);
 }
 
 int			ft_numlen(int num)
@@ -15,8 +22,8 @@ int			ft_numlen(int num)
 	if (!num)
 		return (1);
 	i = 1;
-	while (num /= 10)
-		i++;
+	while ((num = (int)(num * 0.1)))
+		++i;
 	return (i);
 }
 
@@ -49,7 +56,7 @@ void		ft_bzero(void *s, size_t n)
 	while (++i < n)
 	{
 		*((char *)s) = 0;
-		s++;
+		++s;
 	}
 }
 
@@ -63,7 +70,7 @@ int			ft_atoi_pos(char **str)
 	while (*(*str) == '\t' || *(*str) == '\v'
 			|| *(*str) == '\f' || *(*str) == '\r'
 			|| *(*str) == ' ')
-		(*str)++;
+		++(*str);
 	if (*(*str) == '-' || *(*str) == '+')
 		sign = (*(*str)++ == '-') ? -1 : 1;
 	if (*(*str) >= '0' && *(*str) <= '9')
@@ -87,15 +94,15 @@ float		ft_atoi_pos_mantissa(char **str)
 
 	res = 0;
 	while (*(*str) == '\t' || *(*str) == '\v'
-		   || *(*str) == '\f' || *(*str) == '\r'
-		   || *(*str) == ' ')
-		(*str)++;
+			|| *(*str) == '\f' || *(*str) == '\r'
+			|| *(*str) == ' ')
+		++(*str);
 	if (*(*str) >= '0' && *(*str) <= '9')
 	{
 		len = 0;
 		while (*(*str) >= '0' && *(*str) <= '9')
 		{
-			len++;
+			++len;
 			res += powf((float)0.1, len) * (float)(*(*str)++ - '0');
 		}
 	}
@@ -113,8 +120,8 @@ void		*ft_memcpy(void *dest, const void *source, size_t count)
 	if (dest == source)
 		return (dest);
 	i = -1;
-	p1 = (unsigned char *) dest;
-	p2 = (unsigned char *) source;
+	p1 = (unsigned char *)dest;
+	p2 = (unsigned char *)source;
 	while (++i != count)
 		p1[i] = p2[i];
 	return (dest);
@@ -157,7 +164,8 @@ void		ft_list_add_back(t_list **s_list_src, t_list *s_list_new)
 	s_list_last->next = s_list_new;
 }
 
-void		ft_list_cpy(t_list **s_list_dest, t_list *s_list_src, void *(*f_content_cpy)(void *))
+void		ft_list_cpy(t_list **s_list_dest, t_list *s_list_src,
+							void *(*f_content_cpy)(void *))
 {
 	t_list		*s_list_new;
 
@@ -187,14 +195,14 @@ t_list_objs	*ft_list_obj_new(void *content, unsigned char type)
 
 	if (!(s_list_obj = (t_list_objs *)malloc(sizeof(t_list_objs))))
 		return (NULL);
-	s_list_obj->type = OBJ_NONE;
-	s_list_obj->type |= type;
+	s_list_obj->type = type;
 	s_list_obj->content = content;
 	s_list_obj->next = NULL;
 	return (s_list_obj);
 }
 
-void		ft_list_obj_add_front(t_list_objs **s_list_src, t_list_objs *s_list_new)
+void		ft_list_obj_add_front(t_list_objs **s_list_src,
+									t_list_objs *s_list_new)
 {
 	if (!(*s_list_src))
 	{
@@ -205,7 +213,8 @@ void		ft_list_obj_add_front(t_list_objs **s_list_src, t_list_objs *s_list_new)
 	*s_list_src = s_list_new;
 }
 
-void		ft_list_obj_add_back(t_list_objs **s_list_src, t_list_objs *s_list_new)
+void		ft_list_obj_add_back(t_list_objs **s_list_src,
+									t_list_objs *s_list_new)
 {
 	t_list_objs *last;
 
@@ -232,12 +241,16 @@ void		ft_list_obj_cpy(t_list_objs **s_list_dest, t_list_objs *s_list_src)
 	{
 		if (*s_list_dest)
 		{
-			s_list_new->next = ft_list_obj_new(obj_cpy(s_list_src->content, s_list_src->type), s_list_src->type);
+			s_list_new->next = ft_list_obj_new(obj_cpy(s_list_src->content,
+														s_list_src->type),
+												s_list_src->type);
 			s_list_new = s_list_new->next;
 		}
 		else
 		{
-			s_list_new = ft_list_obj_new(obj_cpy(s_list_src->content, s_list_src->type), s_list_src->type);
+			s_list_new = ft_list_obj_new(obj_cpy(s_list_src->content,
+													s_list_src->type),
+											s_list_src->type);
 			*s_list_dest = s_list_new;
 		}
 		s_list_src = s_list_src->next;
@@ -249,7 +262,7 @@ void		putstr_fd(int fd, char *str)
 	while (*str)
 	{
 		write(fd, str, 1);
-		str++;
+		++str;
 	}
 }
 
