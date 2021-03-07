@@ -5,7 +5,7 @@ ifeq ($(DEBUG), 1)
 	DEBUG_FLAGS	= -fsanitize=address -g
 endif
 CFLAGS		= -Wall -Wextra -Werror $(DEBUG_FLAGS) -D COUNT_THREADS=$(COUNT_THREADS)
-CPPFLAGS	= $(CFLAGS) -msse3 -O2 -pipe
+CPPFLAGS	= $(CFLAGS) -march=native -O2 -msse4a -flto -pipe
 RM			= rm -f
 HEADER		= include
 
@@ -16,7 +16,6 @@ SRCS =	src/main.c\
 		src/colors_utils.c\
 		src/matrix_utils.c\
 		src/vectors_utils.c\
-		src/cpy_objs.c\
 		parser/debug_window.c\
 		parser/debug_struct.c\
 		parser/get_next_line.c\
@@ -30,9 +29,10 @@ SRCS =	src/main.c\
 		render/render_utils.c\
 		render/intersections/inter_plane.c\
 		render/intersections/inter_sphere.c\
+		render/intersections/inter_square.c\
 		render/intersections/inter_triangle.c\
 
-OBJS = ${SRCS:.c=.o}
+OBJS = $(SRCS:.c=.o)
 
 UNAME := $(shell uname)
 
@@ -48,25 +48,25 @@ endif
 
 all:			$(NAME)
 
-%.o: %.c
-				$(CC) $(CPPFLAGS) -I $(HEADER) -o $@ -c $<
-
-${NAME}:		${OBJS}
-				cd minilibx && ${MAKE} && mv libmlx.dylib ../libmlx.dylib
+$(NAME):		$(OBJS)
+				cd minilibx && $(MAKE) && mv libmlx.dylib ../libmlx.dylib
 				$(CC) $(CPPFLAGS) -I $(HEADER) $(OBJS) libmlx.dylib -o $(NAME)
 
+.c.o:
+				$(CC) $(CPPFLAGS) -I $(HEADER) -o $@ -c $<
+
 clean:
-				${RM} ${OBJS}
+				$(RM) $(OBJS)
 
 fclean:			clean
-				cd minilibx && ${MAKE} clean
-				${RM} libmlx.dylib
-				${RM} ${NAME}
+				cd minilibx && $(MAKE) clean
+				$(RM) libmlx.dylib
+				$(RM) $(NAME)
 
 re:				fclean all
 
 re_rt:			clean all
 
-.DEFAULT_GOAL:	${NAME}
-.PHONY:			${NAME} all clean fclean re re_rt
+.DEFAULT_GOAL:	$(NAME)
+.PHONY:			$(NAME) all clean fclean re re_rt
 .SILENT:

@@ -63,8 +63,6 @@ void	parse_cylinder(char *str, t_stage *s_stage)
 	skip_between_param(&str, 0);
 	s_cylinder->s_vec_dir = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	s_cylinder->s_color = parse_rgb(&str);
-	skip_between_param(&str, 0);
 	s_cylinder->diameter = parse_float(&str);
 	if (s_cylinder->diameter <= 0.0)
 		error_end("Неверный диаметр цилиндра", PARSE_ERROR);
@@ -72,6 +70,8 @@ void	parse_cylinder(char *str, t_stage *s_stage)
 	s_cylinder->height = parse_float(&str);
 	if (s_cylinder->height <= 0.0)
 		error_end("Неверная высота цилиндра", PARSE_ERROR);
+	skip_between_param(&str, 0);
+	s_cylinder->s_color = parse_rgb(&str);
 	ft_list_obj_add_front(&(s_stage->s_list_objs), ft_list_obj_new(s_cylinder, OBJ_CYLINDER));
 }
 
@@ -89,16 +89,10 @@ void	parse_triangle(char *str, t_stage *s_stage)
 	s_triangle->s_vec_origin_3 = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_triangle->s_color = parse_rgb(&str);
-	if ((s_triangle->s_vec_edge_1 = malloc(sizeof(t_vec))) == NULL)
-		error_end("Ошибка выделения памяти parse_triangle", MALLOC_ERROR);
-	*s_triangle->s_vec_edge_1 = vec_sub(s_triangle->s_vec_origin_2, s_triangle->s_vec_origin_1);
-	if ((s_triangle->s_vec_edge_2 = malloc(sizeof(t_vec))) == NULL)
-		error_end("Ошибка выделения памяти parse_triangle", MALLOC_ERROR);
-	*s_triangle->s_vec_edge_2 = vec_sub(s_triangle->s_vec_origin_3, s_triangle->s_vec_origin_1);
-	if ((s_triangle->s_vec_dir = malloc(sizeof(t_vec))) == NULL)
-		error_end("Ошибка выделения памяти parse_triangle", MALLOC_ERROR);
-	*s_triangle->s_vec_dir = vec_cross_product(s_triangle->s_vec_edge_1, s_triangle->s_vec_edge_2);
-	*s_triangle->s_vec_dir = vec_norm(s_triangle->s_vec_dir);
+	s_triangle->s_vec_edge_1 = vec_sub(&s_triangle->s_vec_origin_2, &s_triangle->s_vec_origin_1);
+	s_triangle->s_vec_edge_2 = vec_sub(&s_triangle->s_vec_origin_3, &s_triangle->s_vec_origin_1);
+	s_triangle->s_vec_dir = vec_cross_product(&s_triangle->s_vec_edge_1, &s_triangle->s_vec_edge_2);
+	s_triangle->s_vec_dir = vec_norm(&s_triangle->s_vec_dir);
 	ft_list_obj_add_front(&(s_stage->s_list_objs), ft_list_obj_new(s_triangle, OBJ_TRIANGLE));
 }
 

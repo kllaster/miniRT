@@ -229,34 +229,6 @@ void		ft_list_obj_add_back(t_list_objs **s_list_src,
 	last->next = s_list_new;
 }
 
-void		ft_list_obj_cpy(t_list_objs **s_list_dest, t_list_objs *s_list_src)
-{
-	t_list_objs	*s_list_new;
-
-	if (!s_list_src)
-		return ;
-	*s_list_dest = NULL;
-	s_list_new = NULL;
-	while (s_list_src)
-	{
-		if (*s_list_dest)
-		{
-			s_list_new->next = ft_list_obj_new(obj_cpy(s_list_src->content,
-														s_list_src->type),
-												s_list_src->type);
-			s_list_new = s_list_new->next;
-		}
-		else
-		{
-			s_list_new = ft_list_obj_new(obj_cpy(s_list_src->content,
-													s_list_src->type),
-											s_list_src->type);
-			*s_list_dest = s_list_new;
-		}
-		s_list_src = s_list_src->next;
-	}
-}
-
 void		putstr_fd(int fd, char *str)
 {
 	while (*str)

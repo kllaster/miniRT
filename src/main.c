@@ -12,8 +12,8 @@ int	main(int argc, char *argv[])
 		error_end("Не задано окно", PARSE_ERROR);
 	if (!s_rt.s_stage.s_list_cameras)
 		error_end("Не задана ни одна камера", PARSE_ERROR);
-	if (!s_rt.s_stage.s_ambient_light.s_color)
-		error_end("Не задан глобальный свет", PARSE_ERROR);
+	// if (!s_rt.s_stage.s_ambient_light.s_color)
+	// 	error_end("Не задан глобальный свет", PARSE_ERROR);
 	if (!s_rt.s_stage.s_list_objs)
 		error_end("Не задан ни один объект", PARSE_ERROR);
 	init_render(&s_rt);

@@ -1,6 +1,9 @@
 #ifndef HOOKS_H
 # define HOOKS_H
 
+# include "mini_rt.h"
+# define TIME2HOOK (1000 / MAX_FPS)
+
 enum	e_keys {
 	KEY_ESC = 53,
 	KEY_SPACE = 49,

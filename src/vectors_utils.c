@@ -1,17 +1,17 @@
 #include "mini_rt.h"
 
-int		vec_check_unzero(t_vec *s_vec)
+int		vec_check_unzero(const t_vec *s_vec)
 {
 	return (s_vec->x || s_vec->y || s_vec->z);
 }
 
-float	vec_len(t_vec *s_vec)
+float	vec_len(const t_vec *s_vec)
 {
 	return (sqrtf(s_vec->x * s_vec->x + s_vec->y * s_vec->y +
 									s_vec->z * s_vec->z));
 }
 
-t_vec	vec_norm(t_vec *s_vec)
+t_vec	vec_norm(const t_vec *s_vec)
 {
 	t_vec	s_vec_norm;
 	float	len;
@@ -29,7 +29,7 @@ t_vec	vec_norm(t_vec *s_vec)
 	return (*s_vec);
 }
 
-t_vec	vec_sum(t_vec *s_vec_1, t_vec *s_vec_2)
+t_vec	vec_sum(const t_vec *s_vec_1, const t_vec *s_vec_2)
 {
 	t_vec	s_vec_sub;
 
@@ -39,7 +39,7 @@ t_vec	vec_sum(t_vec *s_vec_1, t_vec *s_vec_2)
 	return (s_vec_sub);
 }
 
-t_vec	vec_sub(t_vec *s_vec_1, t_vec *s_vec_2)
+t_vec	vec_sub(const t_vec *s_vec_1, const t_vec *s_vec_2)
 {
 	t_vec	s_vec_sub;
 
@@ -49,7 +49,7 @@ t_vec	vec_sub(t_vec *s_vec_1, t_vec *s_vec_2)
 	return (s_vec_sub);
 }
 
-t_vec	vec_mul(t_vec *s_vec, float num)
+t_vec	vec_mul(const t_vec *s_vec, float num)
 {
 	t_vec	s_vec_mul;
 
@@ -59,7 +59,7 @@ t_vec	vec_mul(t_vec *s_vec, float num)
 	return (s_vec_mul);
 }
 
-t_vec	vec_cross_product(t_vec *s_vec_1, t_vec *s_vec_2)
+t_vec	vec_cross_product(const t_vec *s_vec_1, const t_vec *s_vec_2)
 {
 	t_vec	s_vec;
 
@@ -69,7 +69,7 @@ t_vec	vec_cross_product(t_vec *s_vec_1, t_vec *s_vec_2)
 	return (s_vec);
 }
 
-float	vec_scalar_mul(t_vec *s_vec_1, t_vec *s_vec_2)
+float	vec_scalar_mul(const t_vec *s_vec_1, const t_vec *s_vec_2)
 {
 	return (s_vec_1->x * s_vec_2->x + s_vec_1->y * s_vec_2->y +
 											s_vec_1->z * s_vec_2->z);

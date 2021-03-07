@@ -1,19 +1,19 @@
 #include "mini_rt.h"
 
-void	debug_print_s_vec(t_vec *s_vec, char *s_name)
+void	debug_print_s_vec(t_vec s_vec, char *s_name)
 {
 	printf("——— t_vec	%s:\n", s_name);
-	printf("—————— float	x: %f\n", s_vec->x);
-	printf("—————— float	y: %f\n", s_vec->y);
-	printf("—————— float	z: %f\n", s_vec->z);
+	printf("—————— float	x: %f\n", s_vec.x);
+	printf("—————— float	y: %f\n", s_vec.y);
+	printf("—————— float	z: %f\n", s_vec.z);
 }
 
-void	debug_print_s_color(t_rgb *s_color)
+void	debug_print_s_color(t_rgb s_color)
 {
 	printf("——— t_rgb	s_color:\n");
-	printf("—————— int	red: %d\n", s_color->red);
-	printf("—————— int	green: %d\n", s_color->green);
-	printf("—————— int	blue: %d\n", s_color->blue);
+	printf("—————— int	red: %d\n", s_color.red);
+	printf("—————— int	green: %d\n", s_color.green);
+	printf("—————— int	blue: %d\n", s_color.blue);
 }
 
 void	debug_print_s_camera(t_camera *s_camera)
@@ -27,7 +27,6 @@ void	debug_print_s_camera(t_camera *s_camera)
 void	debug_print_s_lights(t_light *s_light)
 {
 	printf("\n——— t_light	s_light:\n");
-	printf("——— float	brightness: %f\n", s_light->brightness);
 	debug_print_s_color(s_light->s_color);
 	debug_print_s_vec(s_light->s_vec_origin, "s_vec_origin");
 }
@@ -89,7 +88,6 @@ void	debug_print_s_stage(t_stage *s_stage)
 	printf("——— int	height: %d\n", s_stage->s_screen.height);
 	printf("——— int	width: %d\n\n", s_stage->s_screen.width);
 	printf("— t_ambient_light	s_ambient_light:\n");
-	printf("——— float	brightness: %f\n", s_stage->s_ambient_light.brightness);
 	debug_print_s_color(s_stage->s_ambient_light.s_color);
 	s_list = s_stage->s_list_cameras;
 	while (s_list)

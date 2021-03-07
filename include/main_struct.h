@@ -23,8 +23,8 @@ typedef	struct	s_camera {
 	t_matrix		s_matrix_rotate;
 	t_vscreen		s_vscreen;
 	t_mlx_img		s_mlx_img;
-	t_vec			*s_vec_origin;
-	t_vec			*s_vec_dir;
+	t_vec			s_vec_origin;
+	t_vec			s_vec_dir;
 	int				render_ready;
 	int				fov;
 	int				count;
@@ -32,14 +32,12 @@ typedef	struct	s_camera {
 }				t_camera;
 
 typedef	struct	s_light {
-	t_vec			*s_vec_origin;
-	t_rgb			*s_color;
-	float			brightness;
+	t_vec			s_vec_origin;
+	t_rgb			s_color;
 }				t_light;
 
 typedef	struct	s_ambient_light {
-	t_rgb			*s_color;
-	float			brightness;
+	t_rgb			s_color;
 }				t_ambient_light;
 
 typedef	struct	s_screen {

@@ -39,6 +39,5 @@ void				ft_list_cpy(t_list **s_list_dest, t_list *s_list_src, void *(*f_content_
 t_list_objs			*ft_list_obj_new(void *content, unsigned char type);
 void				ft_list_obj_add_front(t_list_objs **s_list_src, t_list_objs *s_list_new);
 void				ft_list_obj_add_back(t_list_objs **s_list_src, t_list_objs *new);
-void				ft_list_obj_cpy(t_list_objs **s_list_dest, t_list_objs *s_list_src);
 
 #endif
