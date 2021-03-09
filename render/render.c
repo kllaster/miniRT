@@ -14,7 +14,8 @@ void		check_inter_obj(t_ray *s_ray)
 		inter_triangle(s_ray->last_inter_obj, s_ray);
 }
 
-void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray, float distance)
+void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray,
+								float distance)
 {
 	t_list_objs	*s_list_obj;
 
@@ -36,8 +37,9 @@ void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray, float distanc
 			inter_triangle(s_list_obj->content, s_ray);
 		s_list_obj = s_list_obj->next;
 	}
-	if (s_ray->length < distance && s_ray->last_inter_type ^ (unsigned)OBJ_PLANE
-									&& s_ray->last_inter_type ^ (unsigned)OBJ_TRIANGLE)
+	if (s_ray->length < distance &&
+			s_ray->last_inter_type ^ (unsigned)OBJ_PLANE &&
+			s_ray->last_inter_type ^ (unsigned)OBJ_TRIANGLE)
 		s_ray->s_vec_inter_dir = vec_norm(&s_ray->s_vec_inter_dir);
 }
 
@@ -55,13 +57,15 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 	s_vec_phong = vec_sub(&s_rays->s_ray.s_vec_start,
 							&s_rays->s_ray.s_vec_inter);
 	s_vec_phong = vec_norm(&s_vec_phong);
-	if (vec_scalar_mul(&s_rays->s_ray.s_vec_inter_dir, &s_rays->s_ray.s_vec_start_dir) > 0)
-		s_rays->s_ray.s_vec_inter_dir = vec_mul(&s_rays->s_ray.s_vec_inter_dir, -1);
+	if (vec_scalar_mul(&s_rays->s_ray.s_vec_inter_dir,
+						&s_rays->s_ray.s_vec_start_dir) > 0)
+		s_rays->s_ray.s_vec_inter_dir =
+				vec_mul(&s_rays->s_ray.s_vec_inter_dir, -1);
 	while (s_list_light)
 	{
 		s_rays->s_ray_light.s_vec_start = s_rays->s_ray.s_vec_inter;
 		s_rays->s_ray_light.s_vec_start_dir = vec_sub(&((t_light *)s_list_light->content)->s_vec_origin, &s_rays->s_ray.s_vec_inter);
-		light_length = vec_len(&s_rays->s_ray_light.s_vec_start_dir);
+		light_length = vec_len(&s_rays->s_ray_light.s_vec_start_dir) - MIN_DISTANCE;
 		s_vec_halfway = s_rays->s_ray_light.s_vec_start_dir = vec_norm(&s_rays->s_ray_light.s_vec_start_dir);
 		check_inter_objs(s_thread_data, &s_rays->s_ray_light, light_length);
 		if (s_rays->s_ray_light.length == light_length)
@@ -88,7 +92,7 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 		s_list_light = s_list_light->next;
 	}
 	rgb_add_light(&s_color_res, &s_rays->s_ray.s_color_obj,
-					&s_thread_data->s_ambient_light.s_color,
+					s_thread_data->s_ambient_color,
 					1);
 	return (s_color_res);
 }

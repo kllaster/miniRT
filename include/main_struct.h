@@ -10,7 +10,7 @@ typedef struct	s_mlx_img {
 }				t_mlx_img;
 
 typedef	struct	s_aa_sample {
-	float			**matrix;
+	float			matrix[10][2];
 }				t_aa_sample;
 
 typedef	struct	s_vscreen {
@@ -36,10 +36,6 @@ typedef	struct	s_light {
 	t_rgb			s_color;
 }				t_light;
 
-typedef	struct	s_ambient_light {
-	t_rgb			s_color;
-}				t_ambient_light;
-
 typedef	struct	s_screen {
 	int				height;
 	int				width;
@@ -48,20 +44,20 @@ typedef	struct	s_screen {
 typedef	struct	s_stage {
 	t_aa_sample		s_aa_sample;
 	t_screen		s_screen;
-	t_ambient_light	s_ambient_light;
 	t_camera		*s_main_camera;
 	t_list			*s_list_lights;
 	t_list_objs		*s_list_objs;
+	t_rgb			*s_ambient_color;
 	t_list			*s_list_cameras;
 }				t_stage;
 
 typedef	struct	s_thread_data {
 	t_aa_sample		s_aa_sample;
 	t_screen		s_screen;
-	t_ambient_light	s_ambient_light;
 	t_camera		*s_main_camera;
 	t_list			*s_list_lights;
 	t_list_objs		*s_list_objs;
+	t_rgb			*s_ambient_color;
 	int				start_x;
 	int				end_x;
 }				t_thread_data;

@@ -27,6 +27,20 @@ int			ft_numlen(int num)
 	return (i);
 }
 
+int			ft_strncmp(const char *str1, const char *str2, size_t n)
+{
+	size_t i;
+
+	i = 0;
+	while ((str1[i] || str2[i]) && n > i)
+	{
+		if ((unsigned char)str1[i] != (unsigned char)str2[i])
+			return ((unsigned char)str1[i] - (unsigned char)str2[i]);
+		++i;
+	}
+	return (0);
+}
+
 int			ft_strequal_end(char *str, char *end)
 {
 	int i;
@@ -83,7 +97,7 @@ int			ft_atoi_pos(char **str)
 		}
 	}
 	else
-		error_end("Нет числа", PARSE_ERROR);
+		error_end("No number: ft_atoi_pos()", PARSE_ERROR, 0, NULL);
 	return ((int)res * sign);
 }
 
@@ -107,7 +121,7 @@ float		ft_atoi_pos_mantissa(char **str)
 		}
 	}
 	else
-		error_end("Нет мантиссы", PARSE_ERROR);
+		error_end("No mantissa: ft_atoi_pos_mantissa()", PARSE_ERROR, 0, NULL);
 	return (res);
 }
 
@@ -189,6 +203,17 @@ void		ft_list_cpy(t_list **s_list_dest, t_list *s_list_src,
 	}
 }
 
+void		ft_list_func(t_list *s_list, void (*func)(void *))
+{
+	if (!s_list)
+		return ;
+	while (s_list)
+	{
+		func(s_list->content);
+		s_list = s_list->next;
+	}
+}
+
 t_list_objs	*ft_list_obj_new(void *content, unsigned char type)
 {
 	t_list_objs	*s_list_obj;
@@ -229,6 +254,17 @@ void		ft_list_obj_add_back(t_list_objs **s_list_src,
 	last->next = s_list_new;
 }
 
+void		ft_list_obj_func(t_list_objs *s_list_objs, void (*func)(void *))
+{
+	if (!s_list_objs)
+		return ;
+	while (s_list_objs)
+	{
+		func(s_list_objs->content);
+		s_list_objs = s_list_objs->next;
+	}
+}
+
 void		putstr_fd(int fd, char *str)
 {
 	while (*str)
@@ -238,9 +274,18 @@ void		putstr_fd(int fd, char *str)
 	}
 }
 
-void		error_end(char *str_error, int exit_code)
+void		error_end(char *str_error, int exit_code, int flag, void *s_rt)
 {
-	putstr_fd(2, str_error);
-	putstr_fd(2, "\n");
-	exit(exit_code);
+	static void	*p_rt = NULL;
+
+	if (flag == 1)
+		p_rt = s_rt;
+	else
+	{
+		if (p_rt)
+			free_rt(p_rt);
+		putstr_fd(2, str_error);
+		putstr_fd(2, "\n");
+		exit(exit_code);
+	}
 }

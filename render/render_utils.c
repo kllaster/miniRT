@@ -9,13 +9,9 @@ void	get_aa_sample(t_aa_sample *s_aa_sample)
 	float	aa_sample4[4][2] = {{-0.45,0.4}, {0.4,0.45}, {-0.4,-0.45}, {-0.45,-0.45}};
 	float	aa_sample5[5][2] = {{-0.45,0.4}, {0.4,0.45}, {0,0}, {-0.4,-0.45}, {-0.45,-0.45}};
 
-	if ((s_aa_sample->matrix = malloc(sizeof(float *) * ANTI_ALIASING)) == NULL)
-		error_end("Ошибка выделения памяти s_aa_sample->matrix", MALLOC_ERROR);
 	i = -1;
 	while (++i < ANTI_ALIASING)
 	{
-		if ((s_aa_sample->matrix[i] = malloc(sizeof(float) * 2)) == NULL)
-			error_end("Ошибка выделения памяти s_aa_sample->matrix[]", MALLOC_ERROR);
 		if (ANTI_ALIASING == 1)
 		{
 			s_aa_sample->matrix[i][0] = aa_sample1[i][0];
@@ -59,6 +55,5 @@ int		rgb_get_int(t_rgb *s_rgb)
 
 void	my_mlx_pixel_put(const t_mlx_img *s_mlx_img, int x, int y, int color)
 {
-	*(unsigned int *)(s_mlx_img->addr + (y * s_mlx_img->line_length + x *
-						(int)(s_mlx_img->bits_per_pixel * 0.125))) = color;
+	*(int *)(s_mlx_img->addr + (y * s_mlx_img->line_length + x * 4)) = color;
 }

@@ -53,7 +53,7 @@ int		key_press(int keycode, t_rt *s_rt)
 	int	i;
 
 	if (keycode == KEY_ESC)
-		exit(0);
+		end_rt(s_rt);
 	else if (keycode == KEY_W)
 		s_rt->z_move = SPEED_MOVE;
 	else if (keycode == KEY_S)

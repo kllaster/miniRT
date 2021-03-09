@@ -24,4 +24,7 @@ void	debug_window_put_camera(t_rt *s_rt)
 	sprintf(tmp, "%7.2f", s_rt->s_stage.s_main_camera->s_vec_dir.z);
 	mlx_string_put(s_rt->mlx_p, s_rt->mlx_window, 10, 240, 16777215, "z:");
 	mlx_string_put(s_rt->mlx_p, s_rt->mlx_window, 35, 240, 16777215, tmp);
+	sprintf(tmp, "%d", s_rt->s_stage.s_main_camera->fov);
+	mlx_string_put(s_rt->mlx_p, s_rt->mlx_window, 10, 270, 16777215, "FOV:");
+	mlx_string_put(s_rt->mlx_p, s_rt->mlx_window, 60, 270, 16777215, tmp);
 }

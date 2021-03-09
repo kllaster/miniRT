@@ -12,7 +12,7 @@ void	check_next_arg(char **str)
 		else
 		{
 			printf("\n ---> \"%s\"", *str);
-			error_end("Ошибка в проверке на след. аргумент", PARSE_ERROR);
+			error_end("Error checking the next argument", PARSE_ERROR, 0, NULL);
 		}
 	}
 }
@@ -30,7 +30,7 @@ void	skip_between_param(char **str, char symb)
 		else
 		{
 			printf("\n ---> \"%s\"", *str);
-			error_end("Ошибка в проверке на след. параметр", PARSE_ERROR);
+			error_end("Error checking the next parameter", PARSE_ERROR, 0, NULL);
 		}
 	}
 }
@@ -58,15 +58,15 @@ t_rgb	parse_rgb(char **str)
 
 	s_rgb.red = ft_atoi_pos(str);
 	if (s_rgb.red < 0 || s_rgb.red > 255)
-		error_end("Ошибка в проверке цвета red", PARSE_ERROR);
+		error_end("Error checking red color", PARSE_ERROR, 0, NULL);
 	check_next_arg(str);
 	s_rgb.green = ft_atoi_pos(str);
 	if (s_rgb.green < 0 || s_rgb.green > 255)
-		error_end("Ошибка в проверке цвета green", PARSE_ERROR);
+		error_end("Error checking green color", PARSE_ERROR, 0, NULL);
 	check_next_arg(str);
 	s_rgb.blue = ft_atoi_pos(str);
 	if (s_rgb.blue < 0 || s_rgb.blue > 255)
-		error_end("Ошибка в проверке цвета blue", PARSE_ERROR);
+		error_end("Error checking blue color", PARSE_ERROR, 0, NULL);
 	return (s_rgb);
 }
 

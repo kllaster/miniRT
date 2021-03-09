@@ -1,9 +1,9 @@
 #ifndef MINI_RT_H
 # define MINI_RT_H
 
-# define MAX_FPS		30
+# define MAX_FPS		20
 # define MAX_DISTANCE	100000
-# define MIN_DISTANCE	0.0004
+# define MIN_DISTANCE	0.002
 # define ANTI_ALIASING	1
 # define SPEED_MOVE		5
 # define ANGEL_ROTATION	3

@@ -34,7 +34,7 @@ void	debug_print_s_lights(t_light *s_light)
 void	debug_print_s_sphere(t_sphere *s_sphere)
 {
 	printf("\n——— t_sphere	s_sphere:\n");
-	printf("——— float	radius: %f\n", s_sphere->radius);
+	printf("——— float	radius_pow: %f\n", s_sphere->radius_pow);
 	debug_print_s_color(s_sphere->s_color);
 	debug_print_s_vec(s_sphere->s_vec_origin, "s_vec_origin");
 }
@@ -88,7 +88,7 @@ void	debug_print_s_stage(t_stage *s_stage)
 	printf("——— int	height: %d\n", s_stage->s_screen.height);
 	printf("——— int	width: %d\n\n", s_stage->s_screen.width);
 	printf("— t_ambient_light	s_ambient_light:\n");
-	debug_print_s_color(s_stage->s_ambient_light.s_color);
+	debug_print_s_color(*s_stage->s_ambient_color);
 	s_list = s_stage->s_list_cameras;
 	while (s_list)
 	{

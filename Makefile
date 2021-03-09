@@ -1,16 +1,17 @@
 NAME		= miniRT
 CC			= gcc
+RM			= rm -f
 DEBUG		= 0
 ifeq ($(DEBUG), 1)
 	DEBUG_FLAGS	= -fsanitize=address -g
 endif
 CFLAGS		= -Wall -Wextra -Werror $(DEBUG_FLAGS) -D COUNT_THREADS=$(COUNT_THREADS)
 CPPFLAGS	= $(CFLAGS) -march=native -O2 -msse4a -flto -pipe
-RM			= rm -f
 HEADER		= include
 
 SRCS =	src/main.c\
 		src/utils.c\
+		src/save_img.c\
 		src/hooks.c\
 		src/hooks_utils.c\
 		src/colors_utils.c\
@@ -46,9 +47,7 @@ ifeq ($(COUNT_THREADS), 0)
 	COUNT_THREADS = 1
 endif
 
-all:			$(NAME)
-
-$(NAME):		$(OBJS)
+all:			$(OBJS)
 				cd minilibx && $(MAKE) && mv libmlx.dylib ../libmlx.dylib
 				$(CC) $(CPPFLAGS) -I $(HEADER) $(OBJS) libmlx.dylib -o $(NAME)
 

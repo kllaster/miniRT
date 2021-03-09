@@ -14,7 +14,7 @@ enum	e_objs {
 typedef	struct	s_sphere {
 	t_vec	s_vec_origin;
 	t_rgb	s_color;
-	float	radius;
+	float	radius_pow;
 }				t_sphere;
 
 typedef	struct	s_plane {
@@ -33,7 +33,7 @@ typedef	struct	s_square {
 typedef	struct	s_cylinder {
 	t_vec	s_vec_origin;
 	t_vec	s_vec_dir;
-	t_rgb   s_color;
+	t_rgb	s_color;
 	float	diameter;
 	float	height;
 }				t_cylinder;

@@ -8,9 +8,9 @@ void	inter_triangle(const t_triangle *s_triangle, t_ray *s_ray)
 	t_vec	s_vec1;
 	t_vec	s_vec2;
 
-	s_vec1 = vec_cross_product(&s_ray->s_vec_start_dir, &s_triangle->s_vec_edge_2);
-	det = vec_scalar_mul(&s_triangle->s_vec_edge_1, &s_vec1);
-	det = 1 / det;
+	s_vec1 = vec_cross_product(&s_ray->s_vec_start_dir,
+								&s_triangle->s_vec_edge_2);
+	det = 1 / vec_scalar_mul(&s_triangle->s_vec_edge_1, &s_vec1);
 	s_vec2 = vec_sub(&s_ray->s_vec_start, &s_triangle->s_vec_origin_1);
 	a = vec_scalar_mul(&s_vec2, &s_vec1) * det;
 	if (a < 0 || a > 1)
