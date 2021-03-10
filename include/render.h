@@ -11,6 +11,7 @@ typedef	struct	s_ray {
 	t_rgb			s_color_obj;
 	void			*last_inter_obj;
 	float			length;
+	float			ref_coeff;
 	unsigned char	last_inter_type;
 }				t_ray;
 
@@ -24,6 +25,16 @@ void			create_threads_data(t_rt *s_rt);
 void			get_another_camera(t_rt *s_rt);
 void			init_render(t_rt *s_rt);
 void			*render(void *data);
+void			check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray,
+							 		float distance);
+void			add_gloss(t_rays *s_rays, t_rgb *s_color_res,
+							  t_rgb *s_color_light, t_vec *s_vec_halfway,
+							  t_vec *s_vec_phong);
+void 			add_light_color(t_rays *s_rays, t_rgb *s_color_res,
+									t_rgb *s_color_light, t_vec *s_vec_phong);
+t_rgb			get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays);
+t_rgb			reflection(t_thread_data *s_thread_data, t_rays *s_rays,
+				   				float coeff);
 void			inter_plane(const t_plane *s_plane, t_ray *s_ray);
 void			inter_square(const t_square *s_square, t_ray *s_ray);
 void			inter_sphere(const t_sphere *s_sphere, t_ray *s_ray);

@@ -21,6 +21,7 @@ void	inter_triangle(const t_triangle *s_triangle, t_ray *s_ray)
 	if (b < 0 || a + b > 1 || det <= MIN_DISTANCE || det >= s_ray->length)
 		return ;
 	s_ray->length = det;
+	s_ray->ref_coeff = s_triangle->ref_coeff;
 	s_ray->s_color_obj = s_triangle->s_color;
 	s_ray->last_inter_obj = (void *)s_triangle;
 	s_ray->last_inter_type = (unsigned)OBJ_TRIANGLE;

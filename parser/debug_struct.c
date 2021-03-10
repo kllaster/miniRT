@@ -35,6 +35,7 @@ void	debug_print_s_sphere(t_sphere *s_sphere)
 {
 	printf("\n——— t_sphere	s_sphere:\n");
 	printf("——— float	radius_pow: %f\n", s_sphere->radius_pow);
+	printf("——— float	ref_coeff: %f\n", s_sphere->ref_coeff);
 	debug_print_s_color(s_sphere->s_color);
 	debug_print_s_vec(s_sphere->s_vec_origin, "s_vec_origin");
 }
@@ -42,6 +43,7 @@ void	debug_print_s_sphere(t_sphere *s_sphere)
 void	debug_print_s_plane(t_plane *s_plane)
 {
 	printf("\n——— t_plane	s_plane:\n");
+	printf("——— float	ref_coeff: %f\n", s_plane->ref_coeff);
 	debug_print_s_color(s_plane->s_color);
 	debug_print_s_vec(s_plane->s_vec_dir, "s_vec_dir");
 	debug_print_s_vec(s_plane->s_vec_origin, "s_vec_origin");
@@ -51,6 +53,7 @@ void	debug_print_s_square(t_square *s_square)
 {
 	printf("\n——— t_square	s_square:\n");
 	printf("——— float	side_size: %f\n", s_square->side_size);
+	printf("——— float	ref_coeff: %f\n", s_square->ref_coeff);
 	debug_print_s_color(s_square->s_color);
 	debug_print_s_vec(s_square->s_vec_dir, "s_vec_dir");
 	debug_print_s_vec(s_square->s_vec_origin, "s_vec_origin");
@@ -61,6 +64,7 @@ void	debug_print_s_cylinder(t_cylinder *s_cylinder)
 	printf("\n——— t_cylinder	s_cylinder:\n");
 	printf("——— float	diameter: %f\n", s_cylinder->diameter);
 	printf("——— float	height: %f\n", s_cylinder->height);
+	printf("——— float	ref_coeff: %f\n", s_cylinder->ref_coeff);
 	debug_print_s_color(s_cylinder->s_color);
 	debug_print_s_vec(s_cylinder->s_vec_dir, "s_vec_dir");
 	debug_print_s_vec(s_cylinder->s_vec_origin, "s_vec_origin");
@@ -69,6 +73,7 @@ void	debug_print_s_cylinder(t_cylinder *s_cylinder)
 void	debug_print_s_triangle(t_triangle *s_triangle)
 {
 	printf("\n——— t_triangle	s_triangle:\n");
+	printf("——— float	ref_coeff: %f\n", s_triangle->ref_coeff);
 	debug_print_s_vec(s_triangle->s_vec_origin_1, "s_vec_origin_1");
 	debug_print_s_vec(s_triangle->s_vec_origin_2, "s_vec_origin_2");
 	debug_print_s_vec(s_triangle->s_vec_origin_3, "s_vec_origin_3");

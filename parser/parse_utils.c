@@ -36,7 +36,7 @@ void	skip_between_param(char **str, char symb)
 	}
 }
 
-float	parse_float(char **str)
+float	parse_float(char **str, int error)
 {
 	float	sign;
 	float	num;
@@ -44,7 +44,7 @@ float	parse_float(char **str)
 	sign = 1;
 	if (**str == '-')
 		sign = -1;
-	num = (float)ft_atoi_pos(str);
+	num = (float)ft_atoi_pos(str, error);
 	if (num < 0)
 		num *= sign = -1;
 	if (*(*str) == '.' && (++(*str)))
@@ -57,15 +57,15 @@ t_rgb	parse_rgb(char **str)
 {
 	t_rgb	s_rgb;
 
-	s_rgb.red = ft_atoi_pos(str);
+	s_rgb.red = ft_atoi_pos(str, 1);
 	if (s_rgb.red < 0 || s_rgb.red > 255)
 		error_end("Error checking red color", PARSE_ERROR, 0, NULL);
 	check_next_arg(str);
-	s_rgb.green = ft_atoi_pos(str);
+	s_rgb.green = ft_atoi_pos(str, 1);
 	if (s_rgb.green < 0 || s_rgb.green > 255)
 		error_end("Error checking green color", PARSE_ERROR, 0, NULL);
 	check_next_arg(str);
-	s_rgb.blue = ft_atoi_pos(str);
+	s_rgb.blue = ft_atoi_pos(str, 1);
 	if (s_rgb.blue < 0 || s_rgb.blue > 255)
 		error_end("Error checking blue color", PARSE_ERROR, 0, NULL);
 	return (s_rgb);
@@ -75,10 +75,10 @@ t_vec	parse_coordinates(char **str)
 {
 	t_vec	s_vec;
 
-	s_vec.x = parse_float(str);
+	s_vec.x = parse_float(str, 1);
 	check_next_arg(str);
-	s_vec.y = parse_float(str);
+	s_vec.y = parse_float(str, 1);
 	check_next_arg(str);
-	s_vec.z = parse_float(str);
+	s_vec.z = parse_float(str, 1);
 	return (s_vec);
 }

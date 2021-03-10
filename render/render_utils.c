@@ -1,5 +1,78 @@
 #include "mini_rt.h"
 
+void		add_gloss(t_rays *s_rays, t_rgb *s_color_res,
+					  t_rgb *s_color_light, t_vec *s_vec_halfway,
+					  t_vec *s_vec_phong)
+{
+	float	angel_incidence;
+
+	*s_vec_halfway = vec_sum(s_vec_halfway, s_vec_phong);
+	*s_vec_halfway = vec_norm(s_vec_halfway);
+	if ((angel_incidence =
+				 vec_scalar_mul(s_vec_halfway,
+								&s_rays->s_ray.s_vec_inter_dir)) > 0)
+	{
+		angel_incidence = powf(angel_incidence, 60);
+		rgb_add_light(s_color_res, &s_rays->s_ray.s_color_obj,
+					  s_color_light,
+					  angel_incidence);
+	}
+}
+
+void 		add_light_color(t_rays *s_rays, t_rgb *s_color_res,
+							t_rgb *s_color_light, t_vec *s_vec_phong)
+{
+	float	angel_incidence;
+
+	if ((angel_incidence = vec_scalar_mul(&s_rays->s_ray_light.s_vec_start_dir,
+										  &s_rays->s_ray.s_vec_inter_dir)) > 0)
+	{
+		rgb_add_light(s_color_res, &s_rays->s_ray.s_color_obj,
+					  s_color_light,
+					  angel_incidence);
+		add_gloss(s_rays, s_color_res,
+				  s_color_light,
+				  &s_rays->s_ray_light.s_vec_start_dir,
+				  s_vec_phong);
+	}
+}
+
+t_rgb		reflection(t_thread_data *s_thread_data, t_rays *s_rays, float coeff)
+{
+	int			count;
+	t_rgb		s_color;
+
+	s_color = (t_rgb){0, 0, 0};
+	s_rays->s_ray.s_vec_start = s_rays->s_ray.s_vec_inter;
+	s_rays->s_ray.s_vec_start_dir = s_rays->s_ray.s_vec_inter_dir;
+	count = -1;
+	while (++count < MAX_REF)
+	{
+		check_inter_objs(s_thread_data, &s_rays->s_ray, MAX_DISTANCE);
+		if (s_rays->s_ray.length < MAX_DISTANCE)
+		{
+			s_rays->s_ray.s_vec_start = s_rays->s_ray.s_vec_inter;
+			s_rays->s_ray.s_vec_start_dir = s_rays->s_ray.s_vec_inter_dir;
+		}
+		else
+		{
+			if (count != 0)
+			{
+				s_rays->s_ray.s_vec_inter = s_rays->s_ray.s_vec_start;
+				s_rays->s_ray.s_vec_inter_dir = s_rays->s_ray.s_vec_start_dir;
+				s_rays->s_ray.length = 1;
+			}
+			break ;
+		}
+	}
+	if (count != 0)
+	{
+		s_color = get_color_pixel(s_thread_data, s_rays);
+		s_color = rgb_mul(&s_color, coeff);
+	}
+	return (s_color);
+}
+
 void	get_aa_sample(t_aa_sample *s_aa_sample)
 {
 	int		i;

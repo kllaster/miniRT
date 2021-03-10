@@ -15,12 +15,14 @@ typedef	struct	s_sphere {
 	t_vec	s_vec_origin;
 	t_rgb	s_color;
 	float	radius_pow;
+	float 	ref_coeff;
 }				t_sphere;
 
 typedef	struct	s_plane {
 	t_vec	s_vec_origin;
 	t_vec	s_vec_dir;
 	t_rgb	s_color;
+	float 	ref_coeff;
 }				t_plane;
 
 typedef	struct	s_square {
@@ -28,6 +30,7 @@ typedef	struct	s_square {
 	t_vec	s_vec_dir;
 	t_rgb	s_color;
 	float	side_size;
+	float 	ref_coeff;
 }				t_square;
 
 typedef	struct	s_cylinder {
@@ -36,6 +39,7 @@ typedef	struct	s_cylinder {
 	t_rgb	s_color;
 	float	diameter;
 	float	height;
+	float 	ref_coeff;
 }				t_cylinder;
 
 typedef	struct	s_triangle {
@@ -46,6 +50,7 @@ typedef	struct	s_triangle {
 	t_vec	s_vec_edge_2;
 	t_vec	s_vec_dir;
 	t_rgb	s_color;
+	float 	ref_coeff;
 }				t_triangle;
 
 #endif

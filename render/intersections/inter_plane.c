@@ -12,6 +12,7 @@ void	inter_plane(const t_plane *s_plane, t_ray *s_ray)
 	if (x <= MIN_DISTANCE || s_ray->length <= x)
 		return ;
 	s_ray->length = x;
+	s_ray->ref_coeff = s_plane->ref_coeff;
 	s_ray->s_color_obj = s_plane->s_color;
 	s_ray->last_inter_obj = (void *)s_plane;
 	s_ray->last_inter_type = (unsigned)OBJ_PLANE;

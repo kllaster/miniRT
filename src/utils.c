@@ -74,7 +74,7 @@ void		ft_bzero(void *s, size_t n)
 	}
 }
 
-int			ft_atoi_pos(char **str)
+int			ft_atoi_pos(char **str, int error)
 {
 	unsigned int	res;
 	int				sign;
@@ -96,7 +96,7 @@ int			ft_atoi_pos(char **str)
 			res = res * 10 + (*(*str)++ - '0');
 		}
 	}
-	else
+	else if (error)
 		error_end("No number: ft_atoi_pos()", PARSE_ERROR, 0, NULL);
 	return ((int)res * sign);
 }

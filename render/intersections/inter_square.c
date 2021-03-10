@@ -20,6 +20,7 @@ void	inter_square(const t_square *s_square, t_ray *s_ray)
 			ft_fabs(s_vec1.y) > a || ft_fabs(s_vec1.z) > a)
 		return ;
 	s_ray->length = x;
+	s_ray->ref_coeff = s_square->ref_coeff;
 	s_ray->s_color_obj = s_square->s_color;
 	s_ray->last_inter_obj = (void *)s_square;
 	s_ray->last_inter_type = (unsigned)OBJ_SQUARE;

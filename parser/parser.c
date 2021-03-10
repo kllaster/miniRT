@@ -3,11 +3,11 @@
 void	parse_screen(char *str, t_stage *s_stage)
 {
 	skip_between_param(&str, 0);
-	s_stage->s_screen.width = ft_atoi_pos(&str);
+	s_stage->s_screen.width = ft_atoi_pos(&str, 1);
 	if (s_stage->s_screen.width <= 0)
 		error_end("Incorrect window width", PARSE_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
-	s_stage->s_screen.height = ft_atoi_pos(&str);
+	s_stage->s_screen.height = ft_atoi_pos(&str, 1);
 	if (s_stage->s_screen.height <= 0)
 		error_end("Incorrect window height", PARSE_ERROR, 0, NULL);
 }
@@ -17,7 +17,7 @@ void	parse_ambient_light(char *str, t_stage *s_stage)
 	float brightness;
 
 	skip_between_param(&str, 0);
-	brightness = parse_float(&str);
+	brightness = parse_float(&str, 1);
 	if (brightness < 0.0)
 		error_end("Incorrect ambient light brightness", PARSE_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
@@ -46,7 +46,7 @@ void	parse_camera(char *str, t_stage *s_stage)
 		ft_fabs(s_camera->s_vec_dir.z) > 1)
 		error_end("Incorrect direction camera", PARSE_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
-	s_camera->fov = ft_atoi_pos(&str);
+	s_camera->fov = ft_atoi_pos(&str, 1);
 	if (s_camera->fov <= 0)
 		error_end("Incorrect FOV", PARSE_ERROR, 0, NULL);
 	ft_list_add_back(&(s_stage->s_list_cameras), ft_list_new(s_camera));
@@ -63,7 +63,7 @@ void	parse_light(char *str, t_stage *s_stage)
 					MALLOC_ERROR, 0, NULL);
 	s_light->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	brightness = parse_float(&str);
+	brightness = parse_float(&str, 1);
 	skip_between_param(&str, 0);
 	s_light->s_color = parse_rgb(&str);
 	s_light->s_color = rgb_mul(&s_light->s_color, brightness);
