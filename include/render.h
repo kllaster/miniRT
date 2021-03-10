@@ -10,8 +10,8 @@ typedef	struct	s_ray {
 	t_vec			s_vec_start;
 	t_rgb			s_color_obj;
 	void			*last_inter_obj;
-	unsigned char	last_inter_type;
 	float			length;
+	unsigned char	last_inter_type;
 }				t_ray;
 
 typedef	struct	s_rays {

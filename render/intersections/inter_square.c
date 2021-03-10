@@ -16,7 +16,7 @@ void	inter_square(const t_square *s_square, t_ray *s_ray)
 	s_vec1 = vec_sum(&s_vec1, &s_ray->s_vec_start);
 	s_vec1 = vec_sub(&s_vec1, &s_square->s_vec_origin);
 	a = (float)(s_square->side_size * 0.5);
-	if (ft_fabs(s_vec1.x) > (a * 0.8) ||
+	if (ft_fabs(s_vec1.x) > a ||
 			ft_fabs(s_vec1.y) > a || ft_fabs(s_vec1.z) > a)
 		return ;
 	s_ray->length = x;

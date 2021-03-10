@@ -39,7 +39,7 @@ void	save_bmp(t_rt *s_rt, char *file_name)
 	i = s_rt->s_stage.s_screen.height;
 	while (--i >= 0)
 		if (write(fd, s_rt->s_stage.s_main_camera->s_mlx_img.addr +
-							i * s_rt->s_stage.s_main_camera->s_mlx_img.line_length,
+						i * s_rt->s_stage.s_main_camera->s_mlx_img.line_length,
 					s_rt->s_stage.s_screen.width * 4) <= 0)
 			error_end("Error writing the bpm file body", SAVE_ERROR, 0, NULL);
 	close(fd);
@@ -53,8 +53,9 @@ void	save_img(t_rt *s_rt, char *argv[])
 		if (ft_strequal_end(argv[3], ".bmp"))
 			save_bmp(s_rt, argv[3]);
 		else
-			error_end("Expected \"--save file_name.bmp\"", PARSE_ERROR, 0, NULL);
-		exit(0);
+			error_end("Expected \"--save file_name.bmp\"",
+						PARSE_ERROR, 0, NULL);
+		end_rt(s_rt);
 	}
 	else
 		error_end("Expected \"--save file_name.bmp\"", PARSE_ERROR, 0, NULL);

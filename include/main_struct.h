@@ -58,8 +58,8 @@ typedef	struct	s_thread_data {
 	t_list			*s_list_lights;
 	t_list_objs		*s_list_objs;
 	t_rgb			*s_ambient_color;
-	int				start_x;
-	int				end_x;
+	int				start_y;
+	int				end_y;
 }				t_thread_data;
 
 typedef	struct	s_rt {

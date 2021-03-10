@@ -43,14 +43,49 @@ void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray,
 		s_ray->s_vec_inter_dir = vec_norm(&s_ray->s_vec_inter_dir);
 }
 
+void		add_gloss(t_rays *s_rays, t_rgb *s_color_res,
+					 		t_rgb *s_color_light, t_vec *s_vec_halfway,
+					 		t_vec *s_vec_phong)
+{
+	float	angel_incidence;
+
+	*s_vec_halfway = vec_sum(s_vec_halfway, s_vec_phong);
+	*s_vec_halfway = vec_norm(s_vec_halfway);
+	if ((angel_incidence =
+				 vec_scalar_mul(s_vec_halfway,
+								&s_rays->s_ray.s_vec_inter_dir)) > 0)
+	{
+		angel_incidence = powf(angel_incidence, 60);
+		rgb_add_light(s_color_res, &s_rays->s_ray.s_color_obj,
+					  s_color_light,
+					  angel_incidence);
+	}
+}
+
+void 		add_light_color(t_rays *s_rays, t_rgb *s_color_res,
+					   			t_rgb *s_color_light, t_vec *s_vec_phong)
+{
+	float	angel_incidence;
+
+	if ((angel_incidence = vec_scalar_mul(&s_rays->s_ray_light.s_vec_start_dir,
+										  &s_rays->s_ray.s_vec_inter_dir)) > 0)
+	{
+		rgb_add_light(s_color_res, &s_rays->s_ray.s_color_obj,
+					  s_color_light,
+					  angel_incidence);
+		add_gloss(s_rays, s_color_res,
+				  s_color_light,
+				  &s_rays->s_ray_light.s_vec_start_dir,
+				  s_vec_phong);
+	}
+}
+
 t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 {
-	t_vec	s_vec_halfway;
 	t_vec	s_vec_phong;
 	t_rgb	s_color_res;
 	t_list	*s_list_light;
 	float	light_length;
-	float	angel_incidence;
 
 	s_color_res = (t_rgb){0, 0, 0};
 	s_list_light = s_thread_data->s_list_lights;
@@ -64,31 +99,17 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 	while (s_list_light)
 	{
 		s_rays->s_ray_light.s_vec_start = s_rays->s_ray.s_vec_inter;
-		s_rays->s_ray_light.s_vec_start_dir = vec_sub(&((t_light *)s_list_light->content)->s_vec_origin, &s_rays->s_ray.s_vec_inter);
-		light_length = vec_len(&s_rays->s_ray_light.s_vec_start_dir) - MIN_DISTANCE;
-		s_vec_halfway = s_rays->s_ray_light.s_vec_start_dir = vec_norm(&s_rays->s_ray_light.s_vec_start_dir);
+		s_rays->s_ray_light.s_vec_start_dir =
+				vec_sub(&((t_light *)s_list_light->content)->s_vec_origin,
+							&s_rays->s_ray.s_vec_inter);
+		light_length = vec_len(&s_rays->s_ray_light.s_vec_start_dir) -
+							(float)MIN_DISTANCE;
+		s_rays->s_ray_light.s_vec_start_dir =
+					vec_norm(&s_rays->s_ray_light.s_vec_start_dir);
 		check_inter_objs(s_thread_data, &s_rays->s_ray_light, light_length);
 		if (s_rays->s_ray_light.length == light_length)
-		{
-			if ((angel_incidence = vec_scalar_mul(&s_rays->s_ray_light.s_vec_start_dir,
-													&s_rays->s_ray.s_vec_inter_dir)) > 0)
-			{
-				rgb_add_light(&s_color_res, &s_rays->s_ray.s_color_obj,
-								&((t_light *)s_list_light->content)->s_color,
-								angel_incidence);
-				// Blinn–Phong
-				s_vec_halfway = vec_sum(&s_vec_halfway, &s_vec_phong);
-				s_vec_halfway = vec_norm(&s_vec_halfway);
-				if ((angel_incidence = vec_scalar_mul(&s_vec_halfway,
-														&s_rays->s_ray.s_vec_inter_dir)) > 0)
-				{
-					angel_incidence = (float)pow(angel_incidence, 60);
-					rgb_add_light(&s_color_res, &s_rays->s_ray.s_color_obj,
-						&((t_light *)s_list_light->content)->s_color,
-						angel_incidence);
-				}
-			}
-		}
+			add_light_color(s_rays, &s_color_res,
+				   			&((t_light *)s_list_light->content)->s_color, &s_vec_phong);
 		s_list_light = s_list_light->next;
 	}
 	rgb_add_light(&s_color_res, &s_rays->s_ray.s_color_obj,
@@ -97,7 +118,8 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 	return (s_color_res);
 }
 
-int			anti_aliasing(t_thread_data *s_thread_data, int x, int y, t_rays *s_rays)
+int			anti_aliasing(t_thread_data *s_thread_data, int x, int y,
+							t_rays *s_rays)
 {
 	int		count_rays;
 	t_rgb	s_color_res;
@@ -142,18 +164,18 @@ void		*render(void *data)
 	ft_bzero(&s_rays, sizeof(s_rays));
 	s_thread_data = (t_thread_data *)data;
 	s_rays.s_ray.s_vec_start = s_thread_data->s_main_camera->s_vec_origin;
-	x = s_thread_data->start_x;
-	while (x < s_thread_data->end_x)
+	y = s_thread_data->start_y;
+	while (y < s_thread_data->end_y)
 	{
-		y = 0;
-		while (y < s_thread_data->s_screen.height)
+		x = 0;
+		while (x < s_thread_data->s_screen.width)
 		{
 			color_pixel = anti_aliasing(s_thread_data, x, y, &s_rays);
 			my_mlx_pixel_put(&s_thread_data->s_main_camera->s_mlx_img,
 								x, y, color_pixel);
-			++y;
+			++x;
 		}
-		++x;
+		++y;
 	}
 	return ((void *)"Ready");
 }

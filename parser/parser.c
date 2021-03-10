@@ -22,7 +22,8 @@ void	parse_ambient_light(char *str, t_stage *s_stage)
 		error_end("Incorrect ambient light brightness", PARSE_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
 	if ((s_stage->s_ambient_color = malloc(sizeof(t_rgb))) == NULL)
-		error_end("Memory allocation error: parse_ambient_light()", MALLOC_ERROR, 0, NULL);
+		error_end("Memory allocation error: parse_ambient_light()",
+					MALLOC_ERROR, 0, NULL);
 	*s_stage->s_ambient_color = parse_rgb(&str);
 	*s_stage->s_ambient_color = rgb_mul(s_stage->s_ambient_color,
 												brightness);
@@ -34,7 +35,8 @@ void	parse_camera(char *str, t_stage *s_stage)
 
 	skip_between_param(&str, 0);
 	if ((s_camera = malloc(sizeof(t_camera))) == NULL)
-		error_end("Memory allocation error: parse_camera()", MALLOC_ERROR, 0, NULL);
+		error_end("Memory allocation error: parse_camera()",
+					MALLOC_ERROR, 0, NULL);
 	ft_bzero(s_camera, sizeof(t_camera));
 	s_camera->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
@@ -43,7 +45,6 @@ void	parse_camera(char *str, t_stage *s_stage)
 		ft_fabs(s_camera->s_vec_dir.y) > 1 ||
 		ft_fabs(s_camera->s_vec_dir.z) > 1)
 		error_end("Incorrect direction camera", PARSE_ERROR, 0, NULL);
-	s_camera->s_vec_dir.z += s_camera->s_vec_dir.z < 0 ? -1 : 1;
 	skip_between_param(&str, 0);
 	s_camera->fov = ft_atoi_pos(&str);
 	if (s_camera->fov <= 0)
@@ -58,7 +59,8 @@ void	parse_light(char *str, t_stage *s_stage)
 
 	skip_between_param(&str, 0);
 	if ((s_light = malloc(sizeof(t_light))) == NULL)
-		error_end("Memory allocation error: parse_light()", MALLOC_ERROR, 0, NULL);
+		error_end("Memory allocation error: parse_light()",
+					MALLOC_ERROR, 0, NULL);
 	s_light->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	brightness = parse_float(&str);
@@ -75,7 +77,8 @@ void	parse_file(char *file, t_stage *s_stage)
 	char	*str;
 
 	if (!ft_strequal_end(file, ".rt"))
-		error_end("Invalid scene file format. Expected \".rt\"", PARSE_ERROR, 0, NULL);
+		error_end("Invalid scene file format. Expected \".rt\"",
+					PARSE_ERROR, 0, NULL);
 	if ((fd = open(file, O_RDONLY)) < 0)
 		error_end("Error opening the scene file", PARSE_ERROR, 0, NULL);
 	while ((error = get_next_line(fd, &str)) != -1 && error != 0)
@@ -94,5 +97,6 @@ void	parse_file(char *file, t_stage *s_stage)
 	}
 	if (error == -1)
 		error_end("Error reading the scene file", PARSE_ERROR, 0, NULL);
+	free(str);
 	close(fd);
 }

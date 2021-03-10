@@ -6,7 +6,7 @@ void	free_rt(t_rt *s_rt)
 	{
 		if (s_rt->s_stage.s_main_camera->s_mlx_img.img_ptr)
 			mlx_destroy_image(s_rt->mlx_p,
-							  s_rt->s_stage.s_main_camera->s_mlx_img.img_ptr);
+								s_rt->s_stage.s_main_camera->s_mlx_img.img_ptr);
 		if (s_rt->mlx_window)
 			mlx_destroy_window(s_rt->mlx_p, s_rt->mlx_window);
 	}

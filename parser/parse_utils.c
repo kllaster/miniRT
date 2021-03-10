@@ -30,7 +30,8 @@ void	skip_between_param(char **str, char symb)
 		else
 		{
 			printf("\n ---> \"%s\"", *str);
-			error_end("Error checking the next parameter", PARSE_ERROR, 0, NULL);
+			error_end("Error checking the next parameter",
+						PARSE_ERROR, 0, NULL);
 		}
 	}
 }
