@@ -59,7 +59,7 @@ t_vec	vec_mul(const t_vec *s_vec, float num)
 	return (s_vec_mul);
 }
 
-t_vec	vec_cross_product(const t_vec *s_vec_1, const t_vec *s_vec_2)
+t_vec	vec_cproduct(const t_vec *s_vec_1, const t_vec *s_vec_2)
 {
 	t_vec	s_vec;
 
@@ -69,7 +69,7 @@ t_vec	vec_cross_product(const t_vec *s_vec_1, const t_vec *s_vec_2)
 	return (s_vec);
 }
 
-float	vec_scalar_mul(const t_vec *s_vec_1, const t_vec *s_vec_2)
+float	vec_dot(const t_vec *s_vec_1, const t_vec *s_vec_2)
 {
 	return (s_vec_1->x * s_vec_2->x + s_vec_1->y * s_vec_2->y +
 											s_vec_1->z * s_vec_2->z);

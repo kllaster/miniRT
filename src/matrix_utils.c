@@ -19,12 +19,12 @@ t_matrix	get_matrix_rotate(t_vec *s_vec_orig, t_vec *s_vec_dir)
 	t_vec		s_vec_tmp;
 
 	s_vec_tmp = (t_vec){0, 1, 0};
-	s_vec_tmp = vec_cross_product(&s_vec_tmp, s_vec_dir);
+	s_vec_tmp = vec_cproduct(&s_vec_tmp, s_vec_dir);
 	s_vec_tmp = vec_norm(&s_vec_tmp);
 	s_matrix.el[0][0] = s_vec_tmp.x;
 	s_matrix.el[0][1] = s_vec_tmp.y;
 	s_matrix.el[0][2] = s_vec_tmp.z;
-	s_vec_tmp = vec_cross_product(s_vec_dir, &s_vec_tmp);
+	s_vec_tmp = vec_cproduct(s_vec_dir, &s_vec_tmp);
 	s_vec_tmp = vec_norm(&s_vec_tmp);
 	s_matrix.el[1][0] = s_vec_tmp.x;
 	s_matrix.el[1][1] = s_vec_tmp.y;

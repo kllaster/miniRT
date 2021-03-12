@@ -4,7 +4,7 @@ void	debug_print_s_material(t_material s_material)
 {
 	printf("——— t_material	s_material:\n");
 	printf("—————— float	ref_coeff: %f\n", s_material.ref_coeff);
-	printf("—————— float	ref_intensity: %f\n", s_material.ref_coeff);
+	debug_print_s_color(s_material.s_color);
 }
 
 void	debug_print_s_vec(t_vec s_vec, char *s_name)
@@ -42,7 +42,6 @@ void	debug_print_s_sphere(t_sphere *s_sphere)
 {
 	printf("\n——— t_sphere	s_sphere:\n");
 	printf("——— float	radius_pow: %f\n", s_sphere->radius_pow);
-	debug_print_s_color(s_sphere->s_color);
 	debug_print_s_vec(s_sphere->s_vec_origin, "s_vec_origin");
 	debug_print_s_material(s_sphere->s_material);
 }
@@ -50,7 +49,6 @@ void	debug_print_s_sphere(t_sphere *s_sphere)
 void	debug_print_s_plane(t_plane *s_plane)
 {
 	printf("\n——— t_plane	s_plane:\n");
-	debug_print_s_color(s_plane->s_color);
 	debug_print_s_vec(s_plane->s_vec_dir, "s_vec_dir");
 	debug_print_s_vec(s_plane->s_vec_origin, "s_vec_origin");
 	debug_print_s_material(s_plane->s_material);
@@ -60,7 +58,6 @@ void	debug_print_s_square(t_square *s_square)
 {
 	printf("\n——— t_square	s_square:\n");
 	printf("——— float	side_size: %f\n", s_square->side_size);
-	debug_print_s_color(s_square->s_color);
 	debug_print_s_vec(s_square->s_vec_dir, "s_vec_dir");
 	debug_print_s_vec(s_square->s_vec_origin, "s_vec_origin");
 	debug_print_s_material(s_square->s_material);
@@ -71,7 +68,6 @@ void	debug_print_s_cylinder(t_cylinder *s_cylinder)
 	printf("\n——— t_cylinder	s_cylinder:\n");
 	printf("——— float	diameter: %f\n", s_cylinder->diameter);
 	printf("——— float	height: %f\n", s_cylinder->height);
-	debug_print_s_color(s_cylinder->s_color);
 	debug_print_s_vec(s_cylinder->s_vec_dir, "s_vec_dir");
 	debug_print_s_vec(s_cylinder->s_vec_origin, "s_vec_origin");
 	debug_print_s_material(s_cylinder->s_material);
@@ -86,7 +82,6 @@ void	debug_print_s_triangle(t_triangle *s_triangle)
 	debug_print_s_vec(s_triangle->s_vec_edge_1, "s_vec_edge_1");
 	debug_print_s_vec(s_triangle->s_vec_edge_2, "s_vec_edge_2");
 	debug_print_s_vec(s_triangle->s_vec_dir, "s_vec_dir");
-	debug_print_s_color(s_triangle->s_color);
 	debug_print_s_material(s_triangle->s_material);
 }
 
@@ -116,15 +111,15 @@ void	debug_print_s_stage(t_stage *s_stage)
 	s_list_obj = s_stage->s_list_objs;
 	while (s_list_obj)
 	{
-		if (s_list_obj->type & (unsigned)OBJ_SPHERE)
+		if (s_list_obj->type & OBJ_SPHERE)
 			debug_print_s_sphere(s_list_obj->content);
-		else if (s_list_obj->type & (unsigned)OBJ_PLANE)
+		else if (s_list_obj->type & OBJ_PLANE)
 			debug_print_s_plane(s_list_obj->content);
-		else if (s_list_obj->type & (unsigned)OBJ_SQUARE)
+		else if (s_list_obj->type & OBJ_SQUARE)
 			debug_print_s_square(s_list_obj->content);
-		else if (s_list_obj->type & (unsigned)OBJ_CYLINDER)
+		else if (s_list_obj->type & OBJ_CYLINDER)
 			debug_print_s_cylinder(s_list_obj->content);
-		else if (s_list_obj->type & (unsigned)OBJ_TRIANGLE)
+		else if (s_list_obj->type & OBJ_TRIANGLE)
 			debug_print_s_triangle(s_list_obj->content);
 		s_list_obj = s_list_obj->next;
 	}

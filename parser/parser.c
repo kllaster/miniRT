@@ -45,6 +45,7 @@ void	parse_camera(char *str, t_stage *s_stage)
 		ft_fabs(s_camera->s_vec_dir.y) > 1 ||
 		ft_fabs(s_camera->s_vec_dir.z) > 1)
 		error_end("Incorrect direction camera", PARSE_ERROR, 0, NULL);
+	s_camera->s_vec_dir = vec_norm(&s_camera->s_vec_dir);
 	skip_between_param(&str, 0);
 	s_camera->fov = ft_atoi_pos(&str, 1);
 	if (s_camera->fov <= 0)

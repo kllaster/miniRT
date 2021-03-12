@@ -4,6 +4,7 @@ t_material	parse_material_param(char **str)
 {
 	t_material	s_material;
 
+	s_material.s_color = parse_rgb(str);
 	s_material.ref_coeff = parse_float(str, 0);
 	if (s_material.ref_coeff < 0 || s_material.ref_coeff > 1)
 		error_end("Error: ref_coeff [0, 1]", PARSE_ERROR, 0, NULL);

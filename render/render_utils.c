@@ -1,19 +1,25 @@
 #include "mini_rt.h"
 
+void		add_inter_res(t_ray *s_ray, const t_material *s_material, float x)
+{
+	s_ray->length = x;
+	s_ray->s_vec_inter = vec_mul(&s_ray->s_vec_start_dir, x);
+	s_ray->s_vec_inter = vec_sum(&s_ray->s_vec_start, &s_ray->s_vec_inter);
+	s_ray->s_material = s_material;
+}
+
 void		add_gloss(t_rays *s_rays, t_rgb *s_color_res,
-					  t_rgb *s_color_light, t_vec *s_vec_halfway,
-					  t_vec *s_vec_phong)
+						t_rgb *s_color_light, t_vec *s_vec_phong)
 {
 	float	angel_incidence;
 
-	*s_vec_halfway = vec_sum(s_vec_halfway, s_vec_phong);
-	*s_vec_halfway = vec_norm(s_vec_halfway);
+	s_rays->s_ray_light.s_vec_start_dir = vec_sum(&s_rays->s_ray_light.s_vec_start_dir, s_vec_phong);
+	s_rays->s_ray_light.s_vec_start_dir = vec_norm(&s_rays->s_ray_light.s_vec_start_dir);
 	if ((angel_incidence =
-				 vec_scalar_mul(s_vec_halfway,
-								&s_rays->s_ray.s_vec_inter_dir)) > 0)
+				 vec_dot(&s_rays->s_ray_light.s_vec_start_dir, &s_rays->s_ray.s_vec_inter_dir)) > 0)
 	{
 		angel_incidence = powf(angel_incidence, 100);
-		rgb_add_light(s_color_res, &s_rays->s_ray.s_color_obj,
+		rgb_add_light(s_color_res, &s_rays->s_ray.s_material->s_color,
 					  s_color_light,
 					  angel_incidence);
 	}
@@ -24,16 +30,13 @@ void 		add_light_color(t_rays *s_rays, t_rgb *s_color_res,
 {
 	float	angel_incidence;
 
-	if ((angel_incidence = vec_scalar_mul(&s_rays->s_ray_light.s_vec_start_dir,
-										  &s_rays->s_ray.s_vec_inter_dir)) > 0)
+	if ((angel_incidence = vec_dot(&s_rays->s_ray_light.s_vec_start_dir,
+								   &s_rays->s_ray.s_vec_inter_dir)) > 0)
 	{
-		rgb_add_light(s_color_res, &s_rays->s_ray.s_color_obj,
+		rgb_add_light(s_color_res, &s_rays->s_ray.s_material->s_color,
 					  s_color_light,
 					  angel_incidence);
-		add_gloss(s_rays, s_color_res,
-				  s_color_light,
-				  &s_rays->s_ray_light.s_vec_start_dir,
-				  s_vec_phong);
+		add_gloss(s_rays, s_color_res, s_color_light, s_vec_phong);
 	}
 }
 
@@ -42,7 +45,7 @@ void		get_vec_reflection(t_vec *s_vec_start_dir, t_vec *s_vec_dir)
 	t_vec	s_vec;
 
 	*s_vec_start_dir = vec_mul(s_vec_start_dir, -1);
-	s_vec = vec_mul(s_vec_dir, 2 * vec_scalar_mul(s_vec_dir, s_vec_start_dir));
+	s_vec = vec_mul(s_vec_dir, 2 * vec_dot(s_vec_dir, s_vec_start_dir));
 	*s_vec_start_dir = vec_sub(&s_vec, s_vec_start_dir);
 	*s_vec_start_dir = vec_norm(s_vec_start_dir);
 }
@@ -55,7 +58,7 @@ t_rgb		reflection(t_thread_data *s_thread_data, t_rays s_rays)
 	s_color = (t_rgb){0, 0, 0};
 	if (++s_rays.count_ref < MAX_REF)
 	{
-		ref_coeff = s_rays.s_ray.s_material.ref_coeff;
+		ref_coeff = s_rays.s_ray.s_material->ref_coeff;
 		s_rays.s_ray.s_vec_start = s_rays.s_ray.s_vec_inter;
 		get_vec_reflection(&s_rays.s_ray.s_vec_start_dir,
 						   &s_rays.s_ray.s_vec_inter_dir);
@@ -63,8 +66,8 @@ t_rgb		reflection(t_thread_data *s_thread_data, t_rays s_rays)
 		if (s_rays.s_ray.length < MAX_DISTANCE)
 		{
 			s_color = get_color_pixel(s_thread_data, &s_rays);
-			if (s_rays.s_ray.s_material.ref_coeff)
-				s_color = rgb_mul(&s_color, s_rays.s_ray.s_material.ref_coeff);
+			if (s_rays.s_ray.s_material->ref_coeff)
+				s_color = rgb_mul(&s_color, s_rays.s_ray.s_material->ref_coeff);
 			s_color = rgb_mul(&s_color, ref_coeff);
 		}
 	}

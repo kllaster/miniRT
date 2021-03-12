@@ -2,15 +2,15 @@
 
 void		check_inter_obj(t_ray *s_ray)
 {
-	if (s_ray->last_inter_type & (unsigned)OBJ_SPHERE)
+	if (s_ray->last_inter_type & OBJ_SPHERE)
 		inter_sphere(s_ray->last_inter_obj, s_ray);
-	else if (s_ray->last_inter_type & (unsigned)OBJ_PLANE)
+	else if (s_ray->last_inter_type & OBJ_PLANE)
 		inter_plane(s_ray->last_inter_obj, s_ray);
-	else if (s_ray->last_inter_type & (unsigned)OBJ_SQUARE)
+	else if (s_ray->last_inter_type & OBJ_SQUARE)
 		inter_square(s_ray->last_inter_obj, s_ray);
-//	else if (s_ray->last_inter_type & (unsigned)OBJ_CYLINDER)
+//	else if (s_ray->last_inter_type & OBJ_CYLINDER)
 //		inter_cylinder(s_ray->last_inter_obj, s_ray);
-	else if (s_ray->last_inter_type & (unsigned)OBJ_TRIANGLE)
+	else if (s_ray->last_inter_type & OBJ_TRIANGLE)
 		inter_triangle(s_ray->last_inter_obj, s_ray);
 }
 
@@ -25,21 +25,21 @@ void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray,
 	s_list_obj = s_thread_data->s_list_objs;
 	while (s_list_obj)
 	{
-		if (s_list_obj->type & (unsigned)OBJ_SPHERE)
+		if (s_list_obj->type & OBJ_SPHERE)
 			inter_sphere(s_list_obj->content, s_ray);
-		else if (s_list_obj->type & (unsigned)OBJ_PLANE)
+		else if (s_list_obj->type & OBJ_PLANE)
 			inter_plane(s_list_obj->content, s_ray);
-		else if (s_list_obj->type & (unsigned)OBJ_SQUARE)
+		else if (s_list_obj->type & OBJ_SQUARE)
 			inter_square(s_list_obj->content, s_ray);
-//		else if (s_list_obj->type & (unsigned)OBJ_CYLINDER)
+//		else if (s_list_obj->type & OBJ_CYLINDER)
 //			inter_cylinder(s_list_obj->content, s_ray);
-		else if (s_list_obj->type & (unsigned)OBJ_TRIANGLE)
+		else if (s_list_obj->type & OBJ_TRIANGLE)
 			inter_triangle(s_list_obj->content, s_ray);
 		s_list_obj = s_list_obj->next;
 	}
 	if (s_ray->length < distance &&
-			s_ray->last_inter_type ^ (unsigned)OBJ_PLANE &&
-			s_ray->last_inter_type ^ (unsigned)OBJ_TRIANGLE)
+			s_ray->last_inter_type ^ OBJ_PLANE &&
+			s_ray->last_inter_type ^ OBJ_TRIANGLE)
 		s_ray->s_vec_inter_dir = vec_norm(&s_ray->s_vec_inter_dir);
 }
 
@@ -56,10 +56,6 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 	s_vec_phong = vec_sub(&s_rays->s_ray.s_vec_start,
 							&s_rays->s_ray.s_vec_inter);
 	s_vec_phong = vec_norm(&s_vec_phong);
-	if (vec_scalar_mul(&s_rays->s_ray.s_vec_inter_dir,
-						&s_rays->s_ray.s_vec_start_dir) > 0)
-		s_rays->s_ray.s_vec_inter_dir =
-				vec_mul(&s_rays->s_ray.s_vec_inter_dir, -1);
 	while (s_list_light)
 	{
 		s_rays->s_ray_light.s_vec_start = s_rays->s_ray.s_vec_inter;
@@ -77,9 +73,9 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 								&s_vec_phong);
 		s_list_light = s_list_light->next;
 	}
-	rgb_add_light(&s_color_res, &s_rays->s_ray.s_color_obj,
+	rgb_add_light(&s_color_res, &s_rays->s_ray.s_material->s_color,
 					s_thread_data->s_ambient_color, 1);
-	if (s_rays->s_ray.s_material.ref_coeff)
+	if (s_rays->s_ray.s_material->ref_coeff)
 	{
 		s_color_ref = reflection(s_thread_data, *s_rays);
 		s_color_res = rgb_sum(&s_color_res, &s_color_ref);

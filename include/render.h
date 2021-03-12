@@ -4,15 +4,14 @@
 # include "mini_rt.h"
 
 typedef	struct	s_ray {
-	t_material		s_material;
-	t_vec			s_vec_inter_dir;
-	t_vec			s_vec_inter;
-	t_vec			s_vec_start_dir;
-	t_vec			s_vec_start;
-	t_rgb			s_color_obj;
-	void			*last_inter_obj;
-	float			length;
-	unsigned char	last_inter_type;
+	const t_material	*s_material;
+	t_vec				s_vec_inter_dir;
+	t_vec				s_vec_inter;
+	t_vec				s_vec_start_dir;
+	t_vec				s_vec_start;
+	void				*last_inter_obj;
+	float				length;
+	char				last_inter_type;
 }				t_ray;
 
 typedef	struct	s_rays {
@@ -29,12 +28,13 @@ void			*render(void *data);
 void			check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray,
 							 		float distance);
 void			add_gloss(t_rays *s_rays, t_rgb *s_color_res,
-							  t_rgb *s_color_light, t_vec *s_vec_halfway,
-							  t_vec *s_vec_phong);
+							  t_rgb *s_color_light, t_vec *s_vec_phong);
 void 			add_light_color(t_rays *s_rays, t_rgb *s_color_res,
 									t_rgb *s_color_light, t_vec *s_vec_phong);
 t_rgb			get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays);
 t_rgb			reflection(t_thread_data *s_thread_data, t_rays s_rays);
+void			add_inter_res(t_ray *s_ray, const t_material *s_material,
+					 			float x);
 void			inter_plane(const t_plane *s_plane, t_ray *s_ray);
 void			inter_square(const t_square *s_square, t_ray *s_ray);
 void			inter_sphere(const t_sphere *s_sphere, t_ray *s_ray);

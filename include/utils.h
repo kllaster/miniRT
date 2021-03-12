@@ -15,7 +15,7 @@ typedef struct		s_list_objs
 {
 	void				*content;
 	struct s_list_objs	*next;
-	unsigned char		type;
+	char				type;
 }					t_list_objs;
 
 typedef struct		s_list
