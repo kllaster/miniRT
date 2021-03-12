@@ -12,7 +12,7 @@ void		add_gloss(t_rays *s_rays, t_rgb *s_color_res,
 				 vec_scalar_mul(s_vec_halfway,
 								&s_rays->s_ray.s_vec_inter_dir)) > 0)
 	{
-		angel_incidence = powf(angel_incidence, 60);
+		angel_incidence = powf(angel_incidence, 100);
 		rgb_add_light(s_color_res, &s_rays->s_ray.s_color_obj,
 					  s_color_light,
 					  angel_incidence);
@@ -37,38 +37,36 @@ void 		add_light_color(t_rays *s_rays, t_rgb *s_color_res,
 	}
 }
 
-t_rgb		reflection(t_thread_data *s_thread_data, t_rays *s_rays, float coeff)
+void		get_vec_reflection(t_vec *s_vec_start_dir, t_vec *s_vec_dir)
 {
-	int			count;
-	t_rgb		s_color;
+	t_vec	s_vec;
+
+	*s_vec_start_dir = vec_mul(s_vec_start_dir, -1);
+	s_vec = vec_mul(s_vec_dir, 2 * vec_scalar_mul(s_vec_dir, s_vec_start_dir));
+	*s_vec_start_dir = vec_sub(&s_vec, s_vec_start_dir);
+	*s_vec_start_dir = vec_norm(s_vec_start_dir);
+}
+
+t_rgb		reflection(t_thread_data *s_thread_data, t_rays s_rays)
+{
+	float 	ref_coeff;
+	t_rgb	s_color;
 
 	s_color = (t_rgb){0, 0, 0};
-	s_rays->s_ray.s_vec_start = s_rays->s_ray.s_vec_inter;
-	s_rays->s_ray.s_vec_start_dir = s_rays->s_ray.s_vec_inter_dir;
-	count = -1;
-	while (++count < MAX_REF)
+	if (++s_rays.count_ref < MAX_REF)
 	{
-		check_inter_objs(s_thread_data, &s_rays->s_ray, MAX_DISTANCE);
-		if (s_rays->s_ray.length < MAX_DISTANCE)
+		ref_coeff = s_rays.s_ray.s_material.ref_coeff;
+		s_rays.s_ray.s_vec_start = s_rays.s_ray.s_vec_inter;
+		get_vec_reflection(&s_rays.s_ray.s_vec_start_dir,
+						   &s_rays.s_ray.s_vec_inter_dir);
+		check_inter_objs(s_thread_data, &s_rays.s_ray, MAX_DISTANCE);
+		if (s_rays.s_ray.length < MAX_DISTANCE)
 		{
-			s_rays->s_ray.s_vec_start = s_rays->s_ray.s_vec_inter;
-			s_rays->s_ray.s_vec_start_dir = s_rays->s_ray.s_vec_inter_dir;
+			s_color = get_color_pixel(s_thread_data, &s_rays);
+			if (s_rays.s_ray.s_material.ref_coeff)
+				s_color = rgb_mul(&s_color, s_rays.s_ray.s_material.ref_coeff);
+			s_color = rgb_mul(&s_color, ref_coeff);
 		}
-		else
-		{
-			if (count != 0)
-			{
-				s_rays->s_ray.s_vec_inter = s_rays->s_ray.s_vec_start;
-				s_rays->s_ray.s_vec_inter_dir = s_rays->s_ray.s_vec_start_dir;
-				s_rays->s_ray.length = 1;
-			}
-			break ;
-		}
-	}
-	if (count != 0)
-	{
-		s_color = get_color_pixel(s_thread_data, s_rays);
-		s_color = rgb_mul(&s_color, coeff);
 	}
 	return (s_color);
 }

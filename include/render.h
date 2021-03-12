@@ -4,6 +4,7 @@
 # include "mini_rt.h"
 
 typedef	struct	s_ray {
+	t_material		s_material;
 	t_vec			s_vec_inter_dir;
 	t_vec			s_vec_inter;
 	t_vec			s_vec_start_dir;
@@ -11,13 +12,13 @@ typedef	struct	s_ray {
 	t_rgb			s_color_obj;
 	void			*last_inter_obj;
 	float			length;
-	float			ref_coeff;
 	unsigned char	last_inter_type;
 }				t_ray;
 
 typedef	struct	s_rays {
 	t_ray			s_ray_light;
 	t_ray			s_ray;
+	int				count_ref;
 }				t_rays;
 
 int				start_render(t_rt *s_rt);
@@ -33,8 +34,7 @@ void			add_gloss(t_rays *s_rays, t_rgb *s_color_res,
 void 			add_light_color(t_rays *s_rays, t_rgb *s_color_res,
 									t_rgb *s_color_light, t_vec *s_vec_phong);
 t_rgb			get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays);
-t_rgb			reflection(t_thread_data *s_thread_data, t_rays *s_rays,
-				   				float coeff);
+t_rgb			reflection(t_thread_data *s_thread_data, t_rays s_rays);
 void			inter_plane(const t_plane *s_plane, t_ray *s_ray);
 void			inter_square(const t_square *s_square, t_ray *s_ray);
 void			inter_sphere(const t_sphere *s_sphere, t_ray *s_ray);

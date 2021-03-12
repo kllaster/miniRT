@@ -1,5 +1,15 @@
 #include "mini_rt.h"
 
+t_material	parse_material_param(char **str)
+{
+	t_material	s_material;
+
+	s_material.ref_coeff = parse_float(str, 0);
+	if (s_material.ref_coeff < 0 || s_material.ref_coeff > 1)
+		error_end("Error: ref_coeff [0, 1]", PARSE_ERROR, 0, NULL);
+	return (s_material);
+}
+
 void	check_next_arg(char **str)
 {
 	if (**str == ',')
@@ -42,6 +52,14 @@ float	parse_float(char **str, int error)
 	float	num;
 
 	sign = 1;
+	while (**str)
+	{
+		if (*(*str) == '\t' || *(*str) == ' ')
+			++(*str);
+		else if ((*(*str) >= '0' && *(*str) <= '9') ||
+				 *(*str) == '-' || *(*str) == '+')
+			break ;
+	}
 	if (**str == '-')
 		sign = -1;
 	num = (float)ft_atoi_pos(str, error);
@@ -49,8 +67,7 @@ float	parse_float(char **str, int error)
 		num *= sign = -1;
 	if (*(*str) == '.' && (++(*str)))
 		num += ft_atoi_pos_mantissa(str);
-	num *= sign;
-	return (num);
+	return (num * sign);
 }
 
 t_rgb	parse_rgb(char **str)

@@ -15,7 +15,7 @@ void	inter_sphere(const t_sphere *s_sphere, t_ray *s_ray)
 		d_x >= s_ray->length)
 		return ;
 	s_ray->length = d_x;
-	s_ray->ref_coeff = s_sphere->ref_coeff;
+	s_ray->s_material = s_sphere->s_material;
 	s_ray->s_color_obj = s_sphere->s_color;
 	s_ray->last_inter_obj = (void *)s_sphere;
 	s_ray->last_inter_type = (unsigned)OBJ_SPHERE;

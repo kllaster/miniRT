@@ -47,6 +47,7 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 {
 	t_vec	s_vec_phong;
 	t_rgb	s_color_res;
+	t_rgb	s_color_ref;
 	t_list	*s_list_light;
 	float	light_length;
 
@@ -77,8 +78,12 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 		s_list_light = s_list_light->next;
 	}
 	rgb_add_light(&s_color_res, &s_rays->s_ray.s_color_obj,
-					s_thread_data->s_ambient_color,
-					1);
+					s_thread_data->s_ambient_color, 1);
+	if (s_rays->s_ray.s_material.ref_coeff)
+	{
+		s_color_ref = reflection(s_thread_data, *s_rays);
+		s_color_res = rgb_sum(&s_color_res, &s_color_ref);
+	}
 	return (s_color_res);
 }
 
@@ -86,13 +91,12 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y,
 							t_rays *s_rays)
 {
 	int		count_rays;
-	t_rays	s_rays_ref;
 	t_rgb	s_color_res;
 	t_rgb	s_color_ray;
-	t_rgb	s_color_ref;
 
 	count_rays = 0;
 	s_color_res = (t_rgb){0, 0, 0};
+	s_rays->count_ref = -1;
 	while (count_rays < ANTI_ALIASING)
 	{
 		s_rays->s_ray.s_vec_start_dir.x = (float)x + s_thread_data->s_aa_sample.matrix[count_rays][0] -
@@ -105,18 +109,9 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y,
 		s_rays->s_ray.s_vec_start_dir = vec_sub(&s_rays->s_ray.s_vec_start_dir,
 										  &s_thread_data->s_main_camera->s_vec_origin);
 		s_rays->s_ray.s_vec_start_dir = vec_norm(&s_rays->s_ray.s_vec_start_dir);
-		s_rays->s_ray.ref_coeff = 0;
 		check_inter_objs(s_thread_data, &s_rays->s_ray, MAX_DISTANCE);
 		if (s_rays->s_ray.length < MAX_DISTANCE)
-		{
 			s_color_ray = get_color_pixel(s_thread_data, s_rays);
-			if (s_rays->s_ray.ref_coeff)
-			{
-				s_rays_ref = *s_rays;
-				s_color_ref = reflection(s_thread_data, &s_rays_ref, s_rays->s_ray.ref_coeff);
-				s_color_ray = rgb_sum(&s_color_ray, &s_color_ref);
-			}
-		}
 		else
 			s_color_ray = (t_rgb){0, 0, 0};
 		if (count_rays == 0)

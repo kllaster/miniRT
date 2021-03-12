@@ -81,7 +81,7 @@ void	parse_file(char *file, t_stage *s_stage)
 					PARSE_ERROR, 0, NULL);
 	if ((fd = open(file, O_RDONLY)) < 0)
 		error_end("Error opening the scene file", PARSE_ERROR, 0, NULL);
-	while ((error = get_next_line(fd, &str)) != -1 && error != 0)
+	while ((error = get_next_line(fd, &str)) != -1)
 	{
 		if (str[0] == 'R' && (str[1] == ' ' || str[1] == '\t'))
 			parse_screen(str, s_stage);
@@ -94,9 +94,10 @@ void	parse_file(char *file, t_stage *s_stage)
 		else
 			parse_objs(str, s_stage);
 		free(str);
+		if (error == 0)
+			break ;
 	}
 	if (error == -1)
 		error_end("Error reading the scene file", PARSE_ERROR, 0, NULL);
-	free(str);
 	close(fd);
 }
