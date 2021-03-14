@@ -75,43 +75,17 @@ t_rgb		reflection(t_thread_data *s_thread_data, t_rays s_rays)
 	return (s_color);
 }
 
-void	get_aa_sample(t_aa_sample *s_aa_sample)
+void	get_aa_sample(int anti_aliasing, t_aa_sample *s_aa_sample)
 {
-	int		i;
-	float	aa_sample1[1][2] = {{0,0}};
-	float	aa_sample2[2][2] = {{-0.35,0.35}, {0.35,-0.35}};
-	float	aa_sample3[3][2] = {{-0.45,0.45}, {-0.4,-0.45}, {-0.45,-0.4}};
-	float	aa_sample4[4][2] = {{-0.45,0.4}, {0.4,0.45}, {-0.4,-0.45}, {-0.45,-0.45}};
-	float	aa_sample5[5][2] = {{-0.45,0.4}, {0.4,0.45}, {0,0}, {-0.4,-0.45}, {-0.45,-0.45}};
-
-	i = -1;
-	while (++i < ANTI_ALIASING)
+	ft_bzero(s_aa_sample, sizeof(t_aa_sample));
+	if (anti_aliasing == 1)
 	{
-		if (ANTI_ALIASING == 1)
-		{
-			s_aa_sample->matrix[i][0] = aa_sample1[i][0];
-			s_aa_sample->matrix[i][1] = aa_sample1[i][1];
-		}
-		else if (ANTI_ALIASING == 2)
-		{
-			s_aa_sample->matrix[i][0] = aa_sample2[i][0];
-			s_aa_sample->matrix[i][1] = aa_sample2[i][1];
-		}
-		else if (ANTI_ALIASING == 3)
-		{
-			s_aa_sample->matrix[i][0] = aa_sample3[i][0];
-			s_aa_sample->matrix[i][1] = aa_sample3[i][1];
-		}
-		else if (ANTI_ALIASING == 4)
-		{
-			s_aa_sample->matrix[i][0] = aa_sample4[i][0];
-			s_aa_sample->matrix[i][1] = aa_sample4[i][1];
-		}
-		else if (ANTI_ALIASING == 5)
-		{
-			s_aa_sample->matrix[i][0] = aa_sample5[i][0];
-			s_aa_sample->matrix[i][1] = aa_sample5[i][1];
-		}
+		s_aa_sample->matrix[0][0] = (float)-0.45;
+		s_aa_sample->matrix[0][1] = (float)0.45;
+		s_aa_sample->matrix[1][0] = (float)-0.4;
+		s_aa_sample->matrix[1][1] = (float)-0.45;
+		s_aa_sample->matrix[2][0] = (float)-0.45;
+		s_aa_sample->matrix[2][1] = (float)-0.4;
 	}
 }
 

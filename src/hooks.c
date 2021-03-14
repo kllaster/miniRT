@@ -50,8 +50,8 @@ int		new_frame(t_rt *s_rt)
 	{
 		img_old_p = s_rt->s_stage.s_main_camera->s_mlx_img.img_ptr;
 		if ((s_rt->s_stage.s_main_camera->s_mlx_img.img_ptr =
-				mlx_new_image(s_rt->mlx_p, s_rt->s_stage.s_screen.width,
-								s_rt->s_stage.s_screen.height)) == NULL)
+				mlx_new_image(s_rt->mlx_p, s_rt->s_stage.width,
+								s_rt->s_stage.height)) == NULL)
 			error_end("Error at mlx_new_image()", MLX_ERROR, 0, NULL);
 		if ((s_rt->s_stage.s_main_camera->s_mlx_img.addr =
 			mlx_get_data_addr(

@@ -1,20 +1,20 @@
 #include "mini_rt.h"
 
-void	init_vscreen(t_screen *s_screen, t_camera *s_camera,
-						t_vscreen *s_vscreen)
+void	init_vscreen(float width, float height, t_camera *s_camera,
+				  		t_vscreen *s_vscreen)
 {
-	s_vscreen->width = (float)(s_screen->width * 0.5);
-	s_vscreen->height = (float)(s_screen->height * 0.5);
+	s_vscreen->width = (float)(width * 0.5);
+	s_vscreen->height = (float)(height * 0.5);
 	s_vscreen->z =
-	(s_screen->width / (2 * tanf(s_camera->fov / 2 * (M_PI / 180))));
+	(width / (2 * tanf(s_camera->fov / 2 * (M_PI / 180))));
 }
 
 void	init_camera(t_rt *s_rt, t_camera *s_camera)
 {
 	if ((s_camera->s_mlx_img.img_ptr =
 						mlx_new_image(s_rt->mlx_p,
-										s_rt->s_stage.s_screen.width,
-										s_rt->s_stage.s_screen.height)) == NULL)
+										s_rt->s_stage.width,
+										s_rt->s_stage.height)) == NULL)
 		error_end("Error at mlx_new_image()", MLX_ERROR, 0, NULL);
 	if ((s_camera->s_mlx_img.addr =
 					mlx_get_data_addr(s_camera->s_mlx_img.img_ptr,
@@ -22,7 +22,8 @@ void	init_camera(t_rt *s_rt, t_camera *s_camera)
 										&(s_camera->s_mlx_img.line_length),
 										&(s_camera->s_mlx_img.endian))) == NULL)
 		error_end("Error at mlx_get_data_addr()", MLX_ERROR, 0, NULL);
-	init_vscreen(&s_rt->s_stage.s_screen, s_camera, &s_camera->s_vscreen);
+	init_vscreen((float)s_rt->s_stage.width, (float)s_rt->s_stage.height,
+					s_camera, &s_camera->s_vscreen);
 	s_camera->s_matrix_rotate = get_matrix_rotate(&s_camera->s_vec_origin,
 													&s_camera->s_vec_dir);
 	s_camera->init = 1;
@@ -56,13 +57,14 @@ void	get_another_camera(t_rt *s_rt)
 
 void	check_user_window(t_rt *s_rt)
 {
-	t_screen	s_screen;
+	int	width;
+	int	height;
 
-	mlx_get_screen_size(s_rt->mlx_p, &(s_screen.width), &(s_screen.height));
-	if (s_rt->s_stage.s_screen.width > s_screen.width)
-		s_rt->s_stage.s_screen.width = s_screen.width;
-	if (s_rt->s_stage.s_screen.height > s_screen.height)
-		s_rt->s_stage.s_screen.height = s_screen.height;
+	mlx_get_screen_size(s_rt->mlx_p, &width, &height);
+	if (s_rt->s_stage.width > width)
+		s_rt->s_stage.width = width;
+	if (s_rt->s_stage.height > height)
+		s_rt->s_stage.height = height;
 }
 
 void	init_render(t_rt *s_rt)
@@ -72,8 +74,8 @@ void	init_render(t_rt *s_rt)
 		error_end("Error at mlx_init()", MLX_ERROR, 0, NULL);
 	check_user_window(s_rt);
 	if ((s_rt->mlx_window = mlx_new_window(s_rt->mlx_p,
-											s_rt->s_stage.s_screen.width,
-											s_rt->s_stage.s_screen.height,
+											s_rt->s_stage.width,
+											s_rt->s_stage.height,
 											"miniRT")) == NULL)
 		error_end("Error at mlx_new_window()", MLX_ERROR, 0, NULL);
 	mlx_hook(s_rt->mlx_window, 2, 0, key_press, s_rt);
@@ -81,6 +83,6 @@ void	init_render(t_rt *s_rt)
 	mlx_hook(s_rt->mlx_window, 17, 0, end_rt, s_rt);
 	mlx_mouse_hook(s_rt->mlx_window, mouse_press, s_rt);
 	get_another_camera(s_rt);
-	get_aa_sample(&s_rt->s_stage.s_aa_sample);
+	get_aa_sample(s_rt->s_stage.anti_aliasing, &s_rt->s_stage.s_aa_sample);
 	create_threads_data(s_rt);
 }

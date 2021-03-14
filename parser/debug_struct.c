@@ -91,9 +91,9 @@ void	debug_print_s_stage(t_stage *s_stage)
 	t_list_objs *s_list_obj;
 
 	printf("\n\n\\\\ t_stage s_stage //\n\n");
-	printf("— t_screen	s_screen:\n");
-	printf("——— int	height: %d\n", s_stage->s_screen.height);
-	printf("——— int	width: %d\n\n", s_stage->s_screen.width);
+	printf("——— int	anti_aliasing: %d\n", s_stage->anti_aliasing);
+	printf("——— int	height: %d\n", s_stage->height);
+	printf("——— int	width: %d\n\n", s_stage->width);
 	printf("— t_ambient_light	s_ambient_light:\n");
 	debug_print_s_color(*s_stage->s_ambient_color);
 	s_list = s_stage->s_list_cameras;

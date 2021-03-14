@@ -5,7 +5,7 @@ void	create_threads_data(t_rt *s_rt)
 	int	i;
 	int	height_thread;
 
-	height_thread = s_rt->s_stage.s_screen.height / COUNT_THREADS;
+	height_thread = s_rt->s_stage.height / COUNT_THREADS;
 	i = -1;
 	while (++i < COUNT_THREADS)
 	{
@@ -17,7 +17,7 @@ void	create_threads_data(t_rt *s_rt)
 			s_rt->s_thread_data[i].end_y =
 				s_rt->s_thread_data[i].start_y + height_thread;
 		else
-			s_rt->s_thread_data[i].end_y = s_rt->s_stage.s_screen.height;
+			s_rt->s_thread_data[i].end_y = s_rt->s_stage.height;
 	}
 }
 
@@ -32,7 +32,8 @@ int		start_render(t_rt *s_rt)
 		while (++i < COUNT_THREADS)
 			if (pthread_create(&s_rt->threads[i], NULL, render,
 								&(s_rt->s_thread_data[i])) != 0)
-				error_end("Error while creating thread: start_render()", THREAD_ERROR, 0, NULL);
+				error_end("Error while creating thread: start_render()",
+			  	THREAD_ERROR, 0, NULL);
 		i = -1;
 		while (++i < COUNT_THREADS)
 			pthread_join(s_rt->threads[i], NULL);

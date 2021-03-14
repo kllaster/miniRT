@@ -5,7 +5,6 @@
 # define MAX_DISTANCE	100000
 # define MIN_DISTANCE	0.02
 # define MAX_REF		5
-# define ANTI_ALIASING	1
 # define SPEED_MOVE		5
 # define ANGEL_ROTATION	3
 # define CHANGING_SIZE	2

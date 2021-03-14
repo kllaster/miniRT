@@ -36,31 +36,30 @@ typedef	struct	s_light {
 	t_rgb			s_color;
 }				t_light;
 
-typedef	struct	s_screen {
-	int				height;
-	int				width;
-}				t_screen;
-
-typedef	struct	s_stage {
-	t_aa_sample		s_aa_sample;
-	t_screen		s_screen;
-	t_camera		*s_main_camera;
-	t_list			*s_list_lights;
-	t_list_objs		*s_list_objs;
-	t_rgb			*s_ambient_color;
-	t_list			*s_list_cameras;
-}				t_stage;
-
 typedef	struct	s_thread_data {
 	t_aa_sample		s_aa_sample;
-	t_screen		s_screen;
 	t_camera		*s_main_camera;
 	t_list			*s_list_lights;
 	t_list_objs		*s_list_objs;
 	t_rgb			*s_ambient_color;
+	int				anti_aliasing;
+	int 			height;
+	int 			width;
 	int				start_y;
 	int				end_y;
 }				t_thread_data;
+
+typedef	struct	s_stage {
+	t_aa_sample		s_aa_sample;
+	t_camera		*s_main_camera;
+	t_list			*s_list_lights;
+	t_list_objs		*s_list_objs;
+	t_rgb			*s_ambient_color;
+	int				anti_aliasing;
+	int 			height;
+	int 			width;
+	t_list			*s_list_cameras;
+}				t_stage;
 
 typedef	struct	s_rt {
 	t_stage			s_stage;

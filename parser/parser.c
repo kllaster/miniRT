@@ -3,13 +3,16 @@
 void	parse_screen(char *str, t_stage *s_stage)
 {
 	skip_between_param(&str, 0);
-	s_stage->s_screen.width = ft_atoi_pos(&str, 1);
-	if (s_stage->s_screen.width <= 0)
+	s_stage->width = ft_atoi_pos(&str, 1);
+	if (s_stage->width <= 0)
 		error_end("Incorrect window width", PARSE_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
-	s_stage->s_screen.height = ft_atoi_pos(&str, 1);
-	if (s_stage->s_screen.height <= 0)
+	s_stage->height = ft_atoi_pos(&str, 1);
+	if (s_stage->height <= 0)
 		error_end("Incorrect window height", PARSE_ERROR, 0, NULL);
+	s_stage->anti_aliasing = ft_atoi_pos(&str, 0);
+	if (s_stage->anti_aliasing != 0 && s_stage->anti_aliasing != 1)
+		error_end("Error: anti_aliasing [0, 1]", PARSE_ERROR, 0, NULL);
 }
 
 void	parse_ambient_light(char *str, t_stage *s_stage)

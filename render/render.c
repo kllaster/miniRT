@@ -86,22 +86,27 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 int			anti_aliasing(t_thread_data *s_thread_data, int x, int y,
 							t_rays *s_rays)
 {
+	int		i;
 	int		count_rays;
 	t_rgb	s_color_res;
 	t_rgb	s_color_ray;
 
-	count_rays = 0;
+	i = -1;
+	count_rays = s_thread_data->anti_aliasing ? 3 : 1;
 	s_color_res = (t_rgb){0, 0, 0};
-	s_rays->count_ref = -1;
-	while (count_rays < ANTI_ALIASING)
+	while (++i < count_rays)
 	{
-		s_rays->s_ray.s_vec_start_dir.x = (float)x + s_thread_data->s_aa_sample.matrix[count_rays][0] -
-											s_thread_data->s_main_camera->s_vscreen.width;
-		s_rays->s_ray.s_vec_start_dir.y = (float)-y + s_thread_data->s_aa_sample.matrix[count_rays][1] +
-											s_thread_data->s_main_camera->s_vscreen.height;
-		s_rays->s_ray.s_vec_start_dir.z = s_thread_data->s_main_camera->s_vscreen.z;
-		s_rays->s_ray.s_vec_start_dir = matrix_mul(&s_rays->s_ray.s_vec_start_dir,
-											 &s_thread_data->s_main_camera->s_matrix_rotate);
+		s_rays->s_ray.s_vec_start_dir.x = (float)x +
+								s_thread_data->s_aa_sample.matrix[i][0] -
+								s_thread_data->s_main_camera->s_vscreen.width;
+		s_rays->s_ray.s_vec_start_dir.y = (float)-y +
+								s_thread_data->s_aa_sample.matrix[i][1] +
+								s_thread_data->s_main_camera->s_vscreen.height;
+		s_rays->s_ray.s_vec_start_dir.z =
+								s_thread_data->s_main_camera->s_vscreen.z;
+		s_rays->s_ray.s_vec_start_dir =
+				matrix_mul(&s_rays->s_ray.s_vec_start_dir,
+							 &s_thread_data->s_main_camera->s_matrix_rotate);
 		s_rays->s_ray.s_vec_start_dir = vec_sub(&s_rays->s_ray.s_vec_start_dir,
 												&s_rays->s_ray.s_vec_start);
 		s_rays->s_ray.s_vec_start_dir = vec_norm(&s_rays->s_ray.s_vec_start_dir);
@@ -110,11 +115,10 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y,
 			s_color_ray = get_color_pixel(s_thread_data, s_rays);
 		else
 			s_color_ray = (t_rgb){0, 0, 0};
-		if (count_rays == 0)
+		if (i == 0)
 			s_color_res = rgb_average(&s_color_ray, &s_color_res, 0);
 		else
 			s_color_res = rgb_average(&s_color_ray, &s_color_res, 1);
-		++count_rays;
 	}
 	return (rgb_get_int(&s_color_res));
 }
@@ -134,8 +138,9 @@ void		*render(void *data)
 	while (y < s_thread_data->end_y)
 	{
 		x = 0;
-		while (x < s_thread_data->s_screen.width)
+		while (x < s_thread_data->width)
 		{
+			s_rays.count_ref = -1;
 			color_pixel = anti_aliasing(s_thread_data, x, y, &s_rays);
 			my_mlx_pixel_put(&s_thread_data->s_main_camera->s_mlx_img,
 								x, y, color_pixel);
