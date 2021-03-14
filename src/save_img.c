@@ -45,17 +45,16 @@ void	save_bmp(t_rt *s_rt, char *file_name)
 	close(fd);
 }
 
-void	save_img(t_rt *s_rt, char *argv[])
+void	save_img(t_rt *s_rt, char *name, char *argv[])
 {
-	if (!ft_strncmp("--save", argv[2], 6))
+	if (!argv || !ft_strncmp("--save", argv[2], 6))
 	{
 		start_render(s_rt);
-		if (ft_strequal_end(argv[3], ".bmp"))
-			save_bmp(s_rt, argv[3]);
+		if (ft_strequal_end(name, ".bmp"))
+			save_bmp(s_rt, name);
 		else
 			error_end("Expected \"--save file_name.bmp\"",
 						PARSE_ERROR, 0, NULL);
-		end_rt(s_rt);
 	}
 	else
 		error_end("Expected \"--save file_name.bmp\"", PARSE_ERROR, 0, NULL);

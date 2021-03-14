@@ -13,29 +13,30 @@ void		add_gloss(t_rays *s_rays, t_rgb *s_color_res,
 {
 	float	angel_incidence;
 
-	s_rays->s_ray_light.s_vec_start_dir = vec_sum(&s_rays->s_ray_light.s_vec_start_dir, s_vec_phong);
-	s_rays->s_ray_light.s_vec_start_dir = vec_norm(&s_rays->s_ray_light.s_vec_start_dir);
+	s_rays->s_ray_light.s_vec_start_dir =
+		vec_sum(&s_rays->s_ray_light.s_vec_start_dir, s_vec_phong);
+	s_rays->s_ray_light.s_vec_start_dir =
+		vec_norm(&s_rays->s_ray_light.s_vec_start_dir);
 	if ((angel_incidence =
-				 vec_dot(&s_rays->s_ray_light.s_vec_start_dir, &s_rays->s_ray.s_vec_inter_dir)) > 0)
+				vec_dot(&s_rays->s_ray_light.s_vec_start_dir,
+							&s_rays->s_ray.s_vec_inter_dir)) > 0)
 	{
 		angel_incidence = powf(angel_incidence, 100);
 		rgb_add_light(s_color_res, &s_rays->s_ray.s_material->s_color,
-					  s_color_light,
-					  angel_incidence);
+						s_color_light, angel_incidence);
 	}
 }
 
-void 		add_light_color(t_rays *s_rays, t_rgb *s_color_res,
+void		add_light_color(t_rays *s_rays, t_rgb *s_color_res,
 							t_rgb *s_color_light, t_vec *s_vec_phong)
 {
 	float	angel_incidence;
 
 	if ((angel_incidence = vec_dot(&s_rays->s_ray_light.s_vec_start_dir,
-								   &s_rays->s_ray.s_vec_inter_dir)) > 0)
+									&s_rays->s_ray.s_vec_inter_dir)) > 0)
 	{
 		rgb_add_light(s_color_res, &s_rays->s_ray.s_material->s_color,
-					  s_color_light,
-					  angel_incidence);
+						s_color_light, angel_incidence);
 		add_gloss(s_rays, s_color_res, s_color_light, s_vec_phong);
 	}
 }
@@ -61,7 +62,7 @@ t_rgb		reflection(t_thread_data *s_thread_data, t_rays s_rays)
 		ref_coeff = s_rays.s_ray.s_material->ref_coeff;
 		s_rays.s_ray.s_vec_start = s_rays.s_ray.s_vec_inter;
 		get_vec_reflection(&s_rays.s_ray.s_vec_start_dir,
-						   &s_rays.s_ray.s_vec_inter_dir);
+							&s_rays.s_ray.s_vec_inter_dir);
 		check_inter_objs(s_thread_data, &s_rays.s_ray, MAX_DISTANCE);
 		if (s_rays.s_ray.length < MAX_DISTANCE)
 		{

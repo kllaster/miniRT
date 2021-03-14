@@ -58,3 +58,4 @@ dkms.conf
 miniRT
 scenes_files/
 *.bmp
+*.swiftsourceinfo

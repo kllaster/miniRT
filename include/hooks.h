@@ -18,7 +18,8 @@ enum	e_keys {
 	KEY_UP = 126,
 	KEY_DOWN = 125,
 	KEY_LEFT = 123,
-	KEY_RIGHT = 124
+	KEY_RIGHT = 124,
+	KEY_F5 = 96
 };
 
 void	change_frame(t_rt *s_rt, void *img_old_p);

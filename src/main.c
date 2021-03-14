@@ -20,7 +20,10 @@ int	main(int argc, char *argv[])
 	init_render(&s_rt);
 	debug_print_s_stage(&s_rt.s_stage);
 	if (argc == 4)
-		save_img(&s_rt, argv);
+	{
+		save_img(&s_rt, argv[3], argv);
+		end_rt(&s_rt);
+	}
 	change_frame(&s_rt, NULL);
 	mlx_loop_hook(s_rt.mlx_p, new_frame, &s_rt);
 	mlx_loop(s_rt.mlx_p);

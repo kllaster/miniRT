@@ -66,13 +66,11 @@ typedef	struct	s_rt {
 	t_stage			s_stage;
 	t_thread_data	s_thread_data[COUNT_THREADS];
 	pthread_t		threads[COUNT_THREADS];
-	t_vec			new_dir;
+	t_vec			s_vec_dir;
+	t_vec			s_vec_pos;
 	void			*mlx_window;
 	void			*mlx_p;
 	int				change_cam;
-	int				x_move;
-	int				y_move;
-	int				z_move;
 	int				render_now;
 }				t_rt;
 

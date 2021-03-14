@@ -42,6 +42,6 @@ void			inter_triangle(const t_triangle *s_triangle, t_ray *s_ray);
 void			my_mlx_pixel_put(const t_mlx_img *s_mlx_img, int x, int y,
 									int color);
 void			get_aa_sample(t_aa_sample *s_aa_sample);
-void			save_img(t_rt *s_rt, char *argv[]);
+void			save_img(t_rt *s_rt, char *name, char *argv[]);
 
 #endif

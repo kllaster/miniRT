@@ -37,8 +37,8 @@ void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray,
 			inter_triangle(s_list_obj->content, s_ray);
 		s_list_obj = s_list_obj->next;
 	}
-	if (s_ray->length < distance &&
-			s_ray->last_inter_type ^ OBJ_PLANE &&
+	if (s_ray->length < distance && s_ray->last_inter_type ^ OBJ_PLANE &&
+			s_ray->last_inter_type ^ OBJ_SQUARE &&
 			s_ray->last_inter_type ^ OBJ_TRIANGLE)
 		s_ray->s_vec_inter_dir = vec_norm(&s_ray->s_vec_inter_dir);
 }
