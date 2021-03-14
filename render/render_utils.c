@@ -63,7 +63,7 @@ t_rgb		reflection(t_thread_data *s_thread_data, t_rays s_rays)
 		s_rays.s_ray.s_vec_start = s_rays.s_ray.s_vec_inter;
 		get_vec_reflection(&s_rays.s_ray.s_vec_start_dir,
 							&s_rays.s_ray.s_vec_inter_dir);
-		check_inter_objs(s_thread_data, &s_rays.s_ray, MAX_DISTANCE);
+		check_inter_objs(s_thread_data->s_list_objs, &s_rays.s_ray, MAX_DISTANCE);
 		if (s_rays.s_ray.length < MAX_DISTANCE)
 		{
 			s_color = get_color_pixel(s_thread_data, &s_rays);

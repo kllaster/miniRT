@@ -19,13 +19,16 @@ enum	e_keys {
 	KEY_DOWN = 125,
 	KEY_LEFT = 123,
 	KEY_RIGHT = 124,
-	KEY_F5 = 96
+	KEY_F5 = 96,
+	BUTTON_1 = 1,
+	BUTTON_2 = 2
 };
 
 void	change_frame(t_rt *s_rt, void *img_old_p);
 int		new_frame(t_rt *s_rt);
 int		key_press(int keycode, t_rt *s_rt);
 int		key_release(int keycode, t_rt *s_rt);
+int		mouse_press(int button, int x, int y, t_rt *s_rt);
 int		check_hooks(t_rt *s_rt);
 void	free_rt(t_rt *s_rt);
 int		end_rt(t_rt *s_rt);

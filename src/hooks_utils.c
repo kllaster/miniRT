@@ -115,6 +115,12 @@ int		check_hooks(t_rt *s_rt)
 			update = change_pos_camera(s_rt, &s_rt->s_vec_pos);
 			last_hook_time = time_unix_ms();
 		}
+		else if (!s_rt->render_now && s_rt->change_obj)
+		{
+			update = 1;
+			s_rt->change_obj = 0;
+			last_hook_time = time_unix_ms();
+		}
 	}
 	return (update);
 }

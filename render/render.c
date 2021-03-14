@@ -14,7 +14,7 @@ void		check_inter_obj(t_ray *s_ray)
 		inter_triangle(s_ray->last_inter_obj, s_ray);
 }
 
-void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray,
+void		check_inter_objs(t_list_objs *s_list_objs, t_ray *s_ray,
 								float distance)
 {
 	t_list_objs	*s_list_obj;
@@ -22,7 +22,7 @@ void		check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray,
 	s_ray->length = distance;
 	if (s_ray->last_inter_obj)
 		check_inter_obj(s_ray);
-	s_list_obj = s_thread_data->s_list_objs;
+	s_list_obj = s_list_objs;
 	while (s_list_obj)
 	{
 		if (s_list_obj->type & OBJ_SPHERE)
@@ -66,7 +66,7 @@ t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
 							(float)MIN_DISTANCE;
 		s_rays->s_ray_light.s_vec_start_dir =
 					vec_norm(&s_rays->s_ray_light.s_vec_start_dir);
-		check_inter_objs(s_thread_data, &s_rays->s_ray_light, light_length);
+		check_inter_objs(s_thread_data->s_list_objs, &s_rays->s_ray_light, light_length);
 		if (s_rays->s_ray_light.length == light_length)
 			add_light_color(s_rays, &s_color_res,
 								&((t_light *)s_list_light->content)->s_color,
@@ -103,9 +103,9 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y,
 		s_rays->s_ray.s_vec_start_dir = matrix_mul(&s_rays->s_ray.s_vec_start_dir,
 											 &s_thread_data->s_main_camera->s_matrix_rotate);
 		s_rays->s_ray.s_vec_start_dir = vec_sub(&s_rays->s_ray.s_vec_start_dir,
-										  &s_thread_data->s_main_camera->s_vec_origin);
+												&s_rays->s_ray.s_vec_start);
 		s_rays->s_ray.s_vec_start_dir = vec_norm(&s_rays->s_ray.s_vec_start_dir);
-		check_inter_objs(s_thread_data, &s_rays->s_ray, MAX_DISTANCE);
+		check_inter_objs(s_thread_data->s_list_objs, &s_rays->s_ray, MAX_DISTANCE);
 		if (s_rays->s_ray.length < MAX_DISTANCE)
 			s_color_ray = get_color_pixel(s_thread_data, s_rays);
 		else

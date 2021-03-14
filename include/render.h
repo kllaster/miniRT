@@ -25,7 +25,7 @@ void			create_threads_data(t_rt *s_rt);
 void			get_another_camera(t_rt *s_rt);
 void			init_render(t_rt *s_rt);
 void			*render(void *data);
-void			check_inter_objs(t_thread_data *s_thread_data, t_ray *s_ray,
+void			check_inter_objs(t_list_objs *s_list_objs, t_ray *s_ray,
 							 		float distance);
 void			add_gloss(t_rays *s_rays, t_rgb *s_color_res,
 							  t_rgb *s_color_light, t_vec *s_vec_phong);

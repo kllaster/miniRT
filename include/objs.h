@@ -20,6 +20,7 @@ typedef	struct	s_sphere {
 	t_material	s_material;
 	t_vec		s_vec_origin;
 	float		radius_pow;
+	float		diameter;
 }				t_sphere;
 
 typedef	struct	s_plane {

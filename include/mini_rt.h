@@ -8,6 +8,7 @@
 # define ANTI_ALIASING	1
 # define SPEED_MOVE		5
 # define ANGEL_ROTATION	3
+# define CHANGING_SIZE	2
 
 # include "../minilibx/mlx.h"
 # include <pthread.h>

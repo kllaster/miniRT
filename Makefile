@@ -14,6 +14,7 @@ SRCS =	src/main.c\
 		src/save_img.c\
 		src/hooks.c\
 		src/hooks_utils.c\
+		src/hooks_mouse.c\
 		src/colors_utils.c\
 		src/matrix_utils.c\
 		src/vectors_utils.c\

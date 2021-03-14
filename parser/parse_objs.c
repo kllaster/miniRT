@@ -10,10 +10,10 @@ void	parse_sphere(char *str, t_stage *s_stage)
 	skip_between_param(&str, 0);
 	s_sphere->s_vec_origin = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	s_sphere->radius_pow = parse_float(&str, 1);
-	if (s_sphere->radius_pow <= 0.0)
+	s_sphere->diameter = parse_float(&str, 1);
+	if (s_sphere->diameter <= 0.0)
 		error_end("Incorrect sphere diameter", PARSE_ERROR, 0, NULL);
-	s_sphere->radius_pow *= (float)0.5;
+	s_sphere->radius_pow = s_sphere->diameter * (float)0.5;
 	s_sphere->radius_pow *= s_sphere->radius_pow;
 	skip_between_param(&str, 0);
 	s_sphere->s_material = parse_material_param(&str);

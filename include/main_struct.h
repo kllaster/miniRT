@@ -70,6 +70,7 @@ typedef	struct	s_rt {
 	t_vec			s_vec_pos;
 	void			*mlx_window;
 	void			*mlx_p;
+	int				change_obj;
 	int				change_cam;
 	int				render_now;
 }				t_rt;
