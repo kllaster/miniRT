@@ -1,6 +1,39 @@
 #include "mini_rt.h"
 
-int	mouse_press(int button, int x, int y, t_rt *s_rt)
+void	resize_sphere(float *diameter, float *radius_pow, int *change_obj,
+				   		float i)
+{
+	if (*diameter + i * CHANGING_SIZE < 1)
+	{
+		if (*diameter != 1)
+			*diameter = 1;
+		else
+			return ;
+	}
+	else
+		*diameter += i * CHANGING_SIZE;
+	*radius_pow = *diameter * (float)0.5;
+	*radius_pow *= *radius_pow;
+	*change_obj = 1;
+}
+
+void	resize_square(float *side_size, float *side_half, int *change_obj,
+				   		float i)
+{
+	if (*side_size + i * CHANGING_SIZE < 1)
+	{
+		if (*side_size != 1)
+			*side_size = 1;
+		else
+			return ;
+	}
+	else
+		*side_size += i * CHANGING_SIZE;
+	*side_half = *side_size * (float)0.5;
+	*change_obj = 1;
+}
+
+int		mouse_press(int button, int x, int y, t_rt *s_rt)
 {
 	float 	i;
 	t_ray	s_ray;
@@ -26,27 +59,18 @@ int	mouse_press(int button, int x, int y, t_rt *s_rt)
 	if (s_ray.length < MAX_DISTANCE)
 	{
 		if (s_ray.last_inter_type & OBJ_SPHERE)
-		{
-			if (((t_sphere *)s_ray.last_inter_obj)->diameter +
-					i * CHANGING_SIZE < 1)
-			{
-				if (((t_sphere *)s_ray.last_inter_obj)->diameter != 1)
-					((t_sphere *)s_ray.last_inter_obj)->diameter = 1;
-				else
-					return (0);
-			}
-			((t_sphere *)s_ray.last_inter_obj)->diameter += i * CHANGING_SIZE;
-			((t_sphere *)s_ray.last_inter_obj)->radius_pow =
-					((t_sphere *)s_ray.last_inter_obj)->diameter * (float)0.5;
-			((t_sphere *)s_ray.last_inter_obj)->radius_pow *=
-					((t_sphere *)s_ray.last_inter_obj)->radius_pow;
-			s_rt->change_obj = 1;
-		}
+			resize_sphere(&((t_sphere *)s_ray.last_inter_obj)->diameter,
+						  	&((t_sphere *)s_ray.last_inter_obj)->radius_pow,
+							&s_rt->change_obj, i);
+		else if (s_ray.last_inter_type & OBJ_SQUARE)
+			resize_square(&((t_square *)s_ray.last_inter_obj)->side_size,
+				 			&((t_square *)s_ray.last_inter_obj)->side_half,
+				 			&s_rt->change_obj, i);
 	}
 	return (0);
 }
 
-int	mouse_release(int button, int x, int y, t_rt *s_rt)
+int		mouse_release(int button, int x, int y, t_rt *s_rt)
 {
 	if (button == BUTTON_1 || button == BUTTON_2)
 		s_rt->change_obj = 0;

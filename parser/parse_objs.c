@@ -15,7 +15,6 @@ void	parse_sphere(char *str, t_stage *s_stage)
 		error_end("Incorrect sphere diameter", PARSE_ERROR, 0, NULL);
 	s_sphere->radius_pow = s_sphere->diameter * (float)0.5;
 	s_sphere->radius_pow *= s_sphere->radius_pow;
-	skip_between_param(&str, 0);
 	s_sphere->s_material = parse_material_param(&str);
 	ft_list_obj_add_front(&(s_stage->s_list_objs),
 							ft_list_obj_new(s_sphere, OBJ_SPHERE));
@@ -38,7 +37,6 @@ void	parse_plane(char *str, t_stage *s_stage)
 		error_end("Incorrect direction obj plane",
 					PARSE_ERROR, 0, NULL);
 	s_plane->s_vec_dir = vec_norm(&s_plane->s_vec_dir);
-	skip_between_param(&str, 0);
 	s_plane->s_material = parse_material_param(&str);
 	ft_list_obj_add_front(&(s_stage->s_list_objs),
 							ft_list_obj_new(s_plane, OBJ_PLANE));
@@ -64,7 +62,7 @@ void	parse_square(char *str, t_stage *s_stage)
 	s_square->side_size = parse_float(&str, 1);
 	if (s_square->side_size <= 0.0)
 		error_end("Invalid square side size", PARSE_ERROR, 0, NULL);
-	skip_between_param(&str, 0);
+	s_square->side_half = s_square->side_size * 0.5;
 	s_square->s_material = parse_material_param(&str);
 	ft_list_obj_add_front(&(s_stage->s_list_objs),
 							ft_list_obj_new(s_square, OBJ_SQUARE));
@@ -94,7 +92,6 @@ void	parse_cylinder(char *str, t_stage *s_stage)
 	s_cylinder->height = parse_float(&str, 1);
 	if (s_cylinder->height <= 0.0)
 		error_end("Incorrect cylinder height", PARSE_ERROR, 0, NULL);
-	skip_between_param(&str, 0);
 	s_cylinder->s_material = parse_material_param(&str);
 	ft_list_obj_add_front(&(s_stage->s_list_objs),
 							ft_list_obj_new(s_cylinder, OBJ_CYLINDER));

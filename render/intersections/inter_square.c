@@ -18,9 +18,9 @@ void	inter_square(const t_square *s_square, t_ray *s_ray)
 	s_matrix = get_matrix_rotate((t_vec *)&s_square->s_vec_origin,
 							  		(t_vec *)&s_square->s_vec_dir);
 	if (ft_fabs(vec_dot((t_vec *)&(s_matrix.el[0]), &s_vec1)) >
-			s_square->side_size * 0.5 ||
+			s_square->side_half ||
 			ft_fabs(vec_dot((t_vec *)&(s_matrix.el[1]), &s_vec1)) >
-			s_square->side_size * 0.5)
+			s_square->side_half)
 		return ;
 	add_inter_res(s_ray, &s_square->s_material, x);
 	s_ray->last_inter_obj = (void *)s_square;

@@ -34,6 +34,7 @@ typedef	struct	s_square {
 	t_vec		s_vec_origin;
 	t_vec		s_vec_dir;
 	float		side_size;
+	float		side_half;
 }				t_square;
 
 typedef	struct	s_cylinder {
