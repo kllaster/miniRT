@@ -29,6 +29,7 @@ int		new_frame(t_rt *s_rt);
 int		key_press(int keycode, t_rt *s_rt);
 int		key_release(int keycode, t_rt *s_rt);
 int		mouse_press(int button, int x, int y, t_rt *s_rt);
+int		mouse_release(int button, int x, int y, t_rt *s_rt);
 int		check_hooks(t_rt *s_rt);
 void	free_rt(t_rt *s_rt);
 int		end_rt(t_rt *s_rt);

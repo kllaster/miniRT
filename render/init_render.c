@@ -80,8 +80,9 @@ void	init_render(t_rt *s_rt)
 		error_end("Error at mlx_new_window()", MLX_ERROR, 0, NULL);
 	mlx_hook(s_rt->mlx_window, 2, 0, key_press, s_rt);
 	mlx_hook(s_rt->mlx_window, 3, 0, key_release, s_rt);
+	mlx_hook(s_rt->mlx_window, 4, 0, mouse_press, s_rt);
+	mlx_hook(s_rt->mlx_window, 5, 0, mouse_release, s_rt);
 	mlx_hook(s_rt->mlx_window, 17, 0, end_rt, s_rt);
-	mlx_mouse_hook(s_rt->mlx_window, mouse_press, s_rt);
 	get_another_camera(s_rt);
 	get_aa_sample(s_rt->s_stage.anti_aliasing, &s_rt->s_stage.s_aa_sample);
 	create_threads_data(s_rt);

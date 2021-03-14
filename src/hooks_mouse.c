@@ -6,14 +6,16 @@ int	mouse_press(int button, int x, int y, t_rt *s_rt)
 	t_ray	s_ray;
 
 	i = 1;
-	if (button != BUTTON_1 && button != BUTTON_2)
+	if (s_rt->render_now || (button != BUTTON_1 && button != BUTTON_2))
 		return (0);
 	else if (button == BUTTON_2)
 		i = -1;
 	ft_bzero(&s_ray, sizeof(t_ray));
 	s_ray.s_vec_start = s_rt->s_stage.s_main_camera->s_vec_origin;
-	s_ray.s_vec_start_dir.x = (float)x - s_rt->s_stage.s_main_camera->s_vscreen.width;
-	s_ray.s_vec_start_dir.y = (float)-y + s_rt->s_stage.s_main_camera->s_vscreen.height;
+	s_ray.s_vec_start_dir.x = (float)x -
+								s_rt->s_stage.s_main_camera->s_vscreen.width;
+	s_ray.s_vec_start_dir.y = (float)-y +
+								s_rt->s_stage.s_main_camera->s_vscreen.height;
 	s_ray.s_vec_start_dir.z = s_rt->s_stage.s_main_camera->s_vscreen.z;
 	s_ray.s_vec_start_dir = matrix_mul(&s_ray.s_vec_start_dir,
 							   &s_rt->s_stage.s_main_camera->s_matrix_rotate);
@@ -25,8 +27,14 @@ int	mouse_press(int button, int x, int y, t_rt *s_rt)
 	{
 		if (s_ray.last_inter_type & OBJ_SPHERE)
 		{
-			if (((t_sphere *)s_ray.last_inter_obj)->diameter + i * CHANGING_SIZE < 0)
-				return (0);
+			if (((t_sphere *)s_ray.last_inter_obj)->diameter +
+					i * CHANGING_SIZE < 1)
+			{
+				if (((t_sphere *)s_ray.last_inter_obj)->diameter != 1)
+					((t_sphere *)s_ray.last_inter_obj)->diameter = 1;
+				else
+					return (0);
+			}
 			((t_sphere *)s_ray.last_inter_obj)->diameter += i * CHANGING_SIZE;
 			((t_sphere *)s_ray.last_inter_obj)->radius_pow =
 					((t_sphere *)s_ray.last_inter_obj)->diameter * (float)0.5;
@@ -35,5 +43,14 @@ int	mouse_press(int button, int x, int y, t_rt *s_rt)
 			s_rt->change_obj = 1;
 		}
 	}
+	return (0);
+}
+
+int	mouse_release(int button, int x, int y, t_rt *s_rt)
+{
+	if (button == BUTTON_1 || button == BUTTON_2)
+		s_rt->change_obj = 0;
+	(void)x;
+	(void)y;
 	return (0);
 }

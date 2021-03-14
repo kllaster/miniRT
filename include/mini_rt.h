@@ -7,7 +7,7 @@
 # define MAX_REF		5
 # define SPEED_MOVE		5
 # define ANGEL_ROTATION	3
-# define CHANGING_SIZE	2
+# define CHANGING_SIZE	1
 
 # include "../minilibx/mlx.h"
 # include <pthread.h>
