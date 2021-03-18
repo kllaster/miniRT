@@ -42,7 +42,9 @@ typedef	struct	s_cylinder {
 	t_vec		s_vec_dir;
 	t_vec		s_vec_o;
 	float		diameter;
+	float		radius_pow;
 	float		height;
+	float		height_half;
 }				t_cylinder;
 
 typedef	struct	s_triangle {

@@ -4,10 +4,10 @@ void	parse_sphere(char *str, t_stage *s_stage)
 {
 	t_sphere	*s_sphere;
 
-	if ((s_sphere = malloc(sizeof(t_sphere))) == NULL)
-		error_end("Memory allocation error: parse_sphere()",
-					MALLOC_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
+	malloc_void((void **)&s_sphere, sizeof(t_sphere));
+	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
+							ft_lst_obj_new(s_sphere, OBJ_SPHERE, inter_sphere));
 	s_sphere->s_vec_o = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_sphere->diameter = parse_float(&str, 1);
@@ -16,18 +16,16 @@ void	parse_sphere(char *str, t_stage *s_stage)
 	s_sphere->radius_pow = s_sphere->diameter * (float)0.5;
 	s_sphere->radius_pow *= s_sphere->radius_pow;
 	s_sphere->s_material = parse_material_param(&str);
-	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
-							ft_lst_obj_new(s_sphere, OBJ_SPHERE, inter_sphere));
 }
 
 void	parse_plane(char *str, t_stage *s_stage)
 {
 	t_plane	*s_plane;
 
-	if ((s_plane = malloc(sizeof(t_plane))) == NULL)
-		error_end("Memory allocation error: parse_plane()",
-					MALLOC_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
+	malloc_void((void **)&s_plane, sizeof(t_plane));
+	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
+							ft_lst_obj_new(s_plane, OBJ_PLANE, inter_plane));
 	s_plane->s_vec_o = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_plane->s_vec_dir = parse_coordinates(&str);
@@ -38,18 +36,16 @@ void	parse_plane(char *str, t_stage *s_stage)
 					PARSE_ERROR, 0, NULL);
 	s_plane->s_vec_dir = vec_norm(&s_plane->s_vec_dir);
 	s_plane->s_material = parse_material_param(&str);
-	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
-							ft_lst_obj_new(s_plane, OBJ_PLANE, inter_plane));
 }
 
 void	parse_square(char *str, t_stage *s_stage)
 {
 	t_square	*s_square;
 
-	if ((s_square = malloc(sizeof(t_square))) == NULL)
-		error_end("Memory allocation error: parse_square()",
-					MALLOC_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
+	malloc_void((void **)&s_square, sizeof(t_square));
+	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
+							ft_lst_obj_new(s_square, OBJ_SQUARE, inter_square));
 	s_square->s_vec_o = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_square->s_vec_dir = parse_coordinates(&str);
@@ -64,18 +60,16 @@ void	parse_square(char *str, t_stage *s_stage)
 		error_end("Invalid square side size", PARSE_ERROR, 0, NULL);
 	s_square->side_half = s_square->side_size * 0.5;
 	s_square->s_material = parse_material_param(&str);
-	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
-							ft_lst_obj_new(s_square, OBJ_SQUARE, inter_square));
 }
 
 void	parse_cylinder(char *str, t_stage *s_stage)
 {
 	t_cylinder	*s_cylinder;
 
-	if ((s_cylinder = malloc(sizeof(t_cylinder))) == NULL)
-		error_end("Memory allocation error: parse_cylinder()",
-					MALLOC_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
+	malloc_void((void **)&s_cylinder, sizeof(t_cylinder));
+	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
+				ft_lst_obj_new(s_cylinder, OBJ_CYLINDER, inter_cylinder));
 	s_cylinder->s_vec_o = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_cylinder->s_vec_dir = parse_coordinates(&str);
@@ -88,23 +82,23 @@ void	parse_cylinder(char *str, t_stage *s_stage)
 	s_cylinder->diameter = parse_float(&str, 1);
 	if (s_cylinder->diameter <= 0.0)
 		error_end("Incorrect cylinder diameter", PARSE_ERROR, 0, NULL);
+	s_cylinder->radius_pow = powf(s_cylinder->diameter * (float)0.5, 2);
 	skip_between_param(&str, 0);
 	s_cylinder->height = parse_float(&str, 1);
 	if (s_cylinder->height <= 0.0)
 		error_end("Incorrect cylinder height", PARSE_ERROR, 0, NULL);
+	s_cylinder->height_half = s_cylinder->height * (float)0.5;
 	s_cylinder->s_material = parse_material_param(&str);
-	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
-							ft_lst_obj_new(s_cylinder, OBJ_CYLINDER, NULL));
 }
 
 void	parse_triangle(char *str, t_stage *s_stage)
 {
 	t_triangle	*s_triangle;
 
-	if ((s_triangle = malloc(sizeof(t_triangle))) == NULL)
-		error_end("Memory allocation error: parse_triangle()",
-					MALLOC_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
+	malloc_void((void **)&s_triangle, sizeof(t_triangle));
+	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
+				ft_lst_obj_new(s_triangle, OBJ_TRIANGLE, inter_triangle));
 	s_triangle->s_vec_o_1 = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	s_triangle->s_vec_o_2 = parse_coordinates(&str);
@@ -119,8 +113,6 @@ void	parse_triangle(char *str, t_stage *s_stage)
 	s_triangle->s_vec_dir = vec_cproduct(&s_triangle->s_vec_edge_1,
 											&s_triangle->s_vec_edge_2);
 	s_triangle->s_vec_dir = vec_norm(&s_triangle->s_vec_dir);
-	ft_lst_obj_add_front(&(s_stage->s_lst_objs),
-							ft_lst_obj_new(s_triangle, OBJ_TRIANGLE, inter_triangle));
 }
 
 void	parse_objs(char *str, t_stage *s_stage)
@@ -134,9 +126,9 @@ void	parse_objs(char *str, t_stage *s_stage)
 	else if (str[0] == 's' && str[1] == 'q' &&
 			(str[2] == ' ' || str[2] == '\t') && (str += 2))
 		parse_square(str, s_stage);
-//	else if (str[0] == 'c' && str[1] == 'y' &&
-//			(str[2] == ' ' || str[2] == '\t') && (str += 2))
-//		parse_cylinder(str, s_stage);
+	else if (str[0] == 'c' && str[1] == 'y' &&
+			(str[2] == ' ' || str[2] == '\t') && (str += 2))
+		parse_cylinder(str, s_stage);
 	else if (str[0] == 't' && str[1] == 'r' &&
 			(str[2] == ' ' || str[2] == '\t') && (str += 2))
 		parse_triangle(str, s_stage);

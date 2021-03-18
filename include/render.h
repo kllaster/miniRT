@@ -40,6 +40,7 @@ void			inter_plane(const t_plane *s_plane, t_ray *s_ray);
 void			inter_square(const t_square *s_square, t_ray *s_ray);
 void			inter_sphere(const t_sphere *s_sphere, t_ray *s_ray);
 void			inter_triangle(const t_triangle *s_triangle, t_ray *s_ray);
+void			inter_cylinder(const t_cylinder *s_cylinder, t_ray *s_ray);
 void			my_mlx_pixel_put(const t_mlx_img *s_mlx_img, int x, int y,
 									int color);
 void			get_vec_reflection(t_vec *s_vec_start_dir, t_vec *s_vec_dir);

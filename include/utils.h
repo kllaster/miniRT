@@ -26,6 +26,9 @@ typedef struct		s_lst
 	struct s_lst	*next;
 }					t_lst;
 
+void				malloc_void(void **p, size_t size);
+void				free_rt(t_rt *s_rt);
+int					end_rt(t_rt *s_rt);
 void				error_end(char *str_error, int exit_code, int flag, void *s_rt);
 void				putstr_fd(int fd, char *str);
 float				ft_fabs(float num);

@@ -26,7 +26,6 @@ int		start_render(t_rt *s_rt)
 	int			i;
 
 	i = -1;
-	s_rt->render_now = 1;
 	if (COUNT_THREADS > 1)
 	{
 		while (++i < COUNT_THREADS)
@@ -41,6 +40,5 @@ int		start_render(t_rt *s_rt)
 	else
 		render(&s_rt->s_tdata[0]);
 	s_rt->s_stage.s_main_cam->render_ready = 1;
-	s_rt->render_now = 0;
 	return (0);
 }

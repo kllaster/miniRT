@@ -88,7 +88,7 @@ void	debug_print_s_triangle(t_triangle *s_triangle)
 void	debug_print_s_stage(t_stage *s_stage)
 {
 	t_lst		*s_lst;
-	t_lst_objs *s_lst_obj;
+	t_lst_objs	*s_lst_obj;
 
 	printf("\n\n\\\\ t_stage s_stage //\n\n");
 	printf("——— int	anti_aliasing: %d\n", s_stage->anti_aliasing);

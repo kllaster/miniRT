@@ -1,5 +1,45 @@
 #include "mini_rt.h"
 
+void	free_rt(t_rt *s_rt)
+{
+	t_lst	*s_lst_cams;
+
+	if (s_rt->mlx_p)
+	{
+		s_lst_cams = s_rt->s_stage.s_lst_cams;
+		while (s_lst_cams)
+		{
+			if (((t_cam *)s_lst_cams->content)->s_mlx_img.img_ptr)
+				mlx_destroy_image(s_rt->mlx_p,
+						((t_cam *)s_lst_cams->content)->s_mlx_img.img_ptr);
+			s_lst_cams = s_lst_cams->next;
+		}
+		if (s_rt->mlx_window)
+			mlx_destroy_window(s_rt->mlx_p, s_rt->mlx_window);
+	}
+	if (s_rt->s_stage.s_ambient_color)
+		free(s_rt->s_stage.s_ambient_color);
+	if (s_rt->s_stage.s_lst_lights)
+		ft_lst_func(s_rt->s_stage.s_lst_lights, free);
+	if (s_rt->s_stage.s_lst_cams)
+		ft_lst_func(s_rt->s_stage.s_lst_cams, free);
+	if (s_rt->s_stage.s_lst_objs)
+		ft_lst_obj_func(s_rt->s_stage.s_lst_objs, free);
+}
+
+int		end_rt(t_rt *s_rt)
+{
+	free_rt(s_rt);
+	exit(0);
+}
+
+void	malloc_void(void **p, size_t size)
+{
+	if ((*p = malloc(size)) == NULL)
+		error_end("Memory allocation error",
+			MALLOC_ERROR, 0, NULL);
+}
+
 long long int	time_unix_ms(void)
 {
 	struct timeval	s_time;
@@ -145,8 +185,7 @@ t_lst		*ft_lst_new(void *content)
 {
 	t_lst	*s_lst;
 
-	if (!(s_lst = (t_lst *)malloc(sizeof(t_lst))))
-		return (NULL);
+	malloc_void((void **)&s_lst, sizeof(t_lst));
 	s_lst->content = content;
 	s_lst->next = NULL;
 	return (s_lst);
@@ -229,8 +268,7 @@ t_lst_objs	*ft_lst_obj_new(void *content, char type, void (*func_inter)())
 {
 	t_lst_objs	*s_lst_obj;
 
-	if (!(s_lst_obj = (t_lst_objs *)malloc(sizeof(t_lst_objs))))
-		return (NULL);
+	malloc_void((void **)&s_lst_obj, sizeof(t_lst_objs));
 	s_lst_obj->func_inter = func_inter;
 	s_lst_obj->content = content;
 	s_lst_obj->type = type;
@@ -259,15 +297,18 @@ void		ft_lst_obj_func(t_lst_objs *s_lst_objs, void (*func)(void *))
 		return ;
 	s_lst_obj_prev = s_lst_objs->prev;
 	while (s_lst_objs != s_lst_obj_prev &&
-			s_lst_obj_prev != s_lst_objs->next)
+			(s_lst_obj_prev && s_lst_objs != s_lst_obj_prev->prev))
 	{
 		func(s_lst_objs->content);
-		func(s_lst_obj_prev->content);
+		if (s_lst_obj_prev != NULL)
+			func(s_lst_obj_prev->content);
 		s_lst_objs = s_lst_objs->next;
-		s_lst_obj_prev = s_lst_obj_prev->prev;
+		if (s_lst_obj_prev != NULL)
+			s_lst_obj_prev = s_lst_obj_prev->prev;
 	}
 	func(s_lst_objs->content);
-	if (s_lst_obj_prev == s_lst_objs->next && s_lst_objs->next != s_lst_objs)
+	if ((s_lst_obj_prev && s_lst_objs == s_lst_obj_prev->prev) &&
+			s_lst_objs != s_lst_obj_prev)
 		func(s_lst_obj_prev->content);
 }
 
@@ -290,6 +331,7 @@ void		error_end(char *str_error, int exit_code, int flag, void *s_rt)
 	{
 		if (p_rt)
 			free_rt(p_rt);
+		putstr_fd(2, "\n\n");
 		putstr_fd(2, str_error);
 		putstr_fd(2, "\n");
 		exit(exit_code);

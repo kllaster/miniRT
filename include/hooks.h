@@ -33,7 +33,5 @@ int		change_pos_cam(t_rt *s_rt, t_vec *s_vec_pos);
 int		change_dir_cam(t_rt *s_rt, t_vec *s_vec);
 void	render_all_images(t_rt *s_rt);
 int		check_hooks(t_rt *s_rt);
-void	free_rt(t_rt *s_rt);
-int		end_rt(t_rt *s_rt);
 
 #endif

@@ -10,7 +10,7 @@ void	check_inter_objs(t_lst_objs *s_lst_objs, t_ray *s_ray,
 		s_ray->func_inter(s_ray->last_inter_obj, s_ray);
 	s_lst_obj_prev = s_lst_objs->prev;
 	while (s_lst_objs != s_lst_obj_prev &&
-			s_lst_obj_prev != s_lst_objs->next)
+			s_lst_objs != s_lst_obj_prev->prev)
 	{
 		s_lst_objs->func_inter(s_lst_objs->content, s_ray);
 		s_lst_obj_prev->func_inter(s_lst_obj_prev->content, s_ray);
@@ -18,9 +18,10 @@ void	check_inter_objs(t_lst_objs *s_lst_objs, t_ray *s_ray,
 		s_lst_obj_prev = s_lst_obj_prev->prev;
 	}
 	s_lst_objs->func_inter(s_lst_objs->content, s_ray);
-	if (s_lst_obj_prev == s_lst_objs->next && s_lst_objs != s_lst_objs->next)
+	if (s_lst_objs == s_lst_obj_prev->prev && s_lst_objs != s_lst_obj_prev)
 		s_lst_obj_prev->func_inter(s_lst_obj_prev->content, s_ray);
-	if (s_ray->length < distance && s_ray->last_inter_type ^ OBJ_SPHERE)
+	if (s_ray->length < distance && s_ray->last_inter_type ^ OBJ_SPHERE &&
+			s_ray->last_inter_type ^ OBJ_CYLINDER)
 	{
 		s_ray->s_vec_inter = vec_mul(&s_ray->s_vec_start_dir, s_ray->length);
 		s_ray->s_vec_inter = vec_sum(&s_ray->s_vec_start, &s_ray->s_vec_inter);

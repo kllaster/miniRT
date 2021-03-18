@@ -34,6 +34,7 @@ SRCS =	src/main.c\
 		render/intersections/inter_sphere.c\
 		render/intersections/inter_square.c\
 		render/intersections/inter_triangle.c\
+		render/intersections/inter_cylinder.c\
 
 OBJS = $(SRCS:.c=.o)
 

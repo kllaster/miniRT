@@ -24,9 +24,7 @@ void	parse_ambient_light(char *str, t_stage *s_stage)
 	if (brightness < 0.0)
 		error_end("Incorrect ambient light brightness", PARSE_ERROR, 0, NULL);
 	skip_between_param(&str, 0);
-	if ((s_stage->s_ambient_color = malloc(sizeof(t_rgb))) == NULL)
-		error_end("Memory allocation error: parse_ambient_light()",
-					MALLOC_ERROR, 0, NULL);
+	malloc_void((void **)&s_stage->s_ambient_color, sizeof(t_rgb));
 	*s_stage->s_ambient_color = parse_rgb(&str);
 	*s_stage->s_ambient_color = rgb_mul(s_stage->s_ambient_color,
 												brightness);
@@ -37,9 +35,7 @@ void	parse_cam(char *str, t_stage *s_stage)
 	t_cam		*s_cam;
 
 	skip_between_param(&str, 0);
-	if ((s_cam = malloc(sizeof(t_cam))) == NULL)
-		error_end("Memory allocation error: parse_cam()",
-					MALLOC_ERROR, 0, NULL);
+	malloc_void((void **)&s_cam, sizeof(t_cam));
 	ft_bzero(s_cam, sizeof(t_cam));
 	s_cam->s_vec_o = parse_coordinates(&str);
 	skip_between_param(&str, 0);
@@ -62,16 +58,14 @@ void	parse_light(char *str, t_stage *s_stage)
 	t_light		*s_light;
 
 	skip_between_param(&str, 0);
-	if ((s_light = malloc(sizeof(t_light))) == NULL)
-		error_end("Memory allocation error: parse_light()",
-					MALLOC_ERROR, 0, NULL);
+	malloc_void((void **)&s_light, sizeof(t_light));
+	ft_lst_add_front(&(s_stage->s_lst_lights), ft_lst_new(s_light));
 	s_light->s_vec_o = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	brightness = parse_float(&str, 1);
 	skip_between_param(&str, 0);
 	s_light->s_color = parse_rgb(&str);
 	s_light->s_color = rgb_mul(&s_light->s_color, brightness);
-	ft_lst_add_front(&(s_stage->s_lst_lights), ft_lst_new(s_light));
 }
 
 void	parse_check_str(int fd, t_stage *s_stage)
