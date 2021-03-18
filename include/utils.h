@@ -11,18 +11,20 @@ enum	e_errors {
 	SAVE_ERROR = 5
 };
 
-typedef struct		s_list_objs
+typedef struct		s_lst_objs
 {
+	struct s_lst_objs	*next;
+	struct s_lst_objs	*prev;
 	void				*content;
-	struct s_list_objs	*next;
-	char				type;
-}					t_list_objs;
+	void				(*func_inter)();
+	char 				type;
+}					t_lst_objs;
 
-typedef struct		s_list
+typedef struct		s_lst
 {
 	void			*content;
-	struct s_list	*next;
-}					t_list;
+	struct s_lst	*next;
+}					t_lst;
 
 void				error_end(char *str_error, int exit_code, int flag, void *s_rt);
 void				putstr_fd(int fd, char *str);
@@ -35,14 +37,14 @@ void				ft_bzero(void *s, size_t n);
 int					ft_atoi_pos(char **str, int error);
 float				ft_atoi_pos_mantissa(char **str);
 void				*ft_memcpy(void *dest, const void *source, size_t count);
-t_list				*ft_list_new(void *content);
-void				ft_list_add_front(t_list **s_list_src, t_list *s_list_new);
-void				ft_list_add_back(t_list **s_list_src, t_list *new);
-void				ft_list_cpy(t_list **s_list_dest, t_list *s_list_src, void *(*f_content_cpy)(void *));
-void				ft_list_func(t_list *s_list, void (*func)(void *));
-t_list_objs			*ft_list_obj_new(void *content, unsigned char type);
-void				ft_list_obj_add_front(t_list_objs **s_list_src, t_list_objs *s_list_new);
-void				ft_list_obj_add_back(t_list_objs **s_list_src, t_list_objs *new);
-void				ft_list_obj_func(t_list_objs *s_list_objs, void (*func)(void *));
+t_lst				*ft_lst_new(void *content);
+void				ft_lst_add_front(t_lst **s_lst_src, t_lst *s_lst_new);
+void				ft_lst_add_back(t_lst **s_lst_src, t_lst *new);
+void				ft_lst_cpy(t_lst **s_lst_dest, t_lst *s_lst_src, void *(*f_content_cpy)(void *));
+void				ft_lst_func(t_lst *s_lst, void (*func)(void *));
+t_lst_objs			*ft_lst_obj_new(void *content, char type, void (*func_inter)());
+void				ft_lst_obj_add_front(t_lst_objs **s_lst_src, t_lst_objs *s_lst_new);
+void				ft_end_lst_obj(t_lst_objs **s_lst_src);
+void				ft_lst_obj_func(t_lst_objs *s_lst_objs, void (*func)(void *));
 
 #endif

@@ -1,90 +1,69 @@
 #include "mini_rt.h"
 
-void		check_inter_obj(t_ray *s_ray)
-{
-	if (s_ray->last_inter_type & OBJ_SPHERE)
-		inter_sphere(s_ray->last_inter_obj, s_ray);
-	else if (s_ray->last_inter_type & OBJ_PLANE)
-		inter_plane(s_ray->last_inter_obj, s_ray);
-	else if (s_ray->last_inter_type & OBJ_SQUARE)
-		inter_square(s_ray->last_inter_obj, s_ray);
-//	else if (s_ray->last_inter_type & OBJ_CYLINDER)
-//		inter_cylinder(s_ray->last_inter_obj, s_ray);
-	else if (s_ray->last_inter_type & OBJ_TRIANGLE)
-		inter_triangle(s_ray->last_inter_obj, s_ray);
-}
-
-void		check_inter_objs(t_list_objs *s_list_objs, t_ray *s_ray,
+void	check_inter_objs(t_lst_objs *s_lst_objs, t_ray *s_ray,
 								float distance)
 {
-	t_list_objs	*s_list_obj;
+	t_lst_objs	*s_lst_obj_prev;
 
 	s_ray->length = distance;
 	if (s_ray->last_inter_obj)
-		check_inter_obj(s_ray);
-	s_list_obj = s_list_objs;
-	while (s_list_obj)
+		s_ray->func_inter(s_ray->last_inter_obj, s_ray);
+	s_lst_obj_prev = s_lst_objs->prev;
+	while (s_lst_objs != s_lst_obj_prev &&
+			s_lst_obj_prev != s_lst_objs->next)
 	{
-		if (s_list_obj->type & OBJ_SPHERE)
-			inter_sphere(s_list_obj->content, s_ray);
-		else if (s_list_obj->type & OBJ_PLANE)
-			inter_plane(s_list_obj->content, s_ray);
-		else if (s_list_obj->type & OBJ_SQUARE)
-			inter_square(s_list_obj->content, s_ray);
-//		else if (s_list_obj->type & OBJ_CYLINDER)
-//			inter_cylinder(s_list_obj->content, s_ray);
-		else if (s_list_obj->type & OBJ_TRIANGLE)
-			inter_triangle(s_list_obj->content, s_ray);
-		s_list_obj = s_list_obj->next;
+		s_lst_objs->func_inter(s_lst_objs->content, s_ray);
+		s_lst_obj_prev->func_inter(s_lst_obj_prev->content, s_ray);
+		s_lst_objs = s_lst_objs->next;
+		s_lst_obj_prev = s_lst_obj_prev->prev;
 	}
-	if (s_ray->length < distance && s_ray->last_inter_type ^ OBJ_PLANE &&
-			s_ray->last_inter_type ^ OBJ_SQUARE &&
-			s_ray->last_inter_type ^ OBJ_TRIANGLE)
-		s_ray->s_vec_inter_dir = vec_norm(&s_ray->s_vec_inter_dir);
+	s_lst_objs->func_inter(s_lst_objs->content, s_ray);
+	if (s_lst_obj_prev == s_lst_objs->next && s_lst_objs != s_lst_objs->next)
+		s_lst_obj_prev->func_inter(s_lst_obj_prev->content, s_ray);
+	if (s_ray->length < distance && s_ray->last_inter_type ^ OBJ_SPHERE)
+	{
+		s_ray->s_vec_inter = vec_mul(&s_ray->s_vec_start_dir, s_ray->length);
+		s_ray->s_vec_inter = vec_sum(&s_ray->s_vec_start, &s_ray->s_vec_inter);
+	}
 }
 
-t_rgb		get_color_pixel(t_thread_data *s_thread_data, t_rays *s_rays)
+t_rgb	get_color_pixel(t_tdata *s_tdata, t_rays *s_rays)
 {
 	t_vec	s_vec_phong;
 	t_rgb	s_color_res;
 	t_rgb	s_color_ref;
-	t_list	*s_list_light;
+	t_lst	*s_lst_light;
 	float	light_length;
 
 	s_color_res = (t_rgb){0, 0, 0};
-	s_list_light = s_thread_data->s_list_lights;
 	s_vec_phong = vec_sub(&s_rays->s_ray.s_vec_start,
 							&s_rays->s_ray.s_vec_inter);
 	s_vec_phong = vec_norm(&s_vec_phong);
-	while (s_list_light)
+	s_lst_light = s_tdata->s_lst_lights;
+	while (s_lst_light)
 	{
-		s_rays->s_ray_light.s_vec_start = s_rays->s_ray.s_vec_inter;
-		s_rays->s_ray_light.s_vec_start_dir =
-				vec_sub(&((t_light *)s_list_light->content)->s_vec_origin,
-							&s_rays->s_ray.s_vec_inter);
-		light_length = vec_len(&s_rays->s_ray_light.s_vec_start_dir) -
-							(float)MIN_DISTANCE;
-		s_rays->s_ray_light.s_vec_start_dir =
-					vec_norm(&s_rays->s_ray_light.s_vec_start_dir);
-		check_inter_objs(s_thread_data->s_list_objs, &s_rays->s_ray_light, light_length);
+		light_length = get_vec_light(&s_rays->s_ray_light,
+								&s_rays->s_ray.s_vec_inter,
+								&((t_light *)s_lst_light->content)->s_vec_o);
+		check_inter_objs(s_tdata->s_lst_objs, &s_rays->s_ray_light,
+							light_length);
 		if (s_rays->s_ray_light.length == light_length)
 			add_light_color(s_rays, &s_color_res,
-								&((t_light *)s_list_light->content)->s_color,
+								&((t_light *)s_lst_light->content)->s_color,
 								&s_vec_phong);
-		s_list_light = s_list_light->next;
+		s_lst_light = s_lst_light->next;
 	}
 	rgb_add_light(&s_color_res, &s_rays->s_ray.s_material->s_color,
-					s_thread_data->s_ambient_color, 1);
+					s_tdata->s_ambient_color, 1);
 	if (s_rays->s_ray.s_material->ref_coeff)
 	{
-		s_color_ref = reflection(s_thread_data, *s_rays);
+		s_color_ref = reflection(s_tdata, *s_rays);
 		s_color_res = rgb_sum(&s_color_res, &s_color_ref);
 	}
 	return (s_color_res);
 }
 
-int			anti_aliasing(t_thread_data *s_thread_data, int x, int y,
-							t_rays *s_rays)
+int		anti_aliasing(t_tdata *s_tdata, int x, int y, t_rays *s_rays)
 {
 	int		i;
 	int		count_rays;
@@ -92,27 +71,17 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y,
 	t_rgb	s_color_ray;
 
 	i = -1;
-	count_rays = s_thread_data->anti_aliasing ? 3 : 1;
+	count_rays = s_tdata->anti_aliasing ? 3 : 1;
 	s_color_res = (t_rgb){0, 0, 0};
 	while (++i < count_rays)
 	{
-		s_rays->s_ray.s_vec_start_dir.x = (float)x +
-								s_thread_data->s_aa_sample.matrix[i][0] -
-								s_thread_data->s_main_camera->s_vscreen.width;
-		s_rays->s_ray.s_vec_start_dir.y = (float)-y +
-								s_thread_data->s_aa_sample.matrix[i][1] +
-								s_thread_data->s_main_camera->s_vscreen.height;
-		s_rays->s_ray.s_vec_start_dir.z =
-								s_thread_data->s_main_camera->s_vscreen.z;
-		s_rays->s_ray.s_vec_start_dir =
-				matrix_mul(&s_rays->s_ray.s_vec_start_dir,
-							 &s_thread_data->s_main_camera->s_matrix_rotate);
-		s_rays->s_ray.s_vec_start_dir = vec_sub(&s_rays->s_ray.s_vec_start_dir,
-												&s_rays->s_ray.s_vec_start);
-		s_rays->s_ray.s_vec_start_dir = vec_norm(&s_rays->s_ray.s_vec_start_dir);
-		check_inter_objs(s_thread_data->s_list_objs, &s_rays->s_ray, MAX_DISTANCE);
+		get_vec_start_dir((float)x + s_tdata->s_aa_sample.matrix[i][0],
+							s_tdata->s_aa_sample.matrix[i][1] - (float)y,
+							&s_rays->s_ray, s_tdata->s_main_cam);
+		check_inter_objs(s_tdata->s_lst_objs, &s_rays->s_ray,
+							MAX_DISTANCE);
 		if (s_rays->s_ray.length < MAX_DISTANCE)
-			s_color_ray = get_color_pixel(s_thread_data, s_rays);
+			s_color_ray = get_color_pixel(s_tdata, s_rays);
 		else
 			s_color_ray = (t_rgb){0, 0, 0};
 		if (i == 0)
@@ -123,26 +92,26 @@ int			anti_aliasing(t_thread_data *s_thread_data, int x, int y,
 	return (rgb_get_int(&s_color_res));
 }
 
-void		*render(void *data)
+void	*render(void *data)
 {
-	int				x;
-	int				y;
-	int				color_pixel;
-	t_rays			s_rays;
-	t_thread_data	*s_thread_data;
+	int			x;
+	int			y;
+	int			color_pixel;
+	t_rays		s_rays;
+	t_tdata		*s_tdata;
 
 	ft_bzero(&s_rays, sizeof(s_rays));
-	s_thread_data = (t_thread_data *)data;
-	s_rays.s_ray.s_vec_start = s_thread_data->s_main_camera->s_vec_origin;
-	y = s_thread_data->start_y;
-	while (y < s_thread_data->end_y)
+	s_tdata = (t_tdata *)data;
+	s_rays.s_ray.s_vec_start = s_tdata->s_main_cam->s_vec_o;
+	y = s_tdata->start_y;
+	while (y < s_tdata->end_y)
 	{
 		x = 0;
-		while (x < s_thread_data->width)
+		while (x < s_tdata->width)
 		{
 			s_rays.count_ref = -1;
-			color_pixel = anti_aliasing(s_thread_data, x, y, &s_rays);
-			my_mlx_pixel_put(&s_thread_data->s_main_camera->s_mlx_img,
+			color_pixel = anti_aliasing(s_tdata, x, y, &s_rays);
+			my_mlx_pixel_put(&s_tdata->s_main_cam->s_mlx_img,
 								x, y, color_pixel);
 			++x;
 		}

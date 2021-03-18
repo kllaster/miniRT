@@ -58,7 +58,7 @@ float	parse_float(char **str, int error)
 		if (*(*str) == '\t' || *(*str) == ' ')
 			++(*str);
 		else if ((*(*str) >= '0' && *(*str) <= '9') ||
-				 *(*str) == '-' || *(*str) == '+')
+					*(*str) == '-' || *(*str) == '+')
 			break ;
 	}
 	if (**str == '-')

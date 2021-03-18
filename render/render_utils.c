@@ -1,14 +1,6 @@
 #include "mini_rt.h"
 
-void		add_inter_res(t_ray *s_ray, const t_material *s_material, float x)
-{
-	s_ray->length = x;
-	s_ray->s_vec_inter = vec_mul(&s_ray->s_vec_start_dir, x);
-	s_ray->s_vec_inter = vec_sum(&s_ray->s_vec_start, &s_ray->s_vec_inter);
-	s_ray->s_material = s_material;
-}
-
-void		add_gloss(t_rays *s_rays, t_rgb *s_color_res,
+void	add_gloss(t_rays *s_rays, t_rgb *s_color_res,
 						t_rgb *s_color_light, t_vec *s_vec_phong)
 {
 	float	angel_incidence;
@@ -27,7 +19,7 @@ void		add_gloss(t_rays *s_rays, t_rgb *s_color_res,
 	}
 }
 
-void		add_light_color(t_rays *s_rays, t_rgb *s_color_res,
+void	add_light_color(t_rays *s_rays, t_rgb *s_color_res,
 							t_rgb *s_color_light, t_vec *s_vec_phong)
 {
 	float	angel_incidence;
@@ -41,19 +33,9 @@ void		add_light_color(t_rays *s_rays, t_rgb *s_color_res,
 	}
 }
 
-void		get_vec_reflection(t_vec *s_vec_start_dir, t_vec *s_vec_dir)
+t_rgb	reflection(t_tdata *s_tdata, t_rays s_rays)
 {
-	t_vec	s_vec;
-
-	*s_vec_start_dir = vec_mul(s_vec_start_dir, -1);
-	s_vec = vec_mul(s_vec_dir, 2 * vec_dot(s_vec_dir, s_vec_start_dir));
-	*s_vec_start_dir = vec_sub(&s_vec, s_vec_start_dir);
-	*s_vec_start_dir = vec_norm(s_vec_start_dir);
-}
-
-t_rgb		reflection(t_thread_data *s_thread_data, t_rays s_rays)
-{
-	float 	ref_coeff;
+	float	ref_coeff;
 	t_rgb	s_color;
 
 	s_color = (t_rgb){0, 0, 0};
@@ -63,30 +45,17 @@ t_rgb		reflection(t_thread_data *s_thread_data, t_rays s_rays)
 		s_rays.s_ray.s_vec_start = s_rays.s_ray.s_vec_inter;
 		get_vec_reflection(&s_rays.s_ray.s_vec_start_dir,
 							&s_rays.s_ray.s_vec_inter_dir);
-		check_inter_objs(s_thread_data->s_list_objs, &s_rays.s_ray, MAX_DISTANCE);
+		check_inter_objs(s_tdata->s_lst_objs, &s_rays.s_ray,
+							MAX_DISTANCE);
 		if (s_rays.s_ray.length < MAX_DISTANCE)
 		{
-			s_color = get_color_pixel(s_thread_data, &s_rays);
+			s_color = get_color_pixel(s_tdata, &s_rays);
 			if (s_rays.s_ray.s_material->ref_coeff)
 				s_color = rgb_mul(&s_color, s_rays.s_ray.s_material->ref_coeff);
 			s_color = rgb_mul(&s_color, ref_coeff);
 		}
 	}
 	return (s_color);
-}
-
-void	get_aa_sample(int anti_aliasing, t_aa_sample *s_aa_sample)
-{
-	ft_bzero(s_aa_sample, sizeof(t_aa_sample));
-	if (anti_aliasing == 1)
-	{
-		s_aa_sample->matrix[0][0] = (float)-0.45;
-		s_aa_sample->matrix[0][1] = (float)0.45;
-		s_aa_sample->matrix[1][0] = (float)-0.4;
-		s_aa_sample->matrix[1][1] = (float)-0.45;
-		s_aa_sample->matrix[2][0] = (float)-0.45;
-		s_aa_sample->matrix[2][1] = (float)-0.4;
-	}
 }
 
 int		rgb_get_int(t_rgb *s_rgb)

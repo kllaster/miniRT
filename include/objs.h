@@ -18,41 +18,41 @@ typedef	struct	s_material {
 
 typedef	struct	s_sphere {
 	t_material	s_material;
-	t_vec		s_vec_origin;
+	t_vec		s_vec_o;
 	float		radius_pow;
 	float		diameter;
 }				t_sphere;
 
 typedef	struct	s_plane {
 	t_material	s_material;
-	t_vec		s_vec_origin;
 	t_vec		s_vec_dir;
+	t_vec		s_vec_o;
 }				t_plane;
 
 typedef	struct	s_square {
 	t_material	s_material;
-	t_vec		s_vec_origin;
 	t_vec		s_vec_dir;
+	t_vec		s_vec_o;
 	float		side_size;
 	float		side_half;
 }				t_square;
 
 typedef	struct	s_cylinder {
 	t_material	s_material;
-	t_vec		s_vec_origin;
 	t_vec		s_vec_dir;
+	t_vec		s_vec_o;
 	float		diameter;
 	float		height;
 }				t_cylinder;
 
 typedef	struct	s_triangle {
 	t_material	s_material;
-	t_vec		s_vec_origin_1;
-	t_vec		s_vec_origin_2;
-	t_vec		s_vec_origin_3;
+	t_vec		s_vec_dir;
+	t_vec		s_vec_o_1;
+	t_vec		s_vec_o_2;
+	t_vec		s_vec_o_3;
 	t_vec		s_vec_edge_1;
 	t_vec		s_vec_edge_2;
-	t_vec		s_vec_dir;
 }				t_triangle;
 
 t_material	parse_material_param(char **str);

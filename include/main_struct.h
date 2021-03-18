@@ -19,51 +19,51 @@ typedef	struct	s_vscreen {
 	float			z;
 }				t_vscreen;
 
-typedef	struct	s_camera {
+typedef	struct	s_cam {
 	t_matrix		s_matrix_rotate;
 	t_vscreen		s_vscreen;
 	t_mlx_img		s_mlx_img;
-	t_vec			s_vec_origin;
+	t_vec			s_vec_o;
 	t_vec			s_vec_dir;
 	int				render_ready;
 	int				fov;
 	int				count;
 	int				init;
-}				t_camera;
+}				t_cam;
 
 typedef	struct	s_light {
-	t_vec			s_vec_origin;
+	t_vec			s_vec_o;
 	t_rgb			s_color;
 }				t_light;
 
-typedef	struct	s_thread_data {
+typedef	struct	s_tdata {
 	t_aa_sample		s_aa_sample;
-	t_camera		*s_main_camera;
-	t_list			*s_list_lights;
-	t_list_objs		*s_list_objs;
+	t_cam			*s_main_cam;
+	t_lst			*s_lst_lights;
+	t_lst_objs		*s_lst_objs;
 	t_rgb			*s_ambient_color;
 	int				anti_aliasing;
-	int 			height;
-	int 			width;
+	int				height;
+	int				width;
 	int				start_y;
 	int				end_y;
-}				t_thread_data;
+}				t_tdata;
 
 typedef	struct	s_stage {
 	t_aa_sample		s_aa_sample;
-	t_camera		*s_main_camera;
-	t_list			*s_list_lights;
-	t_list_objs		*s_list_objs;
+	t_cam			*s_main_cam;
+	t_lst			*s_lst_lights;
+	t_lst_objs		*s_lst_objs;
 	t_rgb			*s_ambient_color;
 	int				anti_aliasing;
-	int 			height;
-	int 			width;
-	t_list			*s_list_cameras;
+	int				height;
+	int				width;
+	t_lst			*s_lst_cams;
 }				t_stage;
 
 typedef	struct	s_rt {
 	t_stage			s_stage;
-	t_thread_data	s_thread_data[COUNT_THREADS];
+	t_tdata			s_tdata[COUNT_THREADS];
 	pthread_t		threads[COUNT_THREADS];
 	t_vec			s_vec_dir;
 	t_vec			s_vec_pos;

@@ -32,28 +32,28 @@ void	parse_ambient_light(char *str, t_stage *s_stage)
 												brightness);
 }
 
-void	parse_camera(char *str, t_stage *s_stage)
+void	parse_cam(char *str, t_stage *s_stage)
 {
-	t_camera		*s_camera;
+	t_cam		*s_cam;
 
 	skip_between_param(&str, 0);
-	if ((s_camera = malloc(sizeof(t_camera))) == NULL)
-		error_end("Memory allocation error: parse_camera()",
+	if ((s_cam = malloc(sizeof(t_cam))) == NULL)
+		error_end("Memory allocation error: parse_cam()",
 					MALLOC_ERROR, 0, NULL);
-	ft_bzero(s_camera, sizeof(t_camera));
-	s_camera->s_vec_origin = parse_coordinates(&str);
+	ft_bzero(s_cam, sizeof(t_cam));
+	s_cam->s_vec_o = parse_coordinates(&str);
 	skip_between_param(&str, 0);
-	s_camera->s_vec_dir = parse_coordinates(&str);
-	if (ft_fabs(s_camera->s_vec_dir.x) > 1 ||
-		ft_fabs(s_camera->s_vec_dir.y) > 1 ||
-		ft_fabs(s_camera->s_vec_dir.z) > 1)
-		error_end("Incorrect direction camera", PARSE_ERROR, 0, NULL);
-	s_camera->s_vec_dir = vec_norm(&s_camera->s_vec_dir);
+	s_cam->s_vec_dir = parse_coordinates(&str);
+	if (ft_fabs(s_cam->s_vec_dir.x) > 1 ||
+		ft_fabs(s_cam->s_vec_dir.y) > 1 ||
+		ft_fabs(s_cam->s_vec_dir.z) > 1)
+		error_end("Incorrect direction cam", PARSE_ERROR, 0, NULL);
+	s_cam->s_vec_dir = vec_norm(&s_cam->s_vec_dir);
 	skip_between_param(&str, 0);
-	s_camera->fov = ft_atoi_pos(&str, 1);
-	if (s_camera->fov <= 0)
+	s_cam->fov = ft_atoi_pos(&str, 1);
+	if (s_cam->fov <= 0)
 		error_end("Incorrect FOV", PARSE_ERROR, 0, NULL);
-	ft_list_add_back(&(s_stage->s_list_cameras), ft_list_new(s_camera));
+	ft_lst_add_back(&(s_stage->s_lst_cams), ft_lst_new(s_cam));
 }
 
 void	parse_light(char *str, t_stage *s_stage)
@@ -65,26 +65,20 @@ void	parse_light(char *str, t_stage *s_stage)
 	if ((s_light = malloc(sizeof(t_light))) == NULL)
 		error_end("Memory allocation error: parse_light()",
 					MALLOC_ERROR, 0, NULL);
-	s_light->s_vec_origin = parse_coordinates(&str);
+	s_light->s_vec_o = parse_coordinates(&str);
 	skip_between_param(&str, 0);
 	brightness = parse_float(&str, 1);
 	skip_between_param(&str, 0);
 	s_light->s_color = parse_rgb(&str);
 	s_light->s_color = rgb_mul(&s_light->s_color, brightness);
-	ft_list_add_front(&(s_stage->s_list_lights), ft_list_new(s_light));
+	ft_lst_add_front(&(s_stage->s_lst_lights), ft_lst_new(s_light));
 }
 
-void	parse_file(char *file, t_stage *s_stage)
+void	parse_check_str(int fd, t_stage *s_stage)
 {
-	int		fd;
 	int		error;
 	char	*str;
 
-	if (!ft_strequal_end(file, ".rt"))
-		error_end("Invalid scene file format. Expected \".rt\"",
-					PARSE_ERROR, 0, NULL);
-	if ((fd = open(file, O_RDONLY)) < 0)
-		error_end("Error opening the scene file", PARSE_ERROR, 0, NULL);
 	while ((error = get_next_line(fd, &str)) != -1)
 	{
 		if (str[0] == 'R' && (str[1] == ' ' || str[1] == '\t'))
@@ -92,7 +86,7 @@ void	parse_file(char *file, t_stage *s_stage)
 		else if (str[0] == 'A' && (str[1] == ' ' || str[1] == '\t'))
 			parse_ambient_light(str, s_stage);
 		else if (str[0] == 'c' && (str[1] == ' ' || str[1] == '\t'))
-			parse_camera(str, s_stage);
+			parse_cam(str, s_stage);
 		else if (str[0] == 'l' && (str[1] == ' ' || str[1] == '\t'))
 			parse_light(str, s_stage);
 		else
@@ -103,5 +97,26 @@ void	parse_file(char *file, t_stage *s_stage)
 	}
 	if (error == -1)
 		error_end("Error reading the scene file", PARSE_ERROR, 0, NULL);
+}
+
+void	parse_file(char *file, t_stage *s_stage)
+{
+	int	fd;
+
+	if (!ft_strequal_end(file, ".rt"))
+		error_end("Invalid scene file format. Expected \".rt\"",
+					PARSE_ERROR, 0, NULL);
+	if ((fd = open(file, O_RDONLY)) < 0)
+		error_end("Error opening the scene file", PARSE_ERROR, 0, NULL);
+	parse_check_str(fd, s_stage);
 	close(fd);
+	ft_end_lst_obj(&s_stage->s_lst_objs);
+	if (!s_stage->width || !s_stage->height)
+		error_end("Window incorrect", PARSE_ERROR, 0, NULL);
+	if (!s_stage->s_lst_cams)
+		error_end("The cam is not installed", PARSE_ERROR, 0, NULL);
+	if (!s_stage->s_ambient_color)
+		error_end("Ambient light is not installed", PARSE_ERROR, 0, NULL);
+	if (!s_stage->s_lst_objs)
+		error_end("Objects not specified", PARSE_ERROR, 0, NULL);
 }
