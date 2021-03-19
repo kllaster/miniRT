@@ -1,6 +1,14 @@
 #include "mini_rt.h"
 
-void	render_all_images(t_rt *s_rt)
+long long int	time_unix_ms(void)
+{
+	struct timeval	s_time;
+
+	gettimeofday(&s_time, NULL);
+	return (s_time.tv_sec * 1000 + (int)(s_time.tv_usec * 0.001));
+}
+
+void			render_all_images(t_rt *s_rt)
 {
 	t_lst	*s_lst_cams;
 
@@ -12,7 +20,7 @@ void	render_all_images(t_rt *s_rt)
 	}
 }
 
-void	change_frame(t_rt *s_rt, void *img_old_p)
+void			change_frame(t_rt *s_rt, void *img_old_p)
 {
 	s_rt->render_now = 1;
 	if (s_rt->s_stage.s_main_cam->render_ready == 0)
@@ -28,7 +36,7 @@ void	change_frame(t_rt *s_rt, void *img_old_p)
 	s_rt->render_now = 0;
 }
 
-int		check_hooks(t_rt *s_rt)
+int				check_hooks(t_rt *s_rt)
 {
 	int						update;
 	static long long int	last_hook_time = 0;
@@ -57,7 +65,7 @@ int		check_hooks(t_rt *s_rt)
 	return (update);
 }
 
-int		new_frame(t_rt *s_rt)
+int				new_frame(t_rt *s_rt)
 {
 	static int	update = 0;
 	void		*img_old_p;

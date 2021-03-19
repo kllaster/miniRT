@@ -11,7 +11,7 @@ t_material	parse_material_param(char **str)
 	return (s_material);
 }
 
-void	check_next_arg(char **str)
+void		check_next_arg(char **str)
 {
 	if (**str == ',')
 		++(*str);
@@ -28,7 +28,7 @@ void	check_next_arg(char **str)
 	}
 }
 
-void	skip_between_param(char **str, char symb)
+void		skip_between_param(char **str, char symb)
 {
 	++(*str);
 	while (**str)
@@ -47,31 +47,7 @@ void	skip_between_param(char **str, char symb)
 	}
 }
 
-float	parse_float(char **str, int error)
-{
-	float	sign;
-	float	num;
-
-	sign = 1;
-	while (**str)
-	{
-		if (*(*str) == '\t' || *(*str) == ' ')
-			++(*str);
-		else if ((*(*str) >= '0' && *(*str) <= '9') ||
-					*(*str) == '-' || *(*str) == '+')
-			break ;
-	}
-	if (**str == '-')
-		sign = -1;
-	num = (float)ft_atoi_pos(str, error);
-	if (num < 0)
-		num *= sign = -1;
-	if (*(*str) == '.' && (++(*str)))
-		num += ft_atoi_pos_mantissa(str);
-	return (num * sign);
-}
-
-t_rgb	parse_rgb(char **str)
+t_rgb		parse_rgb(char **str)
 {
 	t_rgb	s_rgb;
 
@@ -89,7 +65,7 @@ t_rgb	parse_rgb(char **str)
 	return (s_rgb);
 }
 
-t_vec	parse_coordinates(char **str)
+t_vec		parse_coordinates(char **str)
 {
 	t_vec	s_vec;
 

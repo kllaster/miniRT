@@ -1,6 +1,28 @@
 #include "mini_rt.h"
 
-int	main(int argc, char *argv[])
+void	parse_file(char *file, t_stage *s_stage)
+{
+	int	fd;
+
+	if (!ft_strequal_end(file, ".rt"))
+		error_end("Invalid scene file format. Expected \".rt\"",
+					PARSE_ERROR, 0, NULL);
+	if ((fd = open(file, O_RDONLY)) < 0)
+		error_end("Error opening the scene file", PARSE_ERROR, 0, NULL);
+	parse_check_str(fd, s_stage);
+	close(fd);
+	ft_end_lst_obj(&s_stage->s_lst_objs);
+	if (!s_stage->width || !s_stage->height)
+		error_end("Window incorrect", PARSE_ERROR, 0, NULL);
+	if (!s_stage->s_lst_cams)
+		error_end("The cam is not installed", PARSE_ERROR, 0, NULL);
+	if (!s_stage->s_ambient_color)
+		error_end("Ambient light is not installed", PARSE_ERROR, 0, NULL);
+	if (!s_stage->s_lst_objs)
+		error_end("Objects not specified", PARSE_ERROR, 0, NULL);
+}
+
+int		main(int argc, char *argv[])
 {
 	t_rt	s_rt;
 

@@ -37,8 +37,6 @@ void	resize_cylinder(t_cylinder *s_cylinder, int *change_obj, float i)
 	{
 		if (s_cylinder->diameter != 1)
 			s_cylinder->diameter = 1;
-		else
-			return ;
 	}
 	else
 		s_cylinder->diameter += i;
@@ -46,8 +44,6 @@ void	resize_cylinder(t_cylinder *s_cylinder, int *change_obj, float i)
 	{
 		if (s_cylinder->height != 1)
 			s_cylinder->height = 1;
-		else
-			return ;
 	}
 	else
 		s_cylinder->height += i;
@@ -57,7 +53,7 @@ void	resize_cylinder(t_cylinder *s_cylinder, int *change_obj, float i)
 	*change_obj = 1;
 }
 
-void	check_click_figure(int i, t_ray *s_ray, t_rt *s_rt)
+void	check_click_figure(float i, t_ray *s_ray, t_rt *s_rt)
 {
 	if (s_ray->length < MAX_DISTANCE)
 	{
@@ -88,7 +84,7 @@ int		mouse_press(int button, int x, int y, t_rt *s_rt)
 	if (init == 0 && (init = 1))
 		ft_bzero(&s_ray, sizeof(t_ray));
 	s_ray.s_vec_start = s_rt->s_stage.s_main_cam->s_vec_o;
-	get_vec_start_dir(x, -y, &s_ray, s_rt->s_stage.s_main_cam);
+	get_vec_start_dir((float)x, (float)-y, &s_ray, s_rt->s_stage.s_main_cam);
 	check_inter_objs(s_rt->s_stage.s_lst_objs, &s_ray, MAX_DISTANCE);
 	check_click_figure(i * CHANGING_SIZE, &s_ray, s_rt);
 	return (0);

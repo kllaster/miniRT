@@ -24,14 +24,15 @@ enum	e_keys {
 	BUTTON_2 = 2
 };
 
-void	change_frame(t_rt *s_rt, void *img_old_p);
-int		new_frame(t_rt *s_rt);
-int		key_press(int keycode, t_rt *s_rt);
-int		key_release(int keycode, t_rt *s_rt);
-int		mouse_press(int button, int x, int y, t_rt *s_rt);
-int		change_pos_cam(t_rt *s_rt, t_vec *s_vec_pos);
-int		change_dir_cam(t_rt *s_rt, t_vec *s_vec);
-void	render_all_images(t_rt *s_rt);
-int		check_hooks(t_rt *s_rt);
+void			change_frame(t_rt *s_rt, void *img_old_p);
+int				new_frame(t_rt *s_rt);
+void			render_all_images(t_rt *s_rt);
+int				change_pos_cam(t_rt *s_rt, t_vec *s_vec_pos);
+int				change_dir_cam(t_rt *s_rt, t_vec *s_vec);
+int				key_press(int keycode, t_rt *s_rt);
+int				key_release(int keycode, t_rt *s_rt);
+int				mouse_press(int button, int x, int y, t_rt *s_rt);
+int				check_hooks(t_rt *s_rt);
+long long int	time_unix_ms();
 
 #endif

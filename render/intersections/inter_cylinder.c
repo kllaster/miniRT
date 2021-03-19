@@ -3,8 +3,7 @@
 void	inter_cylinder_res(const t_cylinder *s_cylinder, t_ray *s_ray,
 							float x[2])
 {
-	add_inter_res(s_ray, inter_cylinder, &s_cylinder->s_material, x[0]);
-	s_ray->last_inter_obj = (void *)s_cylinder;
+	add_inter_res(s_ray, inter_cylinder, s_cylinder, x[0]);
 	s_ray->last_inter_type = OBJ_CYLINDER;
 	s_ray->s_vec_inter = vec_mul(&s_ray->s_vec_start_dir, x[0]);
 	s_ray->s_vec_inter = vec_sum(&s_ray->s_vec_start, &s_ray->s_vec_inter);

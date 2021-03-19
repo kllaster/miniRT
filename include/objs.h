@@ -57,6 +57,6 @@ typedef	struct	s_triangle {
 	t_vec		s_vec_edge_2;
 }				t_triangle;
 
-t_material	parse_material_param(char **str);
+t_material		parse_material_param(char **str);
 
 #endif

@@ -1,11 +1,12 @@
 #include "mini_rt.h"
 
 void	add_inter_res(t_ray *s_ray, void (*func_inter)(),
-							const t_material *s_material, float x)
+							const void *s_figure, float x)
 {
 	s_ray->length = x;
 	s_ray->func_inter = func_inter;
-	s_ray->s_material = s_material;
+	s_ray->last_inter_obj = (void *)s_figure;
+	s_ray->s_material = s_figure;
 }
 
 void	get_vec_reflection(t_vec *s_vec_start_dir, t_vec *s_vec_dir)
@@ -25,7 +26,9 @@ float	get_vec_light(t_ray *s_ray_light, t_vec *s_vec_inter,
 
 	s_ray_light->s_vec_start = *s_vec_inter;
 	s_ray_light->s_vec_start_dir = vec_sub(s_vec_light, s_vec_inter);
-	length = vec_len(&s_ray_light->s_vec_start_dir) - (float)MIN_DISTANCE;
+	length = sqrtf(vec_dot(&s_ray_light->s_vec_start_dir,
+							&s_ray_light->s_vec_start_dir)) -
+			(float)MIN_DISTANCE;
 	s_ray_light->s_vec_start_dir = vec_norm(&s_ray_light->s_vec_start_dir);
 	return (length);
 }

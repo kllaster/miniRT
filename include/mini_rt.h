@@ -28,4 +28,7 @@
 # include "get_next_line.h"
 # include "render.h"
 
+void	free_rt(t_rt *s_rt);
+int		end_rt(t_rt *s_rt);
+
 #endif

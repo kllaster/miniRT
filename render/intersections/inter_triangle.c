@@ -19,8 +19,7 @@ void	inter_triangle(const t_triangle *s_triangle, t_ray *s_ray)
 	det = vec_dot(&s_triangle->s_vec_edge_2, &s_vec2) * det;
 	if (b < 0 || a + b > 1 || det <= MIN_DISTANCE || det >= s_ray->length)
 		return ;
-	add_inter_res(s_ray, inter_triangle, &s_triangle->s_material, det);
-	s_ray->last_inter_obj = (void *)s_triangle;
+	add_inter_res(s_ray, inter_triangle, s_triangle, det);
 	s_ray->last_inter_type = OBJ_TRIANGLE;
 	s_ray->s_vec_inter_dir = s_triangle->s_vec_dir;
 	if (vec_dot(&s_ray->s_vec_inter_dir, &s_ray->s_vec_start_dir) > 0)

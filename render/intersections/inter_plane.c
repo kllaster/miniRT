@@ -11,8 +11,7 @@ void	inter_plane(const t_plane *s_plane, t_ray *s_ray)
 	x = vec_dot(&s_vec1, &s_plane->s_vec_dir) / x;
 	if (x <= MIN_DISTANCE || s_ray->length <= x)
 		return ;
-	add_inter_res(s_ray, inter_plane, &s_plane->s_material, x);
-	s_ray->last_inter_obj = (void *)s_plane;
+	add_inter_res(s_ray, inter_plane, s_plane, x);
 	s_ray->last_inter_type = OBJ_PLANE;
 	s_ray->s_vec_inter_dir = s_plane->s_vec_dir;
 	if (vec_dot(&s_ray->s_vec_inter_dir, &s_ray->s_vec_start_dir) > 0)

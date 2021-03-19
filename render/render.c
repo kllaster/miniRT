@@ -28,30 +28,33 @@ void	check_inter_objs(t_lst_objs *s_lst_objs, t_ray *s_ray,
 	}
 }
 
+int		check_light_inter(t_tdata *s_tdata, t_rays *s_rays, t_vec *s_vec_light)
+{
+	float	light_length;
+
+	light_length = get_vec_light(&s_rays->s_ray_light,
+									&s_rays->s_ray.s_vec_inter, s_vec_light);
+	check_inter_objs(s_tdata->s_lst_objs, &s_rays->s_ray_light, light_length);
+	return (s_rays->s_ray_light.length == light_length);
+}
+
 t_rgb	get_color_pixel(t_tdata *s_tdata, t_rays *s_rays)
 {
-	t_vec	s_vec_phong;
+	t_vec	s_vec_med;
 	t_rgb	s_color_res;
 	t_rgb	s_color_ref;
 	t_lst	*s_lst_light;
-	float	light_length;
 
 	s_color_res = (t_rgb){0, 0, 0};
-	s_vec_phong = vec_sub(&s_rays->s_ray.s_vec_start,
-							&s_rays->s_ray.s_vec_inter);
-	s_vec_phong = vec_norm(&s_vec_phong);
+	s_vec_med = vec_sub(&s_rays->s_ray.s_vec_start, &s_rays->s_ray.s_vec_inter);
+	s_vec_med = vec_norm(&s_vec_med);
 	s_lst_light = s_tdata->s_lst_lights;
 	while (s_lst_light)
 	{
-		light_length = get_vec_light(&s_rays->s_ray_light,
-								&s_rays->s_ray.s_vec_inter,
-								&((t_light *)s_lst_light->content)->s_vec_o);
-		check_inter_objs(s_tdata->s_lst_objs, &s_rays->s_ray_light,
-							light_length);
-		if (s_rays->s_ray_light.length == light_length)
+		if (check_light_inter(s_tdata, s_rays,
+				&((t_light *)s_lst_light->content)->s_vec_o))
 			add_light_color(s_rays, &s_color_res,
-								&((t_light *)s_lst_light->content)->s_color,
-								&s_vec_phong);
+				&((t_light *)s_lst_light->content)->s_color, &s_vec_med);
 		s_lst_light = s_lst_light->next;
 	}
 	rgb_add_light(&s_color_res, &s_rays->s_ray.s_material->s_color,

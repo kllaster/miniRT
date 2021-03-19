@@ -12,19 +12,24 @@ HEADER		= include
 SRCS =	src/main.c\
 		src/utils.c\
 		src/save_img.c\
+		src/lst_utils.c\
+		src/other_utils.c\
+		src/lst_obj_utils.c\
 		src/colors_utils.c\
 		src/matrix_utils.c\
 		src/vectors_utils.c\
+		src/vectors_other.c\
 		hooks/hooks.c\
 		hooks/hooks_utils.c\
 		hooks/hooks_mouse.c\
+		parser/parser.c\
+		parser/parse_objs.c\
+		parser/parse_utils.c\
+		parser/parse_other.c\
 		parser/debug_window.c\
 		parser/debug_struct.c\
 		parser/get_next_line.c\
 		parser/get_next_line_utils.c\
-		parser/parse_utils.c\
-		parser/parse_objs.c\
-		parser/parser.c\
 		render/render.c\
 		render/threads.c\
 		render/ray_utils.c\

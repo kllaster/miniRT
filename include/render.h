@@ -35,7 +35,7 @@ void			add_light_color(t_rays *s_rays, t_rgb *s_color_res,
 t_rgb			get_color_pixel(t_tdata *s_tdata, t_rays *s_rays);
 t_rgb			reflection(t_tdata *s_tdata, t_rays s_rays);
 void			add_inter_res(t_ray *s_ray, void (*func_inter)(),
-								const t_material *s_material, float x);
+								const void *s_figure, float x);
 void			inter_plane(const t_plane *s_plane, t_ray *s_ray);
 void			inter_square(const t_square *s_square, t_ray *s_ray);
 void			inter_sphere(const t_sphere *s_sphere, t_ray *s_ray);
