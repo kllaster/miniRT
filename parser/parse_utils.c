@@ -30,8 +30,7 @@ void		check_next_arg(char **str)
 
 void		skip_between_param(char **str, char symb)
 {
-	++(*str);
-	while (**str)
+	while (*(*str))
 	{
 		if (*(*str) == '\t' || *(*str) == ' ')
 			++(*str);
@@ -45,6 +44,8 @@ void		skip_between_param(char **str, char symb)
 						PARSE_ERROR, 0, NULL);
 		}
 	}
+	error_end("Error checking the next parameter",
+				PARSE_ERROR, 0, NULL);
 }
 
 t_rgb		parse_rgb(char **str)

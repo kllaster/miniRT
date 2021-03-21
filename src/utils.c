@@ -59,7 +59,7 @@ void	error_end(char *str_error, int exit_code, int flag, void *s_rt)
 	{
 		if (p_rt)
 			free_rt(p_rt);
-		putstr_fd(2, "\n\n");
+		putstr_fd(2, "\n\n\x1B[31m");
 		putstr_fd(2, str_error);
 		putstr_fd(2, "\n");
 		exit(exit_code);

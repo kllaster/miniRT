@@ -56,6 +56,4 @@ dkms.conf
 .vscode
 .idea
 miniRT
-scenes_files/
-*.bmp
 *.swiftsourceinfo

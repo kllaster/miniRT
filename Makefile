@@ -55,9 +55,11 @@ ifeq ($(COUNT_THREADS), 0)
 	COUNT_THREADS = 1
 endif
 
-all:			$(OBJS)
+$(NAME):		$(OBJS)
 				cd minilibx && $(MAKE) && mv libmlx.dylib ../libmlx.dylib
 				$(CC) $(CPPFLAGS) -I $(HEADER) $(OBJS) libmlx.dylib -o $(NAME)
+
+all:			$(NAME)
 
 .c.o:
 				$(CC) $(CPPFLAGS) -I $(HEADER) -o $@ -c $<
@@ -74,6 +76,5 @@ re:				fclean all
 
 re_rt:			clean all
 
-.DEFAULT_GOAL:	$(NAME)
-.PHONY:			$(NAME) all clean fclean re re_rt
+.PHONY:			all clean fclean re re_rt
 .SILENT:

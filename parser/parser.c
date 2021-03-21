@@ -75,14 +75,16 @@ void	parse_check_str(int fd, t_stage *s_stage)
 
 	while ((error = get_next_line(fd, &str)) != -1)
 	{
-		if (str[0] == 'R' && (str[1] == ' ' || str[1] == '\t'))
-			parse_screen(str, s_stage);
+		if (str[0] == '\0' || str[0] == '#')
+			str[0] = '\0';
+		else if (str[0] == 'R' && (str[1] == ' ' || str[1] == '\t'))
+			parse_screen(&str[1], s_stage);
 		else if (str[0] == 'A' && (str[1] == ' ' || str[1] == '\t'))
-			parse_ambient_light(str, s_stage);
+			parse_ambient_light(&str[1], s_stage);
 		else if (str[0] == 'c' && (str[1] == ' ' || str[1] == '\t'))
-			parse_cam(str, s_stage);
+			parse_cam(&str[1], s_stage);
 		else if (str[0] == 'l' && (str[1] == ' ' || str[1] == '\t'))
-			parse_light(str, s_stage);
+			parse_light(&str[1], s_stage);
 		else
 			parse_objs(str, s_stage);
 		free(str);

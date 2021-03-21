@@ -109,7 +109,7 @@ void	debug_print_s_stage(t_stage *s_stage)
 		s_lst = s_lst->next;
 	}
 	s_lst_obj = s_stage->s_lst_objs;
-	while (s_lst_obj->next != s_stage->s_lst_objs)
+	while (s_lst_obj)
 	{
 		if (s_lst_obj->type & OBJ_SPHERE)
 			debug_print_s_sphere(s_lst_obj->content);
@@ -121,6 +121,7 @@ void	debug_print_s_stage(t_stage *s_stage)
 			debug_print_s_cylinder(s_lst_obj->content);
 		else if (s_lst_obj->type & OBJ_TRIANGLE)
 			debug_print_s_triangle(s_lst_obj->content);
-		s_lst_obj = s_lst_obj->next;
+		if ((s_lst_obj = s_lst_obj->next) == s_stage->s_lst_objs)
+			break ;
 	}
 }

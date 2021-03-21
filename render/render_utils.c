@@ -50,8 +50,6 @@ t_rgb	reflection(t_tdata *s_tdata, t_rays s_rays)
 		if (s_rays.s_ray.length < MAX_DISTANCE)
 		{
 			s_color = get_color_pixel(s_tdata, &s_rays);
-			if (s_rays.s_ray.s_material->ref_coeff)
-				s_color = rgb_mul(&s_color, s_rays.s_ray.s_material->ref_coeff);
 			s_color = rgb_mul(&s_color, ref_coeff);
 		}
 	}
