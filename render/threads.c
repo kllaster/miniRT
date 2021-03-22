@@ -9,13 +9,12 @@ void	create_threads_data(t_rt *s_rt)
 	i = -1;
 	while (++i < COUNT_THREADS)
 	{
-		ft_memcpy(&s_rt->s_tdata[i],
-					&s_rt->s_stage, sizeof(t_stage) - sizeof(t_lst *));
+		ft_memcpy(&s_rt->s_tdata[i], &s_rt->s_stage,
+					sizeof(t_stage) - sizeof(t_lst *));
 		s_rt->s_tdata[i].s_main_cam = s_rt->s_stage.s_main_cam;
 		s_rt->s_tdata[i].start_y = height_thread * i;
 		if (i + 1 != COUNT_THREADS)
-			s_rt->s_tdata[i].end_y =
-				s_rt->s_tdata[i].start_y + height_thread;
+			s_rt->s_tdata[i].end_y = s_rt->s_tdata[i].start_y + height_thread;
 		else
 			s_rt->s_tdata[i].end_y = s_rt->s_stage.height;
 	}
@@ -23,7 +22,7 @@ void	create_threads_data(t_rt *s_rt)
 
 int		start_render(t_rt *s_rt)
 {
-	int			i;
+	int	i;
 
 	i = -1;
 	if (COUNT_THREADS > 1)

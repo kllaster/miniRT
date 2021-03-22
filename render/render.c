@@ -67,7 +67,7 @@ t_rgb	get_color_pixel(t_tdata *s_tdata, t_rays *s_rays)
 	return (s_color_res);
 }
 
-int		anti_aliasing(t_tdata *s_tdata, int x, int y, t_rays *s_rays)
+int		anti_aliasing(t_tdata *s_tdata, float x, float y, t_rays *s_rays)
 {
 	int		i;
 	int		count_rays;
@@ -79,11 +79,10 @@ int		anti_aliasing(t_tdata *s_tdata, int x, int y, t_rays *s_rays)
 	s_color_res = (t_rgb){0, 0, 0};
 	while (++i < count_rays)
 	{
-		get_vec_start_dir((float)x + s_tdata->s_aa_sample.matrix[i][0],
-							s_tdata->s_aa_sample.matrix[i][1] - (float)y,
+		get_vec_start_dir(x + s_tdata->s_aa_sample.matrix[i][0],
+							s_tdata->s_aa_sample.matrix[i][1] - y,
 							&s_rays->s_ray, s_tdata->s_main_cam);
-		check_inter_objs(s_tdata->s_lst_objs, &s_rays->s_ray,
-							MAX_DISTANCE);
+		check_inter_objs(s_tdata->s_lst_objs, &s_rays->s_ray, MAX_DISTANCE);
 		if (s_rays->s_ray.length < MAX_DISTANCE)
 			s_color_ray = get_color_pixel(s_tdata, s_rays);
 		else
@@ -114,7 +113,7 @@ void	*render(void *data)
 		while (x < s_tdata->width)
 		{
 			s_rays.count_ref = -1;
-			color_pixel = anti_aliasing(s_tdata, x, y, &s_rays);
+			color_pixel = anti_aliasing(s_tdata, (float)x, (float)y, &s_rays);
 			my_mlx_pixel_put(&s_tdata->s_main_cam->s_mlx_img,
 								x, y, color_pixel);
 			++x;

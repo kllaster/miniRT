@@ -9,9 +9,9 @@ void	add_gloss(t_rays *s_rays, t_rgb *s_color_res,
 		vec_sum(&s_rays->s_ray_light.s_vec_start_dir, s_vec_phong);
 	s_rays->s_ray_light.s_vec_start_dir =
 		vec_norm(&s_rays->s_ray_light.s_vec_start_dir);
-	if ((angel_incidence =
-				vec_dot(&s_rays->s_ray_light.s_vec_start_dir,
-							&s_rays->s_ray.s_vec_inter_dir)) > 0)
+	angel_incidence = vec_dot(&s_rays->s_ray_light.s_vec_start_dir,
+								&s_rays->s_ray.s_vec_inter_dir);
+	if (angel_incidence > 0)
 	{
 		angel_incidence = powf(angel_incidence, 100);
 		rgb_add_light(s_color_res, &s_rays->s_ray.s_material->s_color,
@@ -24,8 +24,9 @@ void	add_light_color(t_rays *s_rays, t_rgb *s_color_res,
 {
 	float	angel_incidence;
 
-	if ((angel_incidence = vec_dot(&s_rays->s_ray_light.s_vec_start_dir,
-									&s_rays->s_ray.s_vec_inter_dir)) > 0)
+	angel_incidence = vec_dot(&s_rays->s_ray_light.s_vec_start_dir,
+								&s_rays->s_ray.s_vec_inter_dir);
+	if (angel_incidence > 0)
 	{
 		rgb_add_light(s_color_res, &s_rays->s_ray.s_material->s_color,
 						s_color_light, angel_incidence);

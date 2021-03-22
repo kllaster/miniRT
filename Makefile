@@ -5,9 +5,9 @@ DEBUG		= 0
 ifeq ($(DEBUG), 1)
 	DEBUG_FLAGS	= -fsanitize=address -g
 endif
-CFLAGS		= -Wall -Wextra -Werror $(DEBUG_FLAGS) -D COUNT_THREADS=$(COUNT_THREADS)
+CFLAGS		= -Wall -Wextra -Werror -MMD $(DEBUG_FLAGS) -D COUNT_THREADS=$(COUNT_THREADS)
 CPPFLAGS	= $(CFLAGS) -march=native -O2 -msse4a -flto -pipe
-HEADER		= include
+HEADERS		= include/
 
 SRCS =	src/main.c\
 		src/utils.c\
@@ -57,15 +57,18 @@ endif
 
 $(NAME):		$(OBJS)
 				cd minilibx && $(MAKE) && mv libmlx.dylib ../libmlx.dylib
-				$(CC) $(CPPFLAGS) -I $(HEADER) $(OBJS) libmlx.dylib -o $(NAME)
+				$(CC) $(CPPFLAGS) -I $(HEADERS) $(OBJS) libmlx.dylib -o $(NAME)
 
 all:			$(NAME)
 
 .c.o:
-				$(CC) $(CPPFLAGS) -I $(HEADER) -o $@ -c $<
+				$(CC) $(CPPFLAGS) -I $(HEADERS) -o $@ -c $<
+
+$(OBJS):		$(HEADERS)
 
 clean:
 				$(RM) $(OBJS)
+				$(RM) $(OBJS:.o=.d)
 
 fclean:			clean
 				cd minilibx && $(MAKE) clean

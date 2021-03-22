@@ -1,12 +1,11 @@
 #include "mini_rt.h"
 
-void	init_vscreen(float width, float height, t_cam *s_cam,
+void	init_vscreen(int width, int height, t_cam *s_cam,
 						t_vscreen *s_vscreen)
 {
 	s_vscreen->width = (float)(width * 0.5);
 	s_vscreen->height = (float)(height * 0.5);
-	s_vscreen->z =
-	(width / (2 * tanf(s_cam->fov / 2 * (M_PI / 180))));
+	s_vscreen->z = (float)(width / (2 * tan(s_cam->fov * 0.5 * (M_PI / 180))));
 }
 
 void	init_cam(void *mlx_p, t_stage *s_stage, t_cam *s_cam)
@@ -20,8 +19,7 @@ void	init_cam(void *mlx_p, t_stage *s_stage, t_cam *s_cam)
 										&(s_cam->s_mlx_img.line_length),
 										&(s_cam->s_mlx_img.endian))) == NULL)
 		error_end("Error at mlx_get_data_addr()", MLX_ERROR, 0, NULL);
-	init_vscreen((float)s_stage->width, (float)s_stage->height, s_cam,
-					&s_cam->s_vscreen);
+	init_vscreen(s_stage->width, s_stage->height, s_cam, &s_cam->s_vscreen);
 	s_cam->s_matrix_rotate = get_matrix_rotate(&s_cam->s_vec_o,
 													&s_cam->s_vec_dir);
 	s_cam->init = 1;
@@ -71,8 +69,7 @@ void	init_render(t_rt *s_rt)
 	if ((s_rt->mlx_p = mlx_init()) == NULL)
 		error_end("Error at mlx_init()", MLX_ERROR, 0, NULL);
 	check_user_window(s_rt->mlx_p, &s_rt->s_stage);
-	if ((s_rt->mlx_window = mlx_new_window(s_rt->mlx_p,
-											s_rt->s_stage.width,
+	if ((s_rt->mlx_window = mlx_new_window(s_rt->mlx_p, s_rt->s_stage.width,
 											s_rt->s_stage.height,
 											"miniRT")) == NULL)
 		error_end("Error at mlx_new_window()", MLX_ERROR, 0, NULL);
